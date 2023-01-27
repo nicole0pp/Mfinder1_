@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="album">
+      <h2 data-cy="albumDetailsHeading"><span jhiTranslate="mFinder1App.album.detail.title">Album</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ album.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.album.name">Name</span></dt>
+        <dd>
+          <span>{{ album.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.album.picture">Picture</span></dt>
+        <dd>
+          <div *ngIf="album.picture">
+            <a (click)="openFile(album.picture, album.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
+            {{ album.pictureContentType }}, {{ byteSize(album.picture) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.album.publicationDate">Publication Date</span></dt>
+        <dd>
+          <span>{{ album.publicationDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.album.atist">Atist</span></dt>
+        <dd>
+          <div *ngIf="album.atist">
+            <a [routerLink]="['/artist', album.atist.id, 'view']">{{ album.atist.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

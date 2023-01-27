@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "changelogDate": "20230127182400",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "list_details",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ListDetails",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "favoriteList",
+      "otherEntityRelationshipName": "listDetails",
+      "relationshipName": "list",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "song",
+      "otherEntityRelationshipName": "listDetails",
+      "relationshipName": "song",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

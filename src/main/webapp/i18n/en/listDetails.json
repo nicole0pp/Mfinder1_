@@ -1,0 +1,25 @@
+{
+  "mFinder1App": {
+    "listDetails": {
+      "home": {
+        "title": "List Details",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new List Details",
+        "createOrEditLabel": "Create or edit a List Details",
+        "notFound": "No List Details found"
+      },
+      "created": "A new List Details is created with identifier {{ param }}",
+      "updated": "A List Details is updated with identifier {{ param }}",
+      "deleted": "A List Details is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete List Details {{ id }}?"
+      },
+      "detail": {
+        "title": "List Details"
+      },
+      "id": "ID",
+      "list": "List",
+      "song": "Song"
+    }
+  }
+}

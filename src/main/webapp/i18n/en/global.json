@@ -7,6 +7,12 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "song": "Song",
+        "artist": "Artist",
+        "client": "Client",
+        "album": "Album",
+        "favoriteList": "Favorite List",
+        "listDetails": "List Details",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

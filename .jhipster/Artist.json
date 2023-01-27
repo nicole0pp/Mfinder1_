@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "changelogDate": "20230127182356",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "artist",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Artist",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "album",
+      "otherEntityRelationshipName": "atist",
+      "relationshipName": "album",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "favoriteList",
+      "otherEntityRelationshipName": "artist",
+      "relationshipName": "favoriteList",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

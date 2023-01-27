@@ -1,0 +1,57 @@
+{
+  "applications": "*",
+  "changelogDate": "20230127182355",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "song",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "picture",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Duration"
+    },
+    {
+      "fieldName": "audio",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "artists",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "musicGenre",
+      "fieldType": "MusicGenre",
+      "fieldValues": "JAZZ,BLUES,RB,POP,ROCKROLL,COUNTRY,TECHNO,REGGAE,SALSA,FLAMENCO,HIPHOP,TRAP,REGGAETON,METAL,LOFI,BALADAS,KPOP"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Song",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "listDetails",
+      "otherEntityRelationshipName": "song",
+      "relationshipName": "listDetails",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "album",
+      "otherEntityRelationshipName": "sng",
+      "relationshipName": "album",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

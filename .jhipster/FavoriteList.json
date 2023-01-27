@@ -1,0 +1,45 @@
+{
+  "applications": "*",
+  "changelogDate": "20230127182359",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "favorite_list",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "picture",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "FavoriteList",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "listDetails",
+      "otherEntityRelationshipName": "list",
+      "relationshipName": "listDetails",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "artist",
+      "otherEntityRelationshipName": "favoriteList",
+      "relationshipName": "artist",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "favoriteList",
+      "relationshipName": "client",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

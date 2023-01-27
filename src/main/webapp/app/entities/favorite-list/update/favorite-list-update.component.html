@@ -1,0 +1,134 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-favorite-list-heading"
+        data-cy="FavoriteListCreateUpdateHeading"
+        jhiTranslate="mFinder1App.favoriteList.home.createOrEditLabel"
+      >
+        Crear o editar Favorite List
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.favoriteList.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.favoriteList.picture" for="field_picture">Picture</label>
+          <div>
+            <div *ngIf="editForm.get('picture')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-start"
+                (click)="openFile(editForm.get('picture')!.value!, editForm.get('pictureContentType')!.value!)"
+                jhiTranslate="entity.action.open"
+                >Abrir</a
+              ><br />
+              <span class="pull-start"
+                >{{ editForm.get('pictureContentType')!.value }}, {{ byteSize(editForm.get('picture')!.value!) }}</span
+              >
+              <button
+                type="button"
+                (click)="editForm.patchValue({ picture: undefined, pictureContentType: undefined })"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_picture"
+              data-cy="picture"
+              (change)="setFileData($event, 'picture', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="picture" id="field_picture" data-cy="picture" formControlName="picture" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="pictureContentType"
+            id="field_pictureContentType"
+            formControlName="pictureContentType"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.favoriteList.listDetails" for="field_listDetails">List Details</label>
+          <select
+            class="form-control"
+            id="field_listDetails"
+            data-cy="listDetails"
+            name="listDetails"
+            formControlName="listDetails"
+            [compareWith]="compareListDetails"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="listDetailsOption" *ngFor="let listDetailsOption of listDetailsSharedCollection">
+              {{ listDetailsOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.favoriteList.artist" for="field_artist">Artist</label>
+          <select
+            class="form-control"
+            id="field_artist"
+            data-cy="artist"
+            name="artist"
+            formControlName="artist"
+            [compareWith]="compareArtist"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="artistOption" *ngFor="let artistOption of artistsSharedCollection">{{ artistOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.favoriteList.client" for="field_client">Client</label>
+          <select
+            class="form-control"
+            id="field_client"
+            data-cy="client"
+            name="client"
+            formControlName="client"
+            [compareWith]="compareClient"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="clientOption" *ngFor="let clientOption of clientsSharedCollection">{{ clientOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

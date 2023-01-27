@@ -1,0 +1,31 @@
+{
+  "mFinder1App": {
+    "song": {
+      "home": {
+        "title": "Songs",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Song",
+        "createOrEditLabel": "Crear o editar Song",
+        "notFound": "Ningún Songs encontrado"
+      },
+      "created": "Un nuevo Song ha sido creado con el identificador {{ param }}",
+      "updated": "Un Song ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Song ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Song {{ id }}?"
+      },
+      "detail": {
+        "title": "Song"
+      },
+      "id": "ID",
+      "name": "Name",
+      "picture": "Picture",
+      "duration": "Duration",
+      "audio": "Audio",
+      "artists": "Artists",
+      "musicGenre": "Music Genre",
+      "listDetails": "List Details",
+      "album": "Album"
+    }
+  }
+}

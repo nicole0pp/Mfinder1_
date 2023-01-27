@@ -1,0 +1,43 @@
+{
+  "applications": "*",
+  "changelogDate": "20230127182358",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "album",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "picture",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "publicationDate",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Album",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "song",
+      "otherEntityRelationshipName": "album",
+      "relationshipName": "sng",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "artist",
+      "otherEntityRelationshipName": "album",
+      "relationshipName": "atist",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

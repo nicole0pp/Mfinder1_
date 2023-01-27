@@ -1,0 +1,28 @@
+{
+  "mFinder1App": {
+    "favoriteList": {
+      "home": {
+        "title": "Favorite Lists",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Favorite List",
+        "createOrEditLabel": "Create or edit a Favorite List",
+        "notFound": "No Favorite Lists found"
+      },
+      "created": "A new Favorite List is created with identifier {{ param }}",
+      "updated": "A Favorite List is updated with identifier {{ param }}",
+      "deleted": "A Favorite List is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Favorite List {{ id }}?"
+      },
+      "detail": {
+        "title": "Favorite List"
+      },
+      "id": "ID",
+      "name": "Name",
+      "picture": "Picture",
+      "listDetails": "List Details",
+      "artist": "Artist",
+      "client": "Client"
+    }
+  }
+}

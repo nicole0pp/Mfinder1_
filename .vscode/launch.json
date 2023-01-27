@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MFinder1App<m-finder-1>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.mfinder.app.MFinder1App",
+            "projectName": "m-finder-1",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "console": "internalConsole"
+        }
+    ]
+}

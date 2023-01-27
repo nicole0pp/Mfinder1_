@@ -1,0 +1,22 @@
+{
+  "applications": "*",
+  "changelogDate": "20230127182357",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "client",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Client",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "favoriteList",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "favoriteList",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

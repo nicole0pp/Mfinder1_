@@ -1,0 +1,45 @@
+
+entity Song {
+	name String required,
+    picture Blob
+    duration Duration,
+    audio Blob,
+    artists String
+    musicGenre MusicGenre
+}
+entity Artist{}
+entity Client{}
+
+entity Album{
+	name String required,
+    picture Blob,
+    publicationDate LocalDate,
+}
+entity FavoriteList{
+	name String required,
+    picture Blob,
+}
+entity ListDetails{}
+
+
+enum MusicGenre{
+	JAZZ, BLUES, RB, POP, ROCKROLL, COUNTRY, TECHNO,
+    REGGAE, SALSA, FLAMENCO, HIPHOP, TRAP, REGGAETON,
+    METAL, LOFI, BALADAS, KPOP
+    
+}
+relationship OneToMany{
+	Artist{album} to Album{atist}
+    ListDetails{list} to FavoriteList
+    ListDetails{song} to Song
+    Album{sng} to Song{album}
+    Artist{favoriteList} to FavoriteList
+    Client{favoriteList} to FavoriteList
+    
+}
+
+
+
+dto * with mapstruct
+paginate all with pagination
+service all with serviceImpl

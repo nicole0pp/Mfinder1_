@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="song">
+      <h2 data-cy="songDetailsHeading"><span jhiTranslate="mFinder1App.song.detail.title">Song</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ song.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.name">Name</span></dt>
+        <dd>
+          <span>{{ song.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.picture">Picture</span></dt>
+        <dd>
+          <div *ngIf="song.picture">
+            <a (click)="openFile(song.picture, song.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
+            {{ song.pictureContentType }}, {{ byteSize(song.picture) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.duration">Duration</span></dt>
+        <dd>
+          <span>{{ song.duration | duration }} ({{ song.duration }})</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.audio">Audio</span></dt>
+        <dd>
+          <div *ngIf="song.audio">
+            <a (click)="openFile(song.audio, song.audioContentType)" jhiTranslate="entity.action.open">Abrir</a>
+            {{ song.audioContentType }}, {{ byteSize(song.audio) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.artists">Artists</span></dt>
+        <dd>
+          <span>{{ song.artists }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.musicGenre">Music Genre</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'mFinder1App.MusicGenre.' + song.musicGenre }}">{{ song.musicGenre }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.listDetails">List Details</span></dt>
+        <dd>
+          <div *ngIf="song.listDetails">
+            <a [routerLink]="['/list-details', song.listDetails.id, 'view']">{{ song.listDetails.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.song.album">Album</span></dt>
+        <dd>
+          <div *ngIf="song.album">
+            <a [routerLink]="['/album', song.album.id, 'view']">{{ song.album.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+      </button>
+
+      <button type="button" [routerLink]="['/song', song.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+      </button>
+    </div>
+  </div>
+</div>
