@@ -1,14 +1,41 @@
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_1.svg') no-repeat center top;
-  background-size: contain;
+h1,
+h2,
+h3 a,
+p {
+  color: white;
 }
+p#description {
+  font-size: 18px;
+}
+h1.display-3 {
+  margin-bottom: 25px;
+}
+button {
+  margin: 8px;
+  padding: 10px;
+  font-size: large;
+}
+p {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.5rem;
+}
+.card #card-title {
+  font-size: large;
+  text-align: center;
+  color: white;
+}
+
+// .hipster {
+//   display: inline-block;
+//   width: 347px;
+//   height: 497px;
+//   background: url('../../content/images/jhipster_family_member_1.svg') no-repeat center top;
+//   background-size: contain;
+// }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),

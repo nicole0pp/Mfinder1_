@@ -2,6 +2,7 @@
   "home": {
     "title": "Welcome, Java Hipster!",
     "subtitle": "This is your homepage",
+    "text": "Get unlimited access to our music and sound effects for your videos, streams, and podcasts. Our license includes all the necessary rights.",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
