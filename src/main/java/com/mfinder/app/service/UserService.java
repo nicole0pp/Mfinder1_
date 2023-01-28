@@ -1,8 +1,10 @@
 package com.mfinder.app.service;
 
 import com.mfinder.app.config.Constants;
+import com.mfinder.app.domain.Artist;
 import com.mfinder.app.domain.Authority;
 import com.mfinder.app.domain.User;
+import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.repository.AuthorityRepository;
 import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
@@ -41,16 +43,20 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    // private final ArtistRepository artistRepository;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        ArtistRepository artistRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        // this.artistRepository = artistRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -132,6 +138,14 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        /*LO COMENTO POR QUE EL ARTISTA NO SE TIENE QUE AÑADIR CUANDO HAGO UN ROLE_USER,
+         SINO UN ROLE_ARTIST, EN CAMBIO EL CLIENT SI :)
+        */
+        // Artist newArtist = new Artist();
+        // newArtist.setUser(newUser);
+        // artistRepository.save(newArtist);
+
         return newUser;
     }
 
