@@ -1,5 +1,6 @@
 package com.mfinder.app.service.dto;
 
+import com.mfinder.app.domain.User;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,12 +12,22 @@ public class ClientDTO implements Serializable {
 
     private Long id;
 
+    private User user;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -45,6 +56,7 @@ public class ClientDTO implements Serializable {
     public String toString() {
         return "ClientDTO{" +
             "id=" + getId() +
+            "user_id=" + getUser() +
             "}";
     }
 }

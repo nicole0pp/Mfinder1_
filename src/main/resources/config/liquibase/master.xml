@@ -26,8 +26,9 @@
 
     <!-- Modified Entities -->
     <include file="config/liquibase/changelog/20230128112616_modified_entity_Artist.xml" relativeToChangelogFile="false"/>
+     <include file="config/liquibase/changelog/20230128120416_modified_entity_Client.xml" relativeToChangelogFile="false"/>
     <!-- Modified Contraints entities -->
     <include file="config/liquibase/changelog/20230128112616_modified_constraints_Artist.xml" relativeToChangelogFile="false"/>
-
+     <include file="config/liquibase/changelog/20230128120416_modified_entity_constraints_Client.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

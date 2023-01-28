@@ -29,6 +29,10 @@ public class Client implements Serializable {
     @JsonIgnoreProperties(value = { "listDetails", "artist", "client" }, allowSetters = true)
     private Set<FavoriteList> favoriteLists = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -75,6 +79,20 @@ public class Client implements Serializable {
         return this;
     }
 
+    //Relacion con User
+    public User getUser() {
+        return user;
+    }
+
+    public Client user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -99,6 +117,7 @@ public class Client implements Serializable {
     public String toString() {
         return "Client{" +
             "id=" + getId() +
+            "user_id=" + getUser() +
             "}";
     }
 }
