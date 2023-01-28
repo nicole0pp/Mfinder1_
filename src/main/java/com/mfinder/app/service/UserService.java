@@ -3,9 +3,11 @@ package com.mfinder.app.service;
 import com.mfinder.app.config.Constants;
 import com.mfinder.app.domain.Artist;
 import com.mfinder.app.domain.Authority;
+import com.mfinder.app.domain.Client;
 import com.mfinder.app.domain.User;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.repository.AuthorityRepository;
+import com.mfinder.app.repository.ClientRepository;
 import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
 import com.mfinder.app.security.SecurityUtils;
@@ -45,18 +47,21 @@ public class UserService {
 
     // private final ArtistRepository artistRepository;
 
+    private final ClientRepository clientRepository;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager,
-        ArtistRepository artistRepository
+        ClientRepository clientRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         // this.artistRepository = artistRepository;
+        this.clientRepository = clientRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -145,6 +150,10 @@ public class UserService {
         // Artist newArtist = new Artist();
         // newArtist.setUser(newUser);
         // artistRepository.save(newArtist);
+
+        Client newClient = new Client();
+        newClient.setUser(newUser);
+        clientRepository.save(newClient);
 
         return newUser;
     }
