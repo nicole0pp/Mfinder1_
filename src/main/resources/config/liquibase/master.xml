@@ -23,4 +23,11 @@
     <include file="config/liquibase/changelog/20230127182359_added_entity_constraints_FavoriteList.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+
+    <!-- Modified Entities -->
+    <include file="config/liquibase/changelog/20230128112616_modified_entity_Artist.xml" relativeToChangelogFile="false"/>
+    <!-- Modified Contraints entities -->
+    <include file="config/liquibase/changelog/20230128112616_modified_constraints_Artist.xml" relativeToChangelogFile="false"/>
+
+
 </databaseChangeLog>

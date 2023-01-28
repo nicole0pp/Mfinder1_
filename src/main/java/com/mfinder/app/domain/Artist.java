@@ -34,6 +34,11 @@ public class Artist implements Serializable {
     @JsonIgnoreProperties(value = { "listDetails", "artist", "client" }, allowSetters = true)
     private Set<FavoriteList> favoriteLists = new HashSet<>();
 
+    //Relacion con el User
+    @OneToOne
+    @JoinColumn(unique = true)
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -111,6 +116,21 @@ public class Artist implements Serializable {
         return this;
     }
 
+    //Relacion con el User
+
+    public User getUser() {
+        return user;
+    }
+
+    public Artist user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -135,6 +155,7 @@ public class Artist implements Serializable {
     public String toString() {
         return "Artist{" +
             "id=" + getId() +
+            ", user_id=" + getUser() +
             "}";
     }
 }
