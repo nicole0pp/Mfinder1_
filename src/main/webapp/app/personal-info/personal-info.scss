@@ -1,0 +1,36 @@
+div.row {
+  margin: 4% 0 8% 0;
+}
+div.container div.text {
+  padding: 10%;
+  text-align: start;
+}
+
+div.container div.text .title {
+  font-weight: bold;
+  font-family: 'Rubik', sans-serif;
+  padding-bottom: 2%;
+}
+
+div.container div.text p {
+  font-size: 20px;
+}
+
+div.img {
+  width: 200%;
+  max-width: max-content;
+  height: 100%;
+}
+#img1 {
+  height: 300%;
+}
+#img2 {
+  height: 400px;
+}
+
+.row .col .title-alone {
+  font-weight: bold;
+  font-family: 'Rubik', sans-serif;
+  font-size: 190%;
+  margin: 10% 20% 10% 20%;
+}

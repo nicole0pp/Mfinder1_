@@ -87,6 +87,12 @@ Generic styles
 [jhisortby] {
   cursor: pointer;
 }
+button {
+  margin: 8px;
+  padding: 1% 1.5% 1% 1.5%;
+  font-size: large;
+  border-radius: 3px;
+}
 
 /* ==========================================================================
 Custom alerts for notification
