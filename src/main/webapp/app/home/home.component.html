@@ -8,11 +8,15 @@
     </p>
   </div>
   <div class="justify-content-center">
-    <button type="button" [routerLink]="['./personal-info.component']" class="btn btn-primary btn-lg">Personal</button>
-    <button type="button" [routerLink]="['/artist-info.component']" class="btn btn-primary btn-lg">Artista</button>
+    <button type="button" jhiTranslate="home.button.personal" [routerLink]="['./personal-info.component']" class="btn btn-primary btn-lg">
+      Personal
+    </button>
+    <button type="button" jhiTranslate="home.button.artist" [routerLink]="['/artist-info.component']" class="btn btn-primary btn-lg">
+      Artista
+    </button>
   </div>
   <div class="col align-self-center">
-    <p class="col align-self-center" id="description">Dirigite a la parte que deseas introducirte.</p>
+    <p class="col align-self-center" jhiTranslate="home.description" id="description">Dirigite a la parte que deseas introducirte.</p>
   </div>
 
   <div class="row text-center">

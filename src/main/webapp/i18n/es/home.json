@@ -14,7 +14,10 @@
       "chat": "Sala de chat pública de JHipster",
       "follow": "contacto @jhipster en Twitter"
     },
-    "like": "Si te gusta JHipster, danos una estrella en",
-    "github": "GitHub"
+    "button": {
+      "personal": "Personal",
+      "artist": "Artista"
+    },
+    "description": "Dirigite a la parte que deseas introducirte."
   }
 }
