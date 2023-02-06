@@ -36,6 +36,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'personal-info.component',
           loadChildren: () => import(`./personal-info/personal-info.module`).then(m => m.PersonsalModule),
         },
+        {
+          path: 'artist-info.component',
+          loadChildren: () => import(`./artist-info/artist-info.module`).then(m => m.ArtistViewModule),
+        },
         navbarRoute,
         ...errorRoute,
       ],
