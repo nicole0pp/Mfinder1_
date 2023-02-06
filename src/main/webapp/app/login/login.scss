@@ -1,0 +1,25 @@
+.form-control {
+  background-color: rgb(47, 47, 47);
+  color: azure;
+}
+.spanCreate {
+  margin-bottom: 1em;
+  display: block;
+}
+#sub {
+  color: aliceblue;
+}
+.form-control::placeholder {
+  color: rgb(165, 163, 163);
+}
+.mb-3 {
+  padding-bottom: 3%;
+}
+div.d-flex h1.title-1 {
+  align-self: center !important;
+  margin: 1em;
+}
+.btn {
+  display: inline;
+  width: 100% !important;
+}

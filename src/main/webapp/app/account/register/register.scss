@@ -1,0 +1,16 @@
+// --------------COSAS DEL FORM
+.form-control {
+  background-color: rgb(47, 47, 47);
+  color: azure;
+}
+.form-control::placeholder {
+  color: rgb(165, 163, 163);
+}
+.form-label {
+  color: azure;
+}
+.btn {
+  display: inline;
+  width: 100% !important;
+}
+//--------------------
