@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
-
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 @Component({
   selector: 'personal-info',
   templateUrl: './personal-info.component.html',
@@ -16,7 +16,7 @@ export class PersonalComponent implements OnInit {
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(private accountService: AccountService, private router: Router, private translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.accountService

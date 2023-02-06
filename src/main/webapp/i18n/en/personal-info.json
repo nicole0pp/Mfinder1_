@@ -1,0 +1,22 @@
+{
+  "mFinder1App": {
+    "personal-info": {
+      "title": "Welcome, MFinder!",
+      "titles": {
+        "one": "Enjoy new artist",
+        "alone1": "All content that is published remains licensed forever.",
+        "two": "Who can register?",
+        "three": "Where can I post?",
+        "four": "Commitment to the tastes of each use",
+        "five": "What is not allowed?"
+      },
+      "p": {
+        "one": "For those who find it difficult to find new talents and artists to follow.",
+        "two": "Basically, those people who use music for everything, like studying, working, for the gym or just relaxing.",
+        "three": "By registering you can use the music on the platform for your videos on YouTube, streaming on Twitch and even Instagram stories. All this is for the platform copyright free. ",
+        "four": "Our commitment to our users is first class, so we have arranged a test in which depending on your choices (there is no good or bad choice) we will recommend music from some of our artists.",
+        "five": "We care about user safety and morale, so any attack on another user within the platform will be banned permanently. As well as if there is plagiarism."
+      }
+    }
+  }
+}

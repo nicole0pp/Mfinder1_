@@ -36,7 +36,7 @@
         "database": "Database",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
-      "language": "Language"
+      "language": "Change the language"
     },
     "form": {
       "username.label": "Username",
@@ -149,5 +149,28 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "This is your footer"
+  "footer": {
+    "language": "Change the language",
+    "titles": {
+      "one": "Product",
+      "two": "About",
+      "three": "How does it work?"
+    },
+    "p": {
+      "Product": {
+        "one": "Music",
+        "two": "Artists",
+        "three": "Log in",
+        "four": "Sign up"
+      },
+      "About": {
+        "one": "Campus' profile",
+        "two": "Nicole's profile",
+        "three": "Contact"
+      },
+      "work": {
+        "one": "Platform"
+      }
+    }
+  }
 }

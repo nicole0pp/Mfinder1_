@@ -36,7 +36,7 @@
         "database": "Base de datos",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
-      "language": "Idioma"
+      "language": "Cambia el idioma"
     },
     "form": {
       "username.label": "Usuario",
@@ -148,5 +148,28 @@
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }
   },
-  "footer": "Pie de página"
+  "footer": {
+    "language": "Cambiar el lenguaje",
+    "titles": {
+      "one": "Producto",
+      "two": "Acerca de",
+      "three": "Cómo funciona"
+    },
+    "p": {
+      "Product": {
+        "one": "Musica",
+        "two": "Artistas",
+        "three": "Ingresar",
+        "four": "Registrarse"
+      },
+      "About": {
+        "one": "Perfil del campus",
+        "two": "Perfil de Nicole",
+        "three": "Contacto"
+      },
+      "work": {
+        "one": "Plataforma"
+      }
+    }
+  }
 }

@@ -1,0 +1,19 @@
+{
+  "mFinder1App": {
+    "artist-info": {
+      "titles": {
+        "one": "El futuro es de los creadores",
+        "alone": "Todo el contenido que se publica permanece autorizado para siempre",
+        "two": "¿Quién puede registrarse?",
+        "three": "Abierto para cualquier artista",
+        "four": "¿Qué no está permitido?"
+      },
+      "p": {
+        "one": "Aficionado o persona influyente, no importa. Esta es tu plataforma única para agregegar música a tu contenido.",
+        "two": "Básicamente, todos quienes creen videos, hagan stream o artistas que quieran compartir su música. Si eres un trabajador independiente, puedes registrarte.",
+        "three": "Si eres un artista pequeño que necesita de un público pero que recién estás empezando y sólo quieres compartir tu música esta es tu plataforma",
+        "four": "Cuidamos la seguridad del contenido de nuestros artistas por lo que si ocurre plagio, se sancionará al culplable permanentemente."
+      }
+    }
+  }
+}

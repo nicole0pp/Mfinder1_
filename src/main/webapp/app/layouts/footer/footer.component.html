@@ -1,3 +1,65 @@
 <div class="footer">
-  <p jhiTranslate="footer">Pie de página</p>
+  <div class="row">
+    <div class="col">
+      <li ngbDropdown display="dynamic" *ngIf="languages && languages.length > 1">
+        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
+          <span>
+            <fa-icon icon="globe"></fa-icon>
+            <span jhiTranslate="global.menu.language" id="ListLanguage">Change the lenguage</span>
+          </span>
+        </a>
+        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
+          <li *ngFor="let language of languages">
+            <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);" (click)="changeLanguage(language)">{{
+              language | findLanguageFromKey
+            }}</a>
+          </li>
+        </ul>
+      </li>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <h4 jhiTranslate="footer.titles.one">Producto</h4>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.Product.one">Musica</a>
+          </div>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.Product.two">Artistas</a>
+          </div>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.Product.three">Ingresar</a>
+          </div>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.Product.four">Registrarse</a>
+          </div>
+        </div>
+        <div class="col">
+          <h4 jhiTranslate="footer.titles.two">Acerca de</h4>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.About.one">Perfil de Instituto</a>
+          </div>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.About.two">Perfil de Nicole</a>
+          </div>
+          <div class="row">
+            <a href="" jhiTranslate="footer.p.About.three">Contacto</a>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <h4 jhiTranslate="footer.titles.three">Como funciona</h4>
+            <a href="" jhiTranslate="footer.p.work.one">Plataforma</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <span class="justify-content-center align-self-center" id="logo-img"></span>
+      <h4>Copyright © Music Finder</h4>
+    </div>
+  </div>
 </div>
