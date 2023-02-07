@@ -1,5 +1,6 @@
 package com.mfinder.app.service;
 
+import com.mfinder.app.domain.User;
 import com.mfinder.app.service.dto.ClientDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -55,4 +56,6 @@ public interface ClientService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    void getIdUser(Long userId);
 }

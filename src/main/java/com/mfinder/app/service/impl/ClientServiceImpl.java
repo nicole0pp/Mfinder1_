@@ -1,9 +1,12 @@
 package com.mfinder.app.service.impl;
 
 import com.mfinder.app.domain.Client;
+import com.mfinder.app.domain.User;
 import com.mfinder.app.repository.ClientRepository;
+import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.service.ClientService;
 import com.mfinder.app.service.dto.ClientDTO;
+import com.mfinder.app.service.dto.UserDTO;
 import com.mfinder.app.service.mapper.ClientMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -26,9 +29,12 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientMapper clientMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper) {
+    private final UserRepository userRepository;
+
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, UserRepository userRepository) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -79,6 +85,17 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Client : {}", id);
+        Client client = clientRepository.findById(id).get();
         clientRepository.deleteById(id);
+    }
+
+    public void getIdUser(Long userId) {
+        //WTF
+        User user = userRepository.findById(userId).get();
+        Client client = clientRepository.findById(userId).get();
+        // clientRepository.deleteByUserId(userId);
+        // Long idUser = client.getUser().getId();
+
+        // client= clientRepository.findByd(client.getUser(idUser));
     }
 }

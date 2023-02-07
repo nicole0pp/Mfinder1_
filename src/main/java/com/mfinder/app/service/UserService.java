@@ -11,6 +11,7 @@ import com.mfinder.app.repository.ClientRepository;
 import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
 import com.mfinder.app.security.SecurityUtils;
+import com.mfinder.app.service.ClientService;
 import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.service.dto.UserDTO;
 import java.time.Instant;
@@ -49,13 +50,16 @@ public class UserService {
 
     private final ClientRepository clientRepository;
 
+    private final ClientService clientService;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager,
         ArtistRepository artistRepository,
-        ClientRepository clientRepository
+        ClientRepository clientRepository,
+        ClientService clientService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -63,6 +67,7 @@ public class UserService {
         this.cacheManager = cacheManager;
         this.artistRepository = artistRepository;
         this.clientRepository = clientRepository;
+        this.clientService = clientService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -144,13 +149,6 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
-
-        /*LO COMENTO POR QUE EL ARTISTA NO SE TIENE QUE AÑADIR CUANDO HAGO UN ROLE_USER,
-         SINO UN ROLE_ARTIST, EN CAMBIO EL CLIENT SI :)
-        */
-        // Artist newArtist = new Artist();
-        // newArtist.setUser(newUser);
-        // artistRepository.save(newArtist);
 
         Client newClient = new Client();
         newClient.setUser(newUser);
@@ -289,9 +287,12 @@ public class UserService {
     }
 
     public void deleteUser(String login) {
+        User userA = userRepository.findOneByLogin(login).get();
         userRepository
             .findOneByLogin(login)
             .ifPresent(user -> {
+                clientService.getIdUser(userA.getId());
+                // Client client = clientRepository.findById()
                 userRepository.delete(user);
                 this.clearUserCaches(user);
                 log.debug("Deleted User: {}", user);
