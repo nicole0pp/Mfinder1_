@@ -40,6 +40,11 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'artist-info.component',
           loadChildren: () => import(`./artist-info/artist-info.module`).then(m => m.ArtistViewModule),
         },
+        {
+          path: 'choose.component',
+          loadChildren: () => import('./chooseAccount/choose.component').then(m => m.ChooseAccountComponent),
+        },
+
         navbarRoute,
         ...errorRoute,
       ],

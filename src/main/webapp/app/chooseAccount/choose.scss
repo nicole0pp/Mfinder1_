@@ -1,34 +1,30 @@
-div.col {
-  padding: 0;
+.titles {
+  margin: 2em;
 }
-#column-1 {
-  padding: 0;
+.container {
+  margin-top: 2em;
+  // border: 2px solid rgb(67, 67, 249);
+}
+hr {
+  color: rgb(132, 160, 237);
 }
 .d-flex,
 .col-md-8 {
   margin-right: 0;
 }
 .img {
-  background-image: url('../../../content/images/fondo del login.jpg');
-  background-repeat: no-repeat;
-  background-position: right top;
+  background: url('../../content/images/fondo del login.jpg') no-repeat center;
   background-size: cover;
   height: 100%;
   width: 100%;
-  background-attachment: float;
+  position: center;
 }
 
 .d-flex {
   display: block !important;
 }
-// --------------COSAS DEL FORM
-.form-control {
-  background-color: rgb(47, 47, 47);
-  color: azure;
-}
-.form-control::placeholder {
-  color: rgb(165, 163, 163);
-}
-.form-label {
-  color: azure;
+
+fa-icon {
+  font-size: 2em;
+  margin: 2em;
 }

@@ -7,6 +7,7 @@ import { HomeComponent } from './home.component';
 import { PersonalComponent } from 'app/personal-info/personal-info.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ArtistViewComponent } from 'app/artist-info/artist-info.component';
+import { ChooseAccountComponent } from 'app/chooseAccount/choose.component';
 
 const homeRoute: Routes = [
   {
@@ -16,6 +17,10 @@ const homeRoute: Routes = [
   {
     path: 'artist-info.component',
     component: ArtistViewComponent,
+  },
+  {
+    path: 'choose.component',
+    component: ChooseAccountComponent,
   },
 ];
 @NgModule({
