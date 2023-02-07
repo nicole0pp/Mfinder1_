@@ -20,5 +20,8 @@
         "emailexists": "<strong>¡El correo electrónico ya está en uso!</strong> Por favor, escoja otro email."
       }
     }
+  },
+  "registerArtist": {
+    "title": "Registro de artista"
   }
 }

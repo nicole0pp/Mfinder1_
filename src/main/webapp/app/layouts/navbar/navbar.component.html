@@ -231,6 +231,18 @@
                 <span jhiTranslate="global.menu.account.register">Crear una cuenta</span>
               </a>
             </li>
+            <li *ngSwitchCase="false">
+              <a
+                class="dropdown-item"
+                routerLink="account/registerArtist"
+                routerLinkActive="active"
+                (click)="collapseNavbar()"
+                data-cy="registerArtist"
+              >
+                <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.account.registerArtist">Crear una artist</span>
+              </a>
+            </li>
           </ul>
         </li>
       </ul>
