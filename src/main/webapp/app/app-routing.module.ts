@@ -21,7 +21,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
         },
         {
-          path: 'account',
+          path: 'choose.component/account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },
         {
@@ -42,7 +42,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         },
         {
           path: 'choose.component',
-          loadChildren: () => import('./chooseAccount/choose.component').then(m => m.ChooseAccountComponent),
+          loadChildren: () => import('./chooseAccount/choose.module').then(m => m.ChooseModule),
         },
 
         navbarRoute,
