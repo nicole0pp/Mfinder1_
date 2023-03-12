@@ -23,6 +23,9 @@ public class Artist implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "artistic_name", unique = true)
+    private String artistName;
+
     @OneToMany(mappedBy = "atist")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "sngs", "atist" }, allowSetters = true)
