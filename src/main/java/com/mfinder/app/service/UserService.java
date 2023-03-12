@@ -318,7 +318,7 @@ public class UserService {
     public void deleteUser(String login) {
         User userA = userRepository.findOneByLogin(login).get();
         Long idUser = userA.getId();
-        List artist = artistRepository.findArtistByUserId(idUser);
+        // List artist = artistRepository.findArtistByUserId(idUser);
         //PROBLEMA: INTENTA ENCONTRAR UNA EXISTENCIA DE UN CLIENT, SIEMPRE
         // Client client= clientRepository.findById(userA.getId()).get();
         // Artist artist = artistRepository.findById(userA.getId()).get();
