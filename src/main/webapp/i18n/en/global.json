@@ -23,6 +23,7 @@
         "login": "Sign in",
         "logout": "Sign out",
         "register": "Register",
+        "register2": "Register(Importante)",
         "registerArtist": "Register Artist"
       },
       "admin": {

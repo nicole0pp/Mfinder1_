@@ -23,6 +23,7 @@
         "login": "Iniciar sesión",
         "logout": "Cerrar la sesión",
         "register": "Crear una cuenta",
+        "register2": "Crear una cuenta (Importante)",
         "registerArtist": "Crear una artist"
       },
       "admin": {
