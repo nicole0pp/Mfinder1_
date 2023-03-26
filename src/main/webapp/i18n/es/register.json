@@ -10,7 +10,10 @@
           "required": "Su nombre de usuario es obligatorio.",
           "minlength": "Su nombre de usuario debe tener al menos 1 caracter.",
           "maxlength": "Su nombre de usuario no puede tener más de 50 caracteres.",
-          "pattern": "Su nombre de usuario no es válido."
+          "pattern": "Su nombre de usuario no es válido.",
+          "requiredArtisticName": "Su nombre artístico es obligatorio.",
+          "minlengthArtisticName": "Su nombre artístico debe tener al menos 1 caracter.",
+          "maxlengthArtisticName": "Su nombre artístico no puede tener más de 50 caracteres."
         }
       },
       "success": "<strong>¡Registro guardado!</strong> Por favor, revise su correo electrónico para confirmar.",

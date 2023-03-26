@@ -50,6 +50,8 @@
       "confirmpassword.label": "Confirmación de la nueva contraseña",
       "confirmpassword.placeholder": "Confirmación de la nueva contraseña",
       "email.label": "Correo electrónico",
+      "artisticName.label": "Nombre artistico",
+      "artisticName.placeholder": "Nombre de artistico",
       "email.placeholder": "Su correo electrónico"
     },
     "messages": {

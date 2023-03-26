@@ -10,7 +10,10 @@
           "required": "Your username is required.",
           "minlength": "Your username is required to be at least 1 character.",
           "maxlength": "Your username cannot be longer than 50 characters.",
-          "pattern": "Your username is invalid."
+          "pattern": "Your username is invalid.",
+          "requiredArtisticName": "Your artistic name is required.",
+          "minlengthArtisticName": "Your artistic name is required to be at least 1 character.",
+          "maxlengthArtisticName": "Your artistic name cannot be longer than 50 characters."
         }
       },
       "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
