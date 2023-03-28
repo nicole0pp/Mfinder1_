@@ -49,6 +49,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () =>
             import('../app/layouts/footer/paginas-footer/perfil-centro/perfil-centro.module').then(m => m.PerfilCentroModule),
         },
+        {
+          path: 'personal',
+          loadChildren: () => import('../app/layouts/footer/paginas-footer/perfil/perfil.module').then(m => m.PerfilModule),
+        },
 
         navbarRoute,
         ...errorRoute,
