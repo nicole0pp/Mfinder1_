@@ -28,6 +28,7 @@ import { ErrorComponent } from './layouts/error/error.component';
 //Mis component
 import { PersonsalModule } from './personal-info/personal-info.module';
 import { ChooseModule } from './chooseAccount/choose.module';
+import { PerfilCentroModule } from './layouts/footer/paginas-footer/perfil-centro/perfil-centro.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -43,6 +44,7 @@ import { ChooseModule } from './chooseAccount/choose.module';
     //Mis compoentes
     PersonsalModule,
     ChooseModule,
+    PerfilCentroModule,
   ],
   providers: [
     Title,
