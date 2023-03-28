@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
@@ -9,7 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './perfil-centro.component.html',
   styleUrls: ['../../paginas-footer/paginas-footer.scss'],
 })
-export class PerfilCentroComponent {
+export class PerfilCentroComponent implements OnInit, OnDestroy {
   account: Account | null = null;
 
   private readonly destroy$ = new Subject<void>();
