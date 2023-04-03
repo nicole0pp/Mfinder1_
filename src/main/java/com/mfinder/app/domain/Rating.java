@@ -31,6 +31,14 @@ public class Rating implements Serializable {
     @Column(name = "rating", nullable = false)
     private Double rating;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "song_id")
+    private Song song;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -72,6 +80,14 @@ public class Rating implements Serializable {
         this.rating = rating;
     }
 
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -98,6 +114,7 @@ public class Rating implements Serializable {
             "id=" + getId() +
             ", comment='" + getComment() + "'" +
             ", rating=" + getRating() +
+            ", user=" + getUser() +
             "}";
     }
 }
