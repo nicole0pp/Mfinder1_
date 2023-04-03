@@ -1,0 +1,32 @@
+/***
+    GENERALES
+**/
+h1 {
+  position: center;
+}
+.row {
+  margin-top: 5%;
+}
+p {
+  font-size: 18px;
+}
+/***
+Estrictos
+
+***/
+ol {
+  list-style-type: disc;
+}
+.logo-campus {
+  height: 100%;
+  width: 100%;
+  display: block;
+  background: url('../../../../content/images/logo_eepigroup.png') no-repeat center center;
+  background-size: contain;
+  background-color: white;
+}
+#titulo-logo {
+  background-color: rgb(24, 24, 24);
+  padding: 2%;
+  margin-top: 0;
+}
