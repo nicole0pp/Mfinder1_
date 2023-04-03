@@ -26,6 +26,12 @@ public class Artist implements Serializable {
     @Column(name = "artistic_name", unique = true)
     private String artistName;
 
+    @Column(name = "insta_link")
+    private String insta_link;
+
+    @Column(name = "spoti_link")
+    private String spoti_link;
+
     @OneToMany(mappedBy = "atist")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "sngs", "atist" }, allowSetters = true)
@@ -54,6 +60,32 @@ public class Artist implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getInsta_link() {
+        return this.insta_link;
+    }
+
+    public Artist insta_link(String insta_link) {
+        this.setInsta_link(insta_link);
+        return this;
+    }
+
+    public void setInsta_link(String insta_link) {
+        this.insta_link = insta_link;
+    }
+
+    public String getSpoti_link() {
+        return this.spoti_link;
+    }
+
+    public Artist spoti_link(String spoti_link) {
+        this.setSpoti_link(spoti_link);
+        return this;
+    }
+
+    public void setSpoti_link(String spoti_link) {
+        this.spoti_link = spoti_link;
     }
 
     public Set<Album> getAlbums() {
@@ -158,6 +190,8 @@ public class Artist implements Serializable {
         return "Artist{" +
             "id=" + getId() +
             ", user_id=" + getUser() +
+            ", insta_link='" + getInsta_link() + "'" +
+            ", spoti_link='" + getSpoti_link() + "'" +
             "}";
     }
 }

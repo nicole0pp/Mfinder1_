@@ -38,6 +38,18 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="insta_link">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.artist.insta_link">Insta Link</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="spoti_link">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.artist.spoti_link">Spoti Link</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -46,6 +58,8 @@
           <td>
             <a [routerLink]="['/artist', artist.id, 'view']">{{ artist.id }}</a>
           </td>
+          <td>{{ artist.insta_link }}</td>
+          <td>{{ artist.spoti_link }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/artist', artist.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

@@ -20,6 +20,8 @@ describe('Artist Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            insta_link: expect.any(Object),
+            spoti_link: expect.any(Object),
           })
         );
       });
@@ -30,6 +32,8 @@ describe('Artist Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            insta_link: expect.any(Object),
+            spoti_link: expect.any(Object),
           })
         );
       });

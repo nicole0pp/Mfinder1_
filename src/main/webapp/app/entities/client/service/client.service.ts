@@ -40,7 +40,7 @@ export class ClientService {
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id} `, { observe: 'response' });
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   getClientIdentifier(client: Pick<IClient, 'id'>): number {

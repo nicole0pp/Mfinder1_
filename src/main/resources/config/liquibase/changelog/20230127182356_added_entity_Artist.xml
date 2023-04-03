@@ -14,6 +14,12 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="insta_link" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="spoti_link" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -35,6 +41,8 @@
                   tableName="artist"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="insta_link" type="string"/>
+            <column name="spoti_link" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

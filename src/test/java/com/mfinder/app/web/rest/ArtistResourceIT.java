@@ -31,6 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ArtistResourceIT {
 
+    private static final String DEFAULT_INSTA_LINK = "AAAAAAAAAA";
+    private static final String UPDATED_INSTA_LINK = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SPOTI_LINK = "AAAAAAAAAA";
+    private static final String UPDATED_SPOTI_LINK = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/artists";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -58,7 +64,7 @@ class ArtistResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Artist createEntity(EntityManager em) {
-        Artist artist = new Artist();
+        Artist artist = new Artist().insta_link(DEFAULT_INSTA_LINK).spoti_link(DEFAULT_SPOTI_LINK);
         return artist;
     }
 
@@ -69,7 +75,7 @@ class ArtistResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Artist createUpdatedEntity(EntityManager em) {
-        Artist artist = new Artist();
+        Artist artist = new Artist().insta_link(UPDATED_INSTA_LINK).spoti_link(UPDATED_SPOTI_LINK);
         return artist;
     }
 
@@ -92,6 +98,8 @@ class ArtistResourceIT {
         List<Artist> artistList = artistRepository.findAll();
         assertThat(artistList).hasSize(databaseSizeBeforeCreate + 1);
         Artist testArtist = artistList.get(artistList.size() - 1);
+        assertThat(testArtist.getInsta_link()).isEqualTo(DEFAULT_INSTA_LINK);
+        assertThat(testArtist.getSpoti_link()).isEqualTo(DEFAULT_SPOTI_LINK);
     }
 
     @Test
@@ -124,7 +132,9 @@ class ArtistResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(artist.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(artist.getId().intValue())))
+            .andExpect(jsonPath("$.[*].insta_link").value(hasItem(DEFAULT_INSTA_LINK)))
+            .andExpect(jsonPath("$.[*].spoti_link").value(hasItem(DEFAULT_SPOTI_LINK)));
     }
 
     @Test
@@ -138,7 +148,9 @@ class ArtistResourceIT {
             .perform(get(ENTITY_API_URL_ID, artist.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(artist.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(artist.getId().intValue()))
+            .andExpect(jsonPath("$.insta_link").value(DEFAULT_INSTA_LINK))
+            .andExpect(jsonPath("$.spoti_link").value(DEFAULT_SPOTI_LINK));
     }
 
     @Test
@@ -160,6 +172,7 @@ class ArtistResourceIT {
         Artist updatedArtist = artistRepository.findById(artist.getId()).get();
         // Disconnect from session so that the updates on updatedArtist are not directly saved in db
         em.detach(updatedArtist);
+        updatedArtist.insta_link(UPDATED_INSTA_LINK).spoti_link(UPDATED_SPOTI_LINK);
         ArtistDTO artistDTO = artistMapper.toDto(updatedArtist);
 
         restArtistMockMvc
@@ -174,6 +187,8 @@ class ArtistResourceIT {
         List<Artist> artistList = artistRepository.findAll();
         assertThat(artistList).hasSize(databaseSizeBeforeUpdate);
         Artist testArtist = artistList.get(artistList.size() - 1);
+        assertThat(testArtist.getInsta_link()).isEqualTo(UPDATED_INSTA_LINK);
+        assertThat(testArtist.getSpoti_link()).isEqualTo(UPDATED_SPOTI_LINK);
     }
 
     @Test
@@ -253,6 +268,8 @@ class ArtistResourceIT {
         Artist partialUpdatedArtist = new Artist();
         partialUpdatedArtist.setId(artist.getId());
 
+        partialUpdatedArtist.spoti_link(UPDATED_SPOTI_LINK);
+
         restArtistMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedArtist.getId())
@@ -265,6 +282,8 @@ class ArtistResourceIT {
         List<Artist> artistList = artistRepository.findAll();
         assertThat(artistList).hasSize(databaseSizeBeforeUpdate);
         Artist testArtist = artistList.get(artistList.size() - 1);
+        assertThat(testArtist.getInsta_link()).isEqualTo(DEFAULT_INSTA_LINK);
+        assertThat(testArtist.getSpoti_link()).isEqualTo(UPDATED_SPOTI_LINK);
     }
 
     @Test
@@ -279,6 +298,8 @@ class ArtistResourceIT {
         Artist partialUpdatedArtist = new Artist();
         partialUpdatedArtist.setId(artist.getId());
 
+        partialUpdatedArtist.insta_link(UPDATED_INSTA_LINK).spoti_link(UPDATED_SPOTI_LINK);
+
         restArtistMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedArtist.getId())
@@ -291,6 +312,8 @@ class ArtistResourceIT {
         List<Artist> artistList = artistRepository.findAll();
         assertThat(artistList).hasSize(databaseSizeBeforeUpdate);
         Artist testArtist = artistList.get(artistList.size() - 1);
+        assertThat(testArtist.getInsta_link()).isEqualTo(UPDATED_INSTA_LINK);
+        assertThat(testArtist.getSpoti_link()).isEqualTo(UPDATED_SPOTI_LINK);
     }
 
     @Test

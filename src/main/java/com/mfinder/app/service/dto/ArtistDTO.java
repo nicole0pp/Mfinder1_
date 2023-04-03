@@ -14,6 +14,10 @@ public class ArtistDTO implements Serializable {
 
     private User user;
 
+    private String insta_link;
+
+    private String spoti_link;
+
     public Long getId() {
         return id;
     }
@@ -28,6 +32,22 @@ public class ArtistDTO implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getInsta_link() {
+        return insta_link;
+    }
+
+    public void setInsta_link(String insta_link) {
+        this.insta_link = insta_link;
+    }
+
+    public String getSpoti_link() {
+        return spoti_link;
+    }
+
+    public void setSpoti_link(String spoti_link) {
+        this.spoti_link = spoti_link;
     }
 
     @Override
@@ -57,6 +77,8 @@ public class ArtistDTO implements Serializable {
         return "ArtistDTO{" +
             "id=" + getId() +
             "user_id=" + getUser() +
+            ", insta_link='" + getInsta_link() + "'" +
+            ", spoti_link='" + getSpoti_link() + "'" +
             "}";
     }
 }

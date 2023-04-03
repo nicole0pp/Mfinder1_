@@ -4,7 +4,16 @@
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "artist",
-  "fields": [],
+  "fields": [
+    {
+      "fieldName": "insta_link",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "spoti_link",
+      "fieldType": "String"
+    }
+  ],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Artist",

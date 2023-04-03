@@ -5,11 +5,15 @@ export const sampleWithRequiredData: IArtist = {
 };
 
 export const sampleWithPartialData: IArtist = {
-  id: 86525,
+  id: 78132,
+  insta_link: 'Cantabria Parcela Borders',
+  spoti_link: 'incubate',
 };
 
 export const sampleWithFullData: IArtist = {
-  id: 84326,
+  id: 15109,
+  insta_link: 'driver Operaciones Avon',
+  spoti_link: 'Savings Acero e-commerce',
 };
 
 export const sampleWithNewData: NewArtist = {

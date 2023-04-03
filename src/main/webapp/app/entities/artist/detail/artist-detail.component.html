@@ -14,6 +14,14 @@
         <dd>
           <span>{{ artist.id }}</span>
         </dd>
+        <dt><span jhiTranslate="mFinder1App.artist.insta_link">Insta Link</span></dt>
+        <dd>
+          <span>{{ artist.insta_link }}</span>
+        </dd>
+        <dt><span jhiTranslate="mFinder1App.artist.spoti_link">Spoti Link</span></dt>
+        <dd>
+          <span>{{ artist.spoti_link }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
