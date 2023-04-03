@@ -13,6 +13,7 @@
         "album": "Album",
         "favoriteList": "Favorite List",
         "listDetails": "List Details",
+        "rating": "Rating",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

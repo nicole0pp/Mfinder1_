@@ -60,6 +60,7 @@ public class CacheConfiguration {
             createCache(cm, com.mfinder.app.domain.ListDetails.class.getName());
             createCache(cm, com.mfinder.app.domain.ListDetails.class.getName() + ".lists");
             createCache(cm, com.mfinder.app.domain.ListDetails.class.getName() + ".songs");
+            createCache(cm, com.mfinder.app.domain.Rating.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
