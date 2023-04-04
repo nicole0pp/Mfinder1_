@@ -31,7 +31,11 @@
     <div class="card-columns">
       <span *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
         <div class="card">
-          <img class="card-img-top" ng-init="" *ngIf="album.picture" [src]="album.picture" alt="Card image cap" />
+          <!-- 
+            <a *ngIf="album.picture" (click)="openFile(album.picture, album.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
+            <span *ngIf="album.picture">{{ album.pictureContentType }}, {{ byteSize(album.picture) }}</span> 
+          -->
+          <img class="card-img-top" ng-init="openFile(album.picture, album.pictureContentType)" *ngIf="album.picture" />
           <div class="card-body">
             <h3 class="card-title">
               <span jhiTranslate="mFinder1App.album.name" style="font-weight: bold">Nombre del album</span>
@@ -40,11 +44,9 @@
             <p class="card-text">
               <span jhiTranslate="mFinder1App.album.publicationDate">Publication Date</span>
               <a> {{ album.publicationDate | formatMediumDate }} </a>
-
-              <span jhiTranslate="mFinder1App.album.atist">Artist</span>
             </p>
-
             <div *ngIf="album.atist">
+              <span jhiTranslate="mFinder1App.album.atist">Artist</span>
               <a [routerLink]="['/artist', album.atist.id, 'view']">{{ album.atist.id }}</a>
             </div>
 

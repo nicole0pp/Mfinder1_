@@ -26,7 +26,6 @@ export class AlbumComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
-
   constructor(
     protected albumService: AlbumService,
     protected activatedRoute: ActivatedRoute,
@@ -44,7 +43,11 @@ export class AlbumComponent implements OnInit {
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
-
+  //La cosa es que en el data-util.service.ts cconvierte el blob a url por lo que si puedo hacer sin que se abra ninguna pestaña,
+  //tendré lo que quiero.
+  getImageURl(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.getImageUrl(base64String, contentType);
+  }
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
   }
