@@ -27,15 +27,17 @@
   <span jhiTranslate="mFinder1App.album.home.notFound">Ningún Albums encontrado</span>
 </div>
 <div class="container" *ngIf="albums && albums.length > 0">
-  <div class="row my-6">
-    <div class="card-columns">
-      <span *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
-        <div class="card">
-          <!-- 
-            <a *ngIf="album.picture" (click)="openFile(album.picture, album.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
-            <span *ngIf="album.picture">{{ album.pictureContentType }}, {{ byteSize(album.picture) }}</span> 
-          -->
-          <img class="card-img-top" ng-init="openFile(album.picture, album.pictureContentType)" *ngIf="album.picture" />
+  <div class="row row-cols-md-3 g-3">
+    <span *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
+      <div class="col" style="border-style: solid; color: white">
+        <div class="card justify-content-center align-items-center" style="height: 500px">
+          <img
+            class="card-img-top"
+            *ngIf="album.picture"
+            style="width: 100%"
+            [src]="'data:' + album.pictureContentType + ';base64,' + album.picture"
+          />
+
           <div class="card-body">
             <h3 class="card-title">
               <span jhiTranslate="mFinder1App.album.name" style="font-weight: bold">Nombre del album</span>
@@ -68,8 +70,8 @@
             </div>
           </div>
         </div>
-      </span>
-    </div>
+      </div>
+    </span>
   </div>
 
   <div *ngIf="albums && albums.length > 0">

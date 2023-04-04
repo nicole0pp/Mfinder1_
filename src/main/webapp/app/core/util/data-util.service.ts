@@ -25,24 +25,6 @@ export class DataUtils {
   }
 
   /**
-   * Method send a fileURL
-   */
-  getImageUrl(data: string, contentType: string | null | undefined): void {
-    contentType = contentType ?? '';
-
-    const byteCharacters = atob(data);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], {
-      type: contentType,
-    });
-    const fileURL = window.URL.createObjectURL(blob);
-  }
-
-  /**
    * Method to open file
    */
   openFile(data: string, contentType: string | null | undefined): void {
