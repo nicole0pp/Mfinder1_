@@ -30,7 +30,7 @@
   <div class="row row-cols-md-3 g-3">
     <span *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
       <div class="col" style="border-style: solid; color: white">
-        <div class="card justify-content-center align-items-center" style="height: 500px">
+        <div class="card justify-content-center align-items-center">
           <img
             class="card-img-top"
             *ngIf="album.picture"
