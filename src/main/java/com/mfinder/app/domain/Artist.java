@@ -20,9 +20,11 @@ public class Artist implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "artistic_name", unique = true)
+    private String artistName;
 
     @OneToMany(mappedBy = "atist")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

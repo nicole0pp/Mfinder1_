@@ -11,6 +11,7 @@ import com.mfinder.app.repository.ClientRepository;
 import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
 import com.mfinder.app.security.SecurityUtils;
+import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.ClientService;
 import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.service.dto.UserDTO;
@@ -48,6 +49,8 @@ public class UserService {
 
     private final ArtistRepository artistRepository;
 
+    private final ArtistService artistService;
+
     private final ClientRepository clientRepository;
 
     private final ClientService clientService;
@@ -58,6 +61,7 @@ public class UserService {
         AuthorityRepository authorityRepository,
         CacheManager cacheManager,
         ArtistRepository artistRepository,
+        ArtistService artistService,
         ClientRepository clientRepository,
         ClientService clientService
     ) {
@@ -66,6 +70,7 @@ public class UserService {
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         this.artistRepository = artistRepository;
+        this.artistService = artistService;
         this.clientRepository = clientRepository;
         this.clientService = clientService;
     }
@@ -151,6 +156,7 @@ public class UserService {
         log.debug("Created Information for User: {}", newUser);
 
         Client newClient = new Client();
+        newClient.setId(newUser.getId());
         newClient.setUser(newUser);
         clientRepository.save(newClient);
 
@@ -233,6 +239,20 @@ public class UserService {
         user.setResetDate(Instant.now());
         user.setActivated(true);
         if (userDTO.getAuthorities() != null) {
+            if (userDTO.getAuthorities().contains(AuthoritiesConstants.ARTIST)) {
+                Artist artist = new Artist();
+                artist.setId(user.getId());
+                artist.setUser(user);
+                artistRepository.save(artist);
+
+                Set<Authority> authorities = userDTO
+                    .getAuthorities()
+                    .stream()
+                    .map(authorityRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            }
             Set<Authority> authorities = userDTO
                 .getAuthorities()
                 .stream()
@@ -242,9 +262,18 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+
+        //authorityRepository.findById(AuthoritiesConstants.ARTIST).ifPresent(authorities::add);
+
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
+
+        Client newClient = new Client();
+        newClient.setId(user.getId());
+        newClient.setUser(user);
+        clientRepository.save(newClient);
+
         return user;
     }
 
@@ -288,11 +317,23 @@ public class UserService {
 
     public void deleteUser(String login) {
         User userA = userRepository.findOneByLogin(login).get();
+        Long idUser = userA.getId();
+        // List artist = artistRepository.findArtistByUserId(idUser);
+        //PROBLEMA: INTENTA ENCONTRAR UNA EXISTENCIA DE UN CLIENT, SIEMPRE
+        // Client client= clientRepository.findById(userA.getId()).get();
+        // Artist artist = artistRepository.findById(userA.getId()).get();
+
+        // if (client.getId().equals(userA.getId())) {
+        //     clientService.delete(client.getId());
+        // }else{
+        //     if (artist.getId().equals(userA.getId())) {
+        //         artistService.delete(artist.getId());
+        //     }
+        // }
+
         userRepository
             .findOneByLogin(login)
             .ifPresent(user -> {
-                clientService.getIdUser(userA.getId());
-                // Client client = clientRepository.findById()
                 userRepository.delete(user);
                 this.clearUserCaches(user);
                 log.debug("Deleted User: {}", user);

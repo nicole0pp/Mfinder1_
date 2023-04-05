@@ -4,28 +4,31 @@
       <h1>¿How will you use the platform?</h1>
       <p>Pick what is your profile and register</p>
     </div>
+
     <div class="container">
       <hr />
-      <div class="row">
-        <a href="">
+
+      <div class="row" id="row-enlace">
+        <a class="dropdown-item" routerLink="account/register" data-cy="register">
           <div class="row">
-            <div class="col">
-              <span>I will play music and nothing more</span>
+            <div class="col align-self-center justify-content-center">
+              <span>I will only listen to music</span>
             </div>
-            <div class="col">
+            <div class="col-md-4">
               <fa-icon icon="arrow-right"></fa-icon>
             </div>
           </div>
         </a>
       </div>
       <hr />
-      <div class="row">
-        <a href="">
+
+      <div class="row" id="row-enlace">
+        <a class="dropdown-item" routerLink="account/registerArtist" data-cy="register">
           <div class="row">
-            <div class="col">
+            <div class="col align-self-center justify-content-center">
               <span>I will share my own music</span>
             </div>
-            <div class="col">
+            <div class="col-md-4">
               <fa-icon icon="arrow-right"></fa-icon>
             </div>
           </div>

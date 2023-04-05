@@ -57,5 +57,5 @@ public interface ClientService {
      */
     void delete(Long id);
 
-    void getIdUser(Long userId);
+    boolean existsClient(Long userId);
 }

@@ -89,13 +89,7 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.deleteById(id);
     }
 
-    public void getIdUser(Long userId) {
-        //WTF
-        User user = userRepository.findById(userId).get();
-        Client client = clientRepository.findById(userId).get();
-        // clientRepository.deleteByUserId(userId);
-        // Long idUser = client.getUser().getId();
-
-        // client= clientRepository.findByd(client.getUser(idUser));
+    public boolean existsClient(Long userId) {
+        return true;
     }
 }

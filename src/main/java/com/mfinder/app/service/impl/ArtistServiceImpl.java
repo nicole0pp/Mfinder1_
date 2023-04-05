@@ -79,6 +79,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Artist : {}", id);
+        Artist artist = artistRepository.findById(id).get();
         artistRepository.deleteById(id);
     }
 }

@@ -23,6 +23,7 @@
         "login": "Iniciar sesión",
         "logout": "Cerrar la sesión",
         "register": "Crear una cuenta",
+        "register2": "Crear una cuenta (Importante)",
         "registerArtist": "Crear una artist"
       },
       "admin": {
@@ -49,6 +50,8 @@
       "confirmpassword.label": "Confirmación de la nueva contraseña",
       "confirmpassword.placeholder": "Confirmación de la nueva contraseña",
       "email.label": "Correo electrónico",
+      "artisticName.label": "Nombre artistico",
+      "artisticName.placeholder": "Nombre de artistico",
       "email.placeholder": "Su correo electrónico"
     },
     "messages": {

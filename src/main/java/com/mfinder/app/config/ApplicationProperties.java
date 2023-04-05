@@ -13,4 +13,6 @@ public class ApplicationProperties {
     // jhipster-needle-application-properties-property
     // jhipster-needle-application-properties-property-getter
     // jhipster-needle-application-properties-property-class
+    // spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
 }

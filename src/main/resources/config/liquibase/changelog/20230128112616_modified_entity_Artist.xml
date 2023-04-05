@@ -9,10 +9,16 @@
     <!--
         Modified the entity Artist. 20230128112616_modified_entity_Artist.xml
     -->
-    <changeSet id="20230128112616" author="melit">
-        <addColumn 
+    <changeSet id="20230128112616" author="nicole">
+        <!-- <addColumn 
 			tableName="artist" >
 		    <column name="user_id" type="bigint" >
+                <constraints unique="true" nullable="true" />
+            </column>
+        </addColumn>-->
+        <addColumn  
+			tableName="artist" >
+		    <column name="artistic_name" type="varchar(255)" >
                 <constraints unique="true" nullable="true" />
             </column>
         </addColumn>
