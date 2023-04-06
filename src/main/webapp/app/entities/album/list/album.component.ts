@@ -26,7 +26,7 @@ export class AlbumComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
-
+  fileUrl = '';
   constructor(
     protected albumService: AlbumService,
     protected activatedRoute: ActivatedRoute,

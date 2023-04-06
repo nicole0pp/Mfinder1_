@@ -27,9 +27,9 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 //Mis component
 import { PersonsalModule } from './personal-info/personal-info.module';
-
 import { ChooseModule } from './chooseAccount/choose.module';
 import { PerfilCentroModule } from './layouts/footer/paginas-footer/perfil-centro/perfil-centro.module';
+import { PerfilModule } from './layouts/footer/paginas-footer/perfil/perfil.module';
 @NgModule({
   imports: [
     BrowserModule,

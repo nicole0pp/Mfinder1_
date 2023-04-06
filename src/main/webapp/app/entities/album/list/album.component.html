@@ -1,88 +1,58 @@
-<div>
-  <h2 id="page-heading" data-cy="AlbumHeading">
-    <span jhiTranslate="mFinder1App.album.home.title">Albums</span>
+<h2 id="page-heading" data-cy="AlbumHeading">
+  <span jhiTranslate="mFinder1App.album.home.title">Albums</span>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="mFinder1App.album.home.refreshListLabel">Refrescar lista</span>
-      </button>
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <span jhiTranslate="mFinder1App.album.home.refreshListLabel">Refrescar lista</span>
+    </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-album"
-        [routerLink]="['/album/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="mFinder1App.album.home.createLabel"> Crear nuevo Album </span>
-      </button>
-    </div>
-  </h2>
-
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="albums?.length === 0">
-    <span jhiTranslate="mFinder1App.album.home.notFound">Ningún Albums encontrado</span>
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-album"
+      [routerLink]="['/album/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span jhiTranslate="mFinder1App.album.home.createLabel"> Crear nuevo Album </span>
+    </button>
   </div>
+</h2>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="albums && albums.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="name">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.album.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="picture">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.album.picture">Picture</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="publicationDate">
-            <div class="d-flex">
+<jhi-alert-error></jhi-alert-error>
+
+<jhi-alert></jhi-alert>
+
+<div class="alert alert-warning" id="no-result" *ngIf="albums?.length === 0">
+  <span jhiTranslate="mFinder1App.album.home.notFound">Ningún Albums encontrado</span>
+</div>
+<div class="container" *ngIf="albums && albums.length > 0">
+  <div class="row row-cols-md-3 g-3">
+    <span *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
+      <div class="col" style="border-style: solid; color: white">
+        <div class="card justify-content-center align-items-center">
+          <img
+            class="card-img-top"
+            *ngIf="album.picture"
+            style="width: 100%"
+            [src]="'data:' + album.pictureContentType + ';base64,' + album.picture"
+          />
+
+          <div class="card-body">
+            <h3 class="card-title">
+              <span jhiTranslate="mFinder1App.album.name" style="font-weight: bold">Nombre del album</span>
+              &nbsp;{{ album.name }}
+            </h3>
+            <p class="card-text">
               <span jhiTranslate="mFinder1App.album.publicationDate">Publication Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="atist.id">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.album.atist">Atist</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/album', album.id, 'view']">{{ album.id }}</a>
-          </td>
-          <td>{{ album.name }}</td>
-          <td>
-            <a *ngIf="album.picture" (click)="openFile(album.picture, album.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
-            <span *ngIf="album.picture">{{ album.pictureContentType }}, {{ byteSize(album.picture) }}</span>
-          </td>
-          <td>{{ album.publicationDate | formatMediumDate }}</td>
-          <td>
+              <a> {{ album.publicationDate | formatMediumDate }} </a>
+            </p>
             <div *ngIf="album.atist">
+              <span jhiTranslate="mFinder1App.album.atist">Artist</span>
               <a [routerLink]="['/artist', album.atist.id, 'view']">{{ album.atist.id }}</a>
             </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
+
+            <div class="btn-group text-center">
               <button type="submit" [routerLink]="['/album', album.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
@@ -98,10 +68,10 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
               </button>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </span>
   </div>
 
   <div *ngIf="albums && albums.length > 0">
