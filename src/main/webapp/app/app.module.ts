@@ -30,6 +30,7 @@ import { PersonsalModule } from './personal-info/personal-info.module';
 import { ChooseModule } from './chooseAccount/choose.module';
 import { PerfilCentroModule } from './layouts/footer/paginas-footer/perfil-centro/perfil-centro.module';
 import { PerfilModule } from './layouts/footer/paginas-footer/perfil/perfil.module';
+import { PlataformaModule } from './layouts/footer/paginas-footer/plataforma/plataforma.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -47,6 +48,7 @@ import { PerfilModule } from './layouts/footer/paginas-footer/perfil/perfil.modu
     ChooseModule,
     PerfilCentroModule,
     PerfilModule,
+    PlataformaModule,
   ],
   providers: [
     Title,

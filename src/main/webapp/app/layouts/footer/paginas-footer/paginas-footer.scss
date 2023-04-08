@@ -30,3 +30,19 @@ ol {
   padding: 2%;
   margin-top: 0;
 }
+/** FRONT VISTA PLATAFOMRA **/
+.container.img {
+  background-image: url('../../../../content/images/imagen tio escuchando musica.png');
+  background-repeat: no-repeat;
+  background-position: 100%;
+  height: fit-content;
+  padding: 20%;
+  padding-left: 2%;
+  h2,
+  h4 {
+    font-family: 'Inter', sans-serif;
+  }
+}
+.container.img .content.img {
+  float: left;
+}
