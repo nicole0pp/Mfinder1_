@@ -1,5 +1,20 @@
 {
   "plataforma": {
-    "title": "Plataforma"
+    "title": "Plataforma",
+    "titles": {
+      "centerTitle": "La música como el centro de todo lo que hacemos",
+      "contentCreators": "Potenciar a los creadores se encuentra en nuestro ADN",
+      "register": "Regístrate",
+      "found": "Encuentra tu sonido",
+      "musicalize": "Musicaliza el mundo"
+    },
+    "asiSomos": "Así somos nosotros: MFinder",
+    "miniResume": "Uno de los principales objetivos de MFinder es promover la música de artistas emergentes y menos conocidos.",
+    "discoverNewArtist": "La página web MFinder es una plataforma diseñada para aquellos amantes de la música que desean descubrir nuevos artistas y sonidos que no suelen ser reconocidos por los medios de comunicación tradicionales. Este proyecto surge como trabajo de fin de grado de una estudiante apasionada por la música y comprometida con la promoción de talentos emergentes con una interfaz intuitiva, una selección cuidadosa de artistas y canciones, y la posibilidad de escuchar música en línea, añadirlas a sus favoritos y descubrir nuevos sonidos.",
+    "centerTitle": "En MFinder, los artistas tienen la posibilidad de compartir su música y crear perfiles para dar a conocer su trabajo a nivel mundial. Cada perfil incluye información sobre el artista, su biografía y enlaces a sus redes sociales. Además, los usuarios de la plataforma pueden escuchar la música de los artistas en línea y añadirlas a sus favoritos.",
+    "contentCreators": "En la plataforma esta habilitada un apartado de musica sin derechos de autor especialmente para que nuestro creadores de contenido puedan utilizarla y puedan mejorar el impacto emocional del video, reforzar la narrativa y mejorar la calidad general del contenido. MFinder es una plataforma web de música que permite a los creadores de contenido buscar, explorar y acceder a una amplia biblioteca de música libre de derechos de autor para utilizar en sus videos. Esta plataforma ofrece una gran variedad de géneros musicales, desde música electrónica hasta lo-fi, lo que la hace una opción ideal para cualquier tipo de video.",
+    "register": "Registrate para que descubras todo lo que la música tiene que ofrecer.",
+    "found": "Los usuarios pueden utilizar la función de filtrado de género para encontrar su música favorita de una manera más fácil y rápida. Al filtrar por género, los usuarios pueden restringir su búsqueda a canciones que pertenecen a un género específico, lo que les permite descubrir nuevas canciones y artistas que les gusten.",
+    "musicalize": "Da vida a tu contenido con la banda sonora perfecta. Nuestra licencia musical te protege en todas las plataformas en línea para que puedas enfocarte en crear contenido que inspire a tu audiencia, donde sea que se encuentre."
   }
 }

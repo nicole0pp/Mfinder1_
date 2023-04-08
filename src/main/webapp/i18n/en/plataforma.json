@@ -1,5 +1,20 @@
 {
   "plataforma": {
-    "title": "Plataform"
+    "title": "Plataform",
+    "titles": {
+      "centerTitle": "Music at the center of everything we do",
+      "contentCreators": "Empowering creators is in our DNA",
+      "register": "Sign up",
+      "found": "Found your sound",
+      "musicalize": "Musicalize the world"
+    },
+    "asiSomos": "That's how we are: MFinder",
+    "miniResume": "One of MFinder's main goals is to promote the music of emerging and lesser-known artists.",
+    "discoverNewArtist": " The MFinder website is a platform designed for music lovers who want to discover new artists and sounds. that are not usually recognized by the traditional media. This project arises as an end-of-degree project from a student passionate about music and committed to promoting emerging talents with an intuitive interface, a careful selection of artists and songs, and the ability to listen to music online, add them to your favorites and discover new sounds.",
+    "centerTitle": "On MFinder, artists have the ability to share their music and create profiles to publicize their work at a global level world. Each profile includes information about the artist, their biography and links to their social media. Furthermore, users of the platform can listen to artists' music online and add it to their favourites.",
+    "contentCreators": "On the platform is enabled a section of music without copyright especially for our content creators can use it and can enhance the emotional impact of the video can use it to enhance the emotional impact of the video, reinforce the narrative and improve the overall quality of the content . MFinder is a web-based music platform that allows content creators to search, browse and access a vast library of royalty-free music library of copyright-free music for use in their videos. This platform offers a wide variety of music genres music genres, from electronic music to lo-fi, making it an ideal choice for any type of video.",
+    "register": "Sign up to discover all that music has to offer.",
+    "found": "Users can use the genre filtering feature to find their favorite music easier and faster. By filtering by genre, users can narrow their search to songs that belong to a specific genre, allowing them to discover new songs and artists they like. discover new songs and artists that they like.",
+    "musicalize": "Bring your content to life with the perfect soundtrack. Our music license protects you on all online platforms so you can focus on creating content so you can focus on creating content that inspires your audience, wherever they are."
   }
 }
