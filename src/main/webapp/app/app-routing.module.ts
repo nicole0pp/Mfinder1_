@@ -53,6 +53,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: 'personal',
           loadChildren: () => import('../app/layouts/footer/paginas-footer/perfil/perfil.module').then(m => m.PerfilModule),
         },
+        {
+          path: 'plataforma',
+          loadChildren: () => import('../app/layouts/footer/paginas-footer/plataforma/plataforma.module').then(m => m.PlataformaModule),
+        },
 
         navbarRoute,
         ...errorRoute,
