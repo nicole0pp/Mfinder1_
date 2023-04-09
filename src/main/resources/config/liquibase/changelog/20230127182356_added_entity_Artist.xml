@@ -36,15 +36,15 @@
     -->
     <changeSet id="20230127182356-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/artist.csv"
-                  separator=";"
-                  tableName="artist"
-                  usePreparedStatements="true">
+                file="config/liquibase/fake-data/artist.csv"
+                separator=";"
+                tableName="artist"
+                usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="insta_link" type="string"/>
             <column name="spoti_link" type="string"/>
-        <loadData file="config/liquibase/fake-data/artist.csv" separator=";" tableName="artist" usePreparedStatements="true">
-        <column name="id" type="numeric"/>
+            <column name="id" type="numeric"/>
+        
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
