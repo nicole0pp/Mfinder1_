@@ -14,6 +14,7 @@ import com.mfinder.app.security.SecurityUtils;
 import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.ClientService;
 import com.mfinder.app.service.dto.AdminUserDTO;
+import com.mfinder.app.service.dto.ArtistDTO;
 import com.mfinder.app.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -163,7 +164,7 @@ public class UserService {
         return newUser;
     }
 
-    public User registerUserArtist(AdminUserDTO userDTO, String password) {
+    public User registerUserArtist(AdminUserDTO userDTO, String password, String artistName) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -204,7 +205,9 @@ public class UserService {
         log.debug("Created Information for User: {}", newUser);
 
         Artist newArtist = new Artist();
+
         newArtist.setUser(newUser);
+        newArtist.setArtistName(artistName);
         artistRepository.save(newArtist);
         return newUser;
     }

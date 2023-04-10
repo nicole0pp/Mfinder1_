@@ -38,6 +38,18 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="user.id">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.artist.userId">user</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="artistName">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.artist.artistName">Artist Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="insta_link">
             <div class="d-flex">
               <span jhiTranslate="mFinder1App.artist.insta_link">Insta Link</span>
@@ -58,6 +70,12 @@
           <td>
             <a [routerLink]="['/artist', artist.id, 'view']">{{ artist.id }}</a>
           </td>
+          <td>
+            <div *ngIf="artist.user">
+              <a [routerLink]="['/user', artist.user.id, 'view']"></a>
+            </div>
+          </td>
+          <td>{{ artist.artistName }}</td>
           <td>{{ artist.insta_link }}</td>
           <td>{{ artist.spoti_link }}</td>
           <td class="text-end">

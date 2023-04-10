@@ -12,6 +12,8 @@ public class ArtistDTO implements Serializable {
 
     private Long id;
 
+    private String artistName;
+
     private User user;
 
     private String insta_link;
@@ -24,6 +26,14 @@ public class ArtistDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     public User getUser() {
@@ -76,7 +86,8 @@ public class ArtistDTO implements Serializable {
     public String toString() {
         return "ArtistDTO{" +
             "id=" + getId() +
-            "user_id=" + getUser() +
+            "user_id='" + getUser() + "'" +
+            ", artistName='" + getArtistName() + "'" +
             ", insta_link='" + getInsta_link() + "'" +
             ", spoti_link='" + getSpoti_link() + "'" +
             "}";

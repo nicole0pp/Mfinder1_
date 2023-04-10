@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import { ArtistFormService, ArtistFormGroup } from './artist-form.service';
 import { IArtist } from '../artist.model';
 import { ArtistService } from '../service/artist.service';
+import { UserService } from 'app/entities/user/user.service';
+import { IUser } from 'app/admin/user-management/user-management.model';
 
 @Component({
   selector: 'jhi-artist-update',
@@ -15,15 +17,17 @@ import { ArtistService } from '../service/artist.service';
 export class ArtistUpdateComponent implements OnInit {
   isSaving = false;
   artist: IArtist | null = null;
+  userSharedCollecion: IUser[] = [];
 
   editForm: ArtistFormGroup = this.artistFormService.createArtistFormGroup();
 
   constructor(
     protected artistService: ArtistService,
     protected artistFormService: ArtistFormService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected userService: UserService
   ) {}
-
+  compareUser = (o1: IUser, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ artist }) => {
       this.artist = artist;
@@ -69,5 +73,15 @@ export class ArtistUpdateComponent implements OnInit {
   protected updateForm(artist: IArtist): void {
     this.artist = artist;
     this.artistFormService.resetForm(this.editForm, artist);
+
+    this.userSharedCollecion = this.userService.addUserToCollectionIfMissing<IUser>(this.userSharedCollecion, artist.user);
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.artist?.user)))
+      .subscribe((users: IUser[]) => (this.userSharedCollecion = users));
   }
 }

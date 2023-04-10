@@ -5,6 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterArtistService } from './registerArtist.service';
+import { RegisterService } from '../register/register.service';
+import { Alert, AlertService } from 'app/core/util/alert.service';
 
 @Component({
   selector: 'registerArtist',
@@ -14,6 +16,7 @@ import { RegisterArtistService } from './registerArtist.service';
 export class RegisterArtistComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
   login?: ElementRef;
+  alerts: Alert[] = [];
 
   doNotMatch = false;
   error = false;
@@ -31,6 +34,10 @@ export class RegisterArtistComponent implements AfterViewInit {
         Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
       ],
     }),
+    artistName: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+    }),
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
@@ -45,7 +52,11 @@ export class RegisterArtistComponent implements AfterViewInit {
     }),
   });
 
-  constructor(private translateService: TranslateService, private registerService: RegisterArtistService) {}
+  constructor(
+    private translateService: TranslateService,
+    private registerArtistService: RegisterArtistService,
+    private alertService: AlertService
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.login) {
@@ -63,9 +74,9 @@ export class RegisterArtistComponent implements AfterViewInit {
     if (password !== confirmPassword) {
       this.doNotMatch = true;
     } else {
-      const { login, email } = this.registerArtistForm.getRawValue();
-      this.registerService
-        .save({ login, email, password, langKey: this.translateService.currentLang })
+      const { login, email, artistName } = this.registerArtistForm.getRawValue();
+      this.registerArtistService
+        .save({ login, email, password, langKey: this.translateService.currentLang }, artistName)
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }

@@ -18,6 +18,8 @@ type ArtistFormDefaults = Pick<NewArtist, 'id'>;
 
 type ArtistFormGroupContent = {
   id: FormControl<IArtist['id'] | NewArtist['id']>;
+  user: FormControl<IArtist['user']>;
+  artistName: FormControl<IArtist['artistName']>;
   insta_link: FormControl<IArtist['insta_link']>;
   spoti_link: FormControl<IArtist['spoti_link']>;
 };
@@ -39,6 +41,8 @@ export class ArtistFormService {
           validators: [Validators.required],
         }
       ),
+      user: new FormControl(artistRawValue.user),
+      artistName: new FormControl(artistRawValue.artistName),
       insta_link: new FormControl(artistRawValue.insta_link),
       spoti_link: new FormControl(artistRawValue.spoti_link),
     });

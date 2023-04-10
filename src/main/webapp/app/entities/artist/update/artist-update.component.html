@@ -12,7 +12,24 @@
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
-
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.artist.userId" for="field_userId">ID</label>
+          <select class="form-control" id="field_userId" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="userOption" *ngFor="let userOption of userSharedCollecion">{{ userOption.id }}</option>
+          </select>
+        </div>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="mFinder1App.artist.artistName" for="field_artistName">ArtistName</label>
+          <input
+            type="text"
+            class="form-control"
+            name="artistName"
+            id="field_artistName"
+            data-cy="artistName"
+            formControlName="artistName"
+          />
+        </div>
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="mFinder1App.artist.insta_link" for="field_insta_link">Insta Link</label>
           <input

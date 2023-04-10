@@ -18,8 +18,10 @@
         "title": "Artist"
       },
       "id": "ID",
-      "insta_link": "Insta Link",
-      "spoti_link": "Spoti Link",
+      "userId": "User id",
+      "artistName": "Nombre Artístico",
+      "insta_link": "Instagram Link",
+      "spoti_link": "Spotify Link",
       "album": "Album",
       "favoriteList": "Favorite List"
     }
