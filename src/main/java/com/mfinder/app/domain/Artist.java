@@ -20,6 +20,7 @@ public class Artist implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -60,6 +61,19 @@ public class Artist implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getArtistName() {
+        return this.artistName;
+    }
+
+    public Artist artistName(String artistName) {
+        this.setArtistName(artistName);
+        return this;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     public String getInsta_link() {
@@ -189,7 +203,8 @@ public class Artist implements Serializable {
     public String toString() {
         return "Artist{" +
             "id=" + getId() +
-            ", user_id=" + getUser() +
+            ", user_id='" + getUser() + "'" +
+            ", artistName='" + getArtistName() + "'" +
             ", insta_link='" + getInsta_link() + "'" +
             ", spoti_link='" + getSpoti_link() + "'" +
             "}";

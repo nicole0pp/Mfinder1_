@@ -6,6 +6,7 @@ import com.mfinder.app.security.SecurityUtils;
 import com.mfinder.app.service.MailService;
 import com.mfinder.app.service.UserService;
 import com.mfinder.app.service.dto.AdminUserDTO;
+import com.mfinder.app.service.dto.ArtistDTO;
 import com.mfinder.app.service.dto.PasswordChangeDTO;
 import com.mfinder.app.web.rest.errors.*;
 import com.mfinder.app.web.rest.vm.KeyAndPasswordVM;
@@ -68,18 +69,20 @@ public class AccountResource {
     /**
      * {@code POST  /registerArtist} : registerArtist the user.
      *
-     * @param managedUserVM the managed user View Model.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
     @PostMapping("/registerArtist")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccountArtist(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public void registerAccountArtist(
+        @RequestParam(value = "artistName") String artistName,
+        @Valid @RequestBody ManagedUserVM managedUserVM
+    ) {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUserArtist(managedUserVM, managedUserVM.getPassword());
+        User user = userService.registerUserArtist(managedUserVM, managedUserVM.getPassword(), artistName);
         mailService.sendActivationEmail(user);
     }
 
