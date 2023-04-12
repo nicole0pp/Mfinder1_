@@ -13,6 +13,8 @@
                                  baseTableName="client"
                                  constraintName="fk_client_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="jhi_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
     </changeSet>
 </databaseChangeLog>

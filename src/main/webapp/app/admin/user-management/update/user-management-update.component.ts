@@ -69,7 +69,7 @@ export class UserManagementUpdateComponent implements OnInit {
         next: () => this.onSaveSuccess(),
         error: () => this.onSaveError(),
       });
-    } else {
+    } else if (user.id === null) {
       this.userService.create(user).subscribe({
         next: () => this.onSaveSuccess(),
         error: () => this.onSaveError(),

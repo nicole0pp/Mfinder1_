@@ -242,20 +242,6 @@ public class UserService {
         user.setResetDate(Instant.now());
         user.setActivated(true);
         if (userDTO.getAuthorities() != null) {
-            if (userDTO.getAuthorities().contains(AuthoritiesConstants.ARTIST)) {
-                Artist artist = new Artist();
-                artist.setId(user.getId());
-                artist.setUser(user);
-                artistRepository.save(artist);
-
-                Set<Authority> authorities = userDTO
-                    .getAuthorities()
-                    .stream()
-                    .map(authorityRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-            }
             Set<Authority> authorities = userDTO
                 .getAuthorities()
                 .stream()
@@ -263,20 +249,23 @@ public class UserService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
+
+            if (userDTO.getAuthorities().contains(AuthoritiesConstants.ARTIST)) {
+                Artist artist = new Artist();
+                artist.setId(user.getId());
+                artist.setUser(user);
+                artistRepository.save(artist);
+            } else if (userDTO.getAuthorities().contains(AuthoritiesConstants.USER)) {
+                Client newClient = new Client();
+                newClient.setUser(user);
+                clientRepository.save(newClient);
+            }
             user.setAuthorities(authorities);
         }
-
-        //authorityRepository.findById(AuthoritiesConstants.ARTIST).ifPresent(authorities::add);
 
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
-
-        Client newClient = new Client();
-        newClient.setId(user.getId());
-        newClient.setUser(user);
-        clientRepository.save(newClient);
-
         return user;
     }
 
@@ -320,19 +309,13 @@ public class UserService {
 
     public void deleteUser(String login) {
         User userA = userRepository.findOneByLogin(login).get();
-        Long idUser = userA.getId();
-        // List artist = artistRepository.findArtistByUserId(idUser);
-        //PROBLEMA: INTENTA ENCONTRAR UNA EXISTENCIA DE UN CLIENT, SIEMPRE
-        // Client client= clientRepository.findById(userA.getId()).get();
-        // Artist artist = artistRepository.findById(userA.getId()).get();
-
-        // if (client.getId().equals(userA.getId())) {
-        //     clientService.delete(client.getId());
-        // }else{
-        //     if (artist.getId().equals(userA.getId())) {
-        //         artistService.delete(artist.getId());
-        //     }
-        // }
+        Artist artist = artistRepository.findArtistByUserId(userA.getId());
+        Client client = clientRepository.findByUserId(userA.getId());
+        if (artist != null) {
+            artistRepository.delete(artist);
+        } else if (client != null) {
+            clientRepository.delete(client);
+        }
 
         userRepository
             .findOneByLogin(login)

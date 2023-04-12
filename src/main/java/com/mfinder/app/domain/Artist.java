@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * A Artist.
  */
-@Entity
+@Entity(name = "artist")
 @Table(name = "artist")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
@@ -47,8 +47,6 @@ public class Artist implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
