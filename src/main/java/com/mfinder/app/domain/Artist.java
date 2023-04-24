@@ -48,6 +48,9 @@ public class Artist implements Serializable {
     @JoinColumn(unique = true)
     private User user;
 
+    @ManyToMany(mappedBy = "artists")
+    private Set<Event> events;
+
     public Long getId() {
         return this.id;
     }
