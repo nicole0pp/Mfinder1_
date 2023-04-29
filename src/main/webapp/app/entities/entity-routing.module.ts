@@ -5,6 +5,11 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
+        path: 'event',
+        data: { pageTitle: 'mFinder1App.event.title' },
+        loadChildren: () => import('./event/event.module').then(m => m.EventModule),
+      },
+      {
         path: 'song',
         data: { pageTitle: 'mFinder1App.song.home.title' },
         loadChildren: () => import('./song/song.module').then(m => m.SongModule),

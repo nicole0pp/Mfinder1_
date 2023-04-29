@@ -3,6 +3,7 @@ package com.mfinder.app.web.rest;
 import com.mfinder.app.repository.EventRepository;
 import com.mfinder.app.service.EventService;
 import com.mfinder.app.service.dto.EventDTO;
+import com.mfinder.app.service.dto.controller.EventController;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,6 +26,11 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+/**
+ * REST controller for managing {@link com.mfinder.app.domain.Event}.
+ */
+@RestController
+@RequestMapping("/api")
 public class EventResource {
 
     private final Logger log = LoggerFactory.getLogger(EventResource.class);
@@ -38,9 +44,12 @@ public class EventResource {
 
     private final EventRepository eventRepository;
 
-    public EventResource(EventService eventService, EventRepository eventRepository) {
+    private final EventController eventController;
+
+    public EventResource(EventService eventService, EventRepository eventRepository, EventController eventController) {
         this.eventService = eventService;
         this.eventRepository = eventRepository;
+        this.eventController = eventController;
     }
 
     /**
@@ -56,7 +65,7 @@ public class EventResource {
         if (eventDTO.getId() != null) {
             throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        EventDTO result = eventService.save(eventDTO);
+        EventDTO result = eventController.save(eventDTO);
         return ResponseEntity
             .created(new URI("/api/event/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -78,7 +87,7 @@ public class EventResource {
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody EventDTO eventDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update event : {}, {}", id, eventDTO);
+        log.debug("REST request to update Event : {}, {}", id, eventDTO);
         if (eventDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -90,7 +99,7 @@ public class EventResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        EventDTO result = eventService.update(eventDTO);
+        EventDTO result = eventController.update(eventDTO);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventDTO.getId().toString()))
@@ -109,11 +118,11 @@ public class EventResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/events/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<EventDTO> partialUpdateevent(
+    public ResponseEntity<EventDTO> partialUpdateEvent(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody EventDTO eventDTO
+        @RequestBody EventDTO eventDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update event partially : {}, {}", id, eventDTO);
+        log.debug("REST request to partial update Event partially : {}, {}", id, eventDTO);
         if (eventDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -125,7 +134,7 @@ public class EventResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<EventDTO> result = eventService.partialUpdate(eventDTO);
+        Optional<EventDTO> result = eventController.partialUpdate(eventDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -140,9 +149,9 @@ public class EventResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of events in body.
      */
     @GetMapping("/events")
-    public ResponseEntity<List<EventDTO>> getAllevents(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of events");
-        Page<EventDTO> page = eventService.findAll(pageable);
+    public ResponseEntity<List<EventDTO>> getAllEvents(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Events");
+        Page<EventDTO> page = eventController.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -156,8 +165,17 @@ public class EventResource {
     @GetMapping("/events/{id}")
     public ResponseEntity<EventDTO> getevent(@PathVariable Long id) {
         log.debug("REST request to get event : {}", id);
-        Optional<EventDTO> eventDTO = eventService.findOne(id);
+        Optional<EventDTO> eventDTO = eventController.findOne(id);
         return ResponseUtil.wrapOrNotFound(eventDTO);
+    }
+
+    /**
+     * Gets a list of all the events.
+     * @return a long list of all the events.
+     */
+    @GetMapping("/getEvents")
+    public List<Long> getevents() {
+        return eventService.getEvents();
     }
 
     /**
@@ -167,9 +185,9 @@ public class EventResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/events/{id}")
-    public ResponseEntity<Void> deleteevent(@PathVariable Long id) {
-        log.debug("REST request to delete event : {}", id);
-        eventService.delete(id);
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        log.debug("REST request to delete Event : {}", id);
+        eventController.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

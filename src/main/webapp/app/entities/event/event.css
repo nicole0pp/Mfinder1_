@@ -1,0 +1,18 @@
+#header {
+  background-image: url('../../../content/images/conciertoHeader2.jpg');
+  background-position: 50%;
+  background-size: cover;
+  height: 400px;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+.col-8 {
+  align-items: center;
+}
+.p-5 {
+  padding: 2% 0 2% 0 !important;
+}
+
+.container {
+  margin-top: 10px;
+}

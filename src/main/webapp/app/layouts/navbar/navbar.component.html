@@ -26,6 +26,14 @@
             </span>
           </a>
         </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="event" (click)="collapseNavbar()">
+            <span>
+              <fa-icon icon="calendar-days"></fa-icon>
+              <span jhiTranslate="global.menu.event">Eventos</span>
+            </span>
+          </a>
+        </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <li
           *ngSwitchCase="true"

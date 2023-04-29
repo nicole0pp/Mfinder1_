@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "event")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Event implements Serializable {
 
@@ -41,11 +41,11 @@ public class Event implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipoEvento")
+    @Column(name = "tipo_evento")
     private TipoEvento tipoEvento;
 
     @NotNull
-    @Column(name = "eventDate")
+    @Column(name = "event_date")
     private LocalDate eventDate;
 
     @Column(name = "location")
@@ -210,17 +210,17 @@ public class Event implements Serializable {
     }
 
     // prettier-ignore
-     @Override
-     public String toString() {
-          return "Event{" +
-          "id=" + getId() +
-          ", name='" + getName() + "'" +
-          ", picture='" + getImage() + "'" +
-          ", tipoEvento='" + getTipoEvento() + "'" +
-          ", eventDate='" + getEventDate() + "'" +
-          ", location='" + getLocation() + "'" +
-          ", city='" + getCity() + "'" +
-          ", description='" + getDescription() + "'" +
-          "}"; 
-     }
+    @Override
+    public String toString() {
+        return "Event{" +
+        "id=" + getId() +
+        ", name='" + getName() + "'" +
+        ", picture='" + getImage() + "'" +
+        ", tipoEvento='" + getTipoEvento() + "'" +
+        ", eventDate='" + getEventDate() + "'" +
+        ", location='" + getLocation() + "'" +
+        ", city='" + getCity() + "'" +
+        ", description='" + getDescription() + "'" +
+        "}"; 
+    }
 }

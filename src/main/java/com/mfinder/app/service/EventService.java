@@ -1,55 +1,24 @@
 package com.mfinder.app.service;
 
-import com.mfinder.app.service.dto.EventDTO;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.mfinder.app.domain.Event;
+import com.mfinder.app.repository.EventRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface EventService {
-    /**
-     * Save a event.
-     *
-     * @param eventDTO the entity to save.
-     * @return the persisted entity.
-     */
-    EventDTO save(EventDTO eventDTO);
+@Service
+@Transactional
+public class EventService {
 
-    /**
-     * Updates a event.
-     *
-     * @param EventDTO the entity to update.
-     * @return the persisted entity.
-     */
-    EventDTO update(EventDTO eventDTO);
+    private final EventRepository eventRepository;
 
-    /**
-     * Partially updates a event.
-     *
-     * @param eventDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<EventDTO> partialUpdate(EventDTO eventDTO);
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
-    /**
-     * Get all the events.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<EventDTO> findAll(Pageable pageable);
-
-    /**
-     * Get the "id" event.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
-    Optional<EventDTO> findOne(Long id);
-
-    /**
-     * Delete the "id" event.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
+    @Transactional(readOnly = true)
+    public List<Long> getEvents() {
+        return eventRepository.findAll().stream().map(Event::getId).collect(Collectors.toList());
+    }
 }

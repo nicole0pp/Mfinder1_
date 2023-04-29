@@ -35,5 +35,5 @@
     <include file="config/liquibase/changelog/20230403141733_constrainsts_Rating.xml" relativeToChangelogFile="false"/>
 
     <!-- My Entities (hechas por mi)-->
-    <include file="config/liquibase/changelog/20230419123716_added_entity_Event.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230428211916_added_entity_Event.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

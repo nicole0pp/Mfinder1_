@@ -1,0 +1,117 @@
+<div>
+  <div class="row justify-content-center" id="header" data-cy="EventHeading">
+    <div class="d-flex col-8 align-items-center" style="width: 60%">
+      <div class="container text-center">
+        <div class="text-white" style="background-color: black; opacity: 80%; padding: 4%">
+          <h1 class="display-4">Eventos</h1>
+          <a class="btn btn-outline-light btn-lg" href="#"> Call to action </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 
+     Aqui va el nav : Tendrá:
+          - Las tarjetas con todos los eventos: Todos
+          - Las tarjetas por ubicacion: Por ubicacion -- tendré que hacer un filtro de busqueda por Paises
+          - Eventos pasados , aquí los usuarios podrán poner valoraciones y comentarios de los eventos que ya han sucedido.
+     -->
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="events?.length === 0">
+    <span jhiTranslate="mFinder1App.event.home.notFound">Ningún Evento encontrado</span>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-event"
+      [routerLink]="['/event/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span jhiTranslate="mFinder1App.event.home.createLabel"> Crear un nuevo Evento </span>
+    </button>
+    <!-- El crear un evento, será una modal!-->
+  </div>
+  <div class="container" *ngIf="events && events.length > 0">
+    <!-- <nav ngbNav #nav="ngbNav" class="nav-tabs">
+               <ng-container ngbNavItem>
+                    <a ngbNavLink>One</a>
+                         <ng-template ngbNavContent style="width: 500px;"> -->
+    <div class="row row-cols-md-3 g-3">
+      <span *ngFor="let event of events; trackBy: trackId" data-cy="entityTable">
+        <div class="col" style="border-style: solid; color: white">
+          <div class="card justify-content-center align-items-center">
+            <img
+              class="card-img-top"
+              *ngIf="event.image"
+              style="width: 100%"
+              [src]="'data:' + event.imageContentType + ';base64,' + event.image"
+            />
+            <div class="card-body">
+              <h3 class="card-title">
+                <span jhiTranslate="mFinder1App.event.home.name" style="font-weight: bold">Nombre del evento</span>
+                &nbsp;{{ event.name }}
+              </h3>
+              <p class="card-text">
+                <span jhiTranslate="mFinder1App.event.home.artist">Artistas Invitados</span>
+                <a> {{ event.artists }} </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+    <!--                          
+                         </ng-template>
+               </ng-container>
+               <ng-container ngbNavItem>
+                    <a ngbNavLink>Two</a>
+                    <ng-template ngbNavContent>
+                         <p>
+                              Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
+                              farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts
+                              ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar
+                              helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson
+                              8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
+                              stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                         </p>
+                    </ng-template>
+               </ng-container>
+               <ng-container ngbNavItem>
+                    <a ngbNavLink>Three</a>
+                    <ng-template ngbNavContent>
+                         <p>
+                              Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.
+                              Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio.
+                              Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna,
+                              egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec
+                              tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et
+                              magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget
+                              neque. Phasellus nec tortor vel tellus pulvinar feugiat.
+                         </p>
+                    </ng-template>
+               </ng-container>
+          </nav>
+          <div [ngbNavOutlet]="nav" class="mt-2"></div>
+          <pre>Active: {{ active }}</pre> -->
+    <div *ngIf="events && events.length > 0">
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

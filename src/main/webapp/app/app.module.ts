@@ -31,6 +31,7 @@ import { ChooseModule } from './chooseAccount/choose.module';
 import { PerfilCentroModule } from './layouts/footer/paginas-footer/perfil-centro/perfil-centro.module';
 import { PerfilModule } from './layouts/footer/paginas-footer/perfil/perfil.module';
 import { PlataformaModule } from './layouts/footer/paginas-footer/plataforma/plataforma.module';
+import { EventModule } from './entities/event/event.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -47,6 +48,7 @@ import { PlataformaModule } from './layouts/footer/paginas-footer/plataforma/pla
     PerfilCentroModule,
     PerfilModule,
     PlataformaModule,
+    EventModule,
   ],
   providers: [
     Title,

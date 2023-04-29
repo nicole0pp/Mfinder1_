@@ -4,6 +4,7 @@ import com.mfinder.app.domain.Artist;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.dto.ArtistDTO;
+import com.mfinder.app.service.dto.controller.ArtistController;
 import com.mfinder.app.service.mapper.ArtistMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ArtistServiceImpl implements ArtistService {
+public class ArtistServiceImpl implements ArtistController {
 
     private final Logger log = LoggerFactory.getLogger(ArtistServiceImpl.class);
 

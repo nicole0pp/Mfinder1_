@@ -50,7 +50,9 @@ export class ArtistService {
   compareArtist(o1: Pick<IArtist, 'id'> | null, o2: Pick<IArtist, 'id'> | null): boolean {
     return o1 && o2 ? this.getArtistIdentifier(o1) === this.getArtistIdentifier(o2) : o1 === o2;
   }
-
+  artists(): Observable<string[]> {
+    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/artistsString'));
+  }
   addArtistToCollectionIfMissing<Type extends Pick<IArtist, 'id'>>(
     artistCollection: Type[],
     ...artistsToCheck: (Type | null | undefined)[]

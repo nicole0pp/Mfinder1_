@@ -3,6 +3,7 @@ package com.mfinder.app.web.rest;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.dto.ArtistDTO;
+import com.mfinder.app.service.dto.controller.ArtistController;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,9 +42,12 @@ public class ArtistResource {
 
     private final ArtistRepository artistRepository;
 
-    public ArtistResource(ArtistService artistService, ArtistRepository artistRepository) {
+    private final ArtistController artistController;
+
+    public ArtistResource(ArtistService artistService, ArtistRepository artistRepository, ArtistController artistController) {
         this.artistService = artistService;
         this.artistRepository = artistRepository;
+        this.artistController = artistController;
     }
 
     /**
@@ -59,7 +63,7 @@ public class ArtistResource {
         if (artistDTO.getId() != null) {
             throw new BadRequestAlertException("A new artist cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ArtistDTO result = artistService.save(artistDTO);
+        ArtistDTO result = artistController.save(artistDTO);
         return ResponseEntity
             .created(new URI("/api/artists/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -93,7 +97,7 @@ public class ArtistResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ArtistDTO result = artistService.update(artistDTO);
+        ArtistDTO result = artistController.update(artistDTO);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, artistDTO.getId().toString()))
@@ -128,7 +132,7 @@ public class ArtistResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<ArtistDTO> result = artistService.partialUpdate(artistDTO);
+        Optional<ArtistDTO> result = artistController.partialUpdate(artistDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,7 +149,7 @@ public class ArtistResource {
     @GetMapping("/artists")
     public ResponseEntity<List<ArtistDTO>> getAllArtists(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Artists");
-        Page<ArtistDTO> page = artistService.findAll(pageable);
+        Page<ArtistDTO> page = artistController.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -159,8 +163,17 @@ public class ArtistResource {
     @GetMapping("/artists/{id}")
     public ResponseEntity<ArtistDTO> getArtist(@PathVariable Long id) {
         log.debug("REST request to get Artist : {}", id);
-        Optional<ArtistDTO> artistDTO = artistService.findOne(id);
+        Optional<ArtistDTO> artistDTO = artistController.findOne(id);
         return ResponseUtil.wrapOrNotFound(artistDTO);
+    }
+
+    /**
+     * Gets a list of all the artists.
+     * @return a string list of all the artists.
+     */
+    @GetMapping("/artistsString")
+    public List<String> getArtists() {
+        return artistService.getArtists();
     }
 
     /**
@@ -172,7 +185,7 @@ public class ArtistResource {
     @DeleteMapping("/artists/{id}")
     public ResponseEntity<Void> deleteArtist(@PathVariable Long id) {
         log.debug("REST request to delete Artist : {}", id);
-        artistService.delete(id);
+        artistController.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

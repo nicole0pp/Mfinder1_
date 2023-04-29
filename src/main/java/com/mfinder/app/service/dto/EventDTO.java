@@ -1,14 +1,15 @@
 package com.mfinder.app.service.dto;
 
-import com.mfinder.app.domain.Artist;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 
+/**
+ * A DTO for the {@link com.mfinder.app.domain.Event} entity.
+ */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventDTO implements Serializable {
 

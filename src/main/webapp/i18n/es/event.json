@@ -1,0 +1,18 @@
+{
+  "mFinder1App": {
+    "event": {
+      "title": "Eventos",
+      "home": {
+        "notFound": "Ningun evento encontrado",
+        "createLabel": "Crear un nuevo evento",
+        "name": "Titulo del evento: ",
+        "tipoEvento": "El tipo de evento: ",
+        "eventDate": "Fecha del evento: ",
+        "location": "Dirección: ",
+        "city": "Ciudad: ",
+        "description": "Descripción del evento: ",
+        "artist": "Artista/s invitado/s"
+      }
+    }
+  }
+}

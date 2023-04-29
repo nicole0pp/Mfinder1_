@@ -1,3 +1,11 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "workbench.colorCustomizations": {
+        "statusBar.debuggingBackground": "#8611c5cd",
+        "statusBar.noFolderBackground": "#8611c5cd",
+        "statussBar.prominentBackground": "#8611c5cd",
+        "statusBar.foreground": "#c3c3c3",
+        "statusBar.debuggingForeground": "#ffffff",
+        "statusBar.border": "#000000"
+    }
 }
