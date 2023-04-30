@@ -13,6 +13,8 @@ import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
 import { IArtist } from 'app/entities/artist/artist.model';
 import { ArtistService } from 'app/entities/artist/service/artist.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
 
 @Component({
   selector: 'jhi-event-update',
@@ -21,7 +23,7 @@ import { ArtistService } from 'app/entities/artist/service/artist.service';
 export class EventUpdateComponent implements OnInit {
   isSaving = false;
   event: IEvent | null = null;
-  TipoEventoValues = Object.keys(TipoEvento);
+  tipoEventoValues = Object.keys(TipoEvento);
   artists: string[] = [];
 
   editForm: EventFormGroup = this.eventFormService.createEventFormGroup();
@@ -32,7 +34,8 @@ export class EventUpdateComponent implements OnInit {
     protected eventService: EventService,
     protected eventFormService: EventFormService,
     protected artistService: ArtistService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected activeModal: NgbActiveModal
   ) {}
 
   compareArtist = (o1: IArtist | null, o2: IArtist | null): boolean => this.artistService.compareArtist(o1, o2);
@@ -64,7 +67,8 @@ export class EventUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    // window.history.back();
+    this.activeModal.dismiss();
   }
 
   save(): void {
@@ -86,6 +90,7 @@ export class EventUpdateComponent implements OnInit {
 
   protected onSaveSuccess(): void {
     this.previousState();
+    this.activeModal.close(ITEM_SAVED_EVENT);
   }
 
   protected onSaveError(): void {
@@ -103,5 +108,8 @@ export class EventUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.artistService.artists().subscribe(artists => (this.artists = artists));
+  }
+  cancel(): void {
+    this.activeModal.dismiss();
   }
 }

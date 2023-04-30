@@ -55,7 +55,9 @@ export class EventFormService {
       eventDate: new FormControl(eventRawValue.eventDate),
       location: new FormControl(eventRawValue.location),
       city: new FormControl(eventRawValue.city),
-      description: new FormControl(eventRawValue.description),
+      description: new FormControl(eventRawValue.description, {
+        validators: Validators.maxLength(254),
+      }),
       artists: new FormControl(eventRawValue.artists),
     });
   }

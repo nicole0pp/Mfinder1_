@@ -2,9 +2,19 @@
   "mFinder1App": {
     "event": {
       "title": "Eventos",
+      "name": "Titulo del evento",
+      "image": "Inserta imagen de presentación",
+      "tipoEvento": "Inserta el tipo de evento",
+      "eventDate": "Fecha del evento ",
+      "location": "Dirección",
+      "city": "Ciudad",
+      "guestArtists": "Artistas Invitados",
+      "description": "Descripción del evento",
+
       "home": {
         "notFound": "Ningun evento encontrado",
         "createLabel": "Crear un nuevo evento",
+        "createOrEditLabel": "Crear o Editar un Evento",
         "name": "Titulo del evento: ",
         "tipoEvento": "El tipo de evento: ",
         "eventDate": "Fecha del evento: ",
@@ -12,6 +22,10 @@
         "city": "Ciudad: ",
         "description": "Descripción del evento: ",
         "artist": "Artista/s invitado/s"
+      },
+
+      "action": {
+        "view": "Detalles"
       }
     }
   }

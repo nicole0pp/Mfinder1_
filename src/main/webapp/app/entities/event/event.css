@@ -6,6 +6,11 @@
   background-repeat: no-repeat;
   margin-bottom: 10px;
 }
+
+label,
+.form-label {
+  margin-bottom: 0 0 8px;
+}
 .col-8 {
   align-items: center;
 }

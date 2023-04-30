@@ -6,10 +6,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IEvent } from '../event.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA, ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, EventService } from '../service/event.service';
 import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { EventUpdateComponent } from '../update/event-update.component';
+import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
 
 @Component({
   selector: 'jhi-event',
@@ -20,7 +22,7 @@ export class EventComponent implements OnInit {
   events?: IEvent[];
   isLoading = false;
   active = 1;
-
+  tipoEventoValues = Object.keys(TipoEvento);
   predicate = 'id';
   ascending = true;
 
@@ -50,6 +52,19 @@ export class EventComponent implements OnInit {
     return this.dataUtils.openFile(base64String, contentType);
   }
 
+  create(): void {
+    const modalRef = this.modalService.open(EventUpdateComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === ITEM_SAVED_EVENT),
+        switchMap(() => this.loadFromBackendWithRouteInformations())
+      )
+      .subscribe({
+        next: (res: EntityArrayResponseType) => {
+          this.onResponseSuccess(res);
+        },
+      });
+  }
   delete(event: IEvent): void {
     const modalRef = this.modalService.open(EventDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.event = event;
