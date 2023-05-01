@@ -151,7 +151,8 @@ public class AccountResource {
             userDTO.getLastName(),
             userDTO.getEmail(),
             userDTO.getLangKey(),
-            userDTO.getImageUrl()
+            userDTO.getPicture(),
+            userDTO.getPictureContentType()
         );
     }
 

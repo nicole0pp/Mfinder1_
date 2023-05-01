@@ -143,7 +143,8 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
-        newUser.setImageUrl(userDTO.getImageUrl());
+        newUser.setPicture(userDTO.getPicture());
+        newUser.setPictureContentType(userDTO.getPictureContentType());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
         newUser.setActivated(false);
@@ -191,7 +192,8 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
-        newUser.setImageUrl(userDTO.getImageUrl());
+        newUser.setPicture(userDTO.getPicture());
+        newUser.setPictureContentType(userDTO.getPictureContentType());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
         newUser.setActivated(false);
@@ -230,7 +232,8 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }
-        user.setImageUrl(userDTO.getImageUrl());
+        user.setPicture(userDTO.getPicture());
+        user.setPictureContentType(userDTO.getPictureContentType());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
@@ -288,7 +291,8 @@ public class UserService {
                 if (userDTO.getEmail() != null) {
                     user.setEmail(userDTO.getEmail().toLowerCase());
                 }
-                user.setImageUrl(userDTO.getImageUrl());
+                user.setPicture(userDTO.getPicture());
+                user.setPictureContentType(userDTO.getPictureContentType());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();
@@ -333,9 +337,10 @@ public class UserService {
      * @param lastName  last name of user.
      * @param email     email id of user.
      * @param langKey   language key.
-     * @param imageUrl  image URL of user.
+     * @param picture  picture of user.
+     * @param pictureContentType
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, byte[] picture, String pictureContentType) {
         SecurityUtils
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
@@ -346,7 +351,8 @@ public class UserService {
                     user.setEmail(email.toLowerCase());
                 }
                 user.setLangKey(langKey);
-                user.setImageUrl(imageUrl);
+                user.setPicture(picture);
+                user.setPictureContentType(pictureContentType);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });

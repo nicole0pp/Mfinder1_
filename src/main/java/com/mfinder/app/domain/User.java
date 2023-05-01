@@ -64,10 +64,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "lang_key", length = 10)
     private String langKey;
 
-    @Size(max = 256)
-    @Column(name = "image_url", length = 256)
-    private String imageUrl;
-
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
@@ -80,6 +76,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+
+    @Lob
+    @Column(name = "picture")
+    private byte[] picture;
+
+    @Column(name = "picture_content_type")
+    private String pictureContentType;
 
     @JsonIgnore
     @ManyToMany
@@ -141,14 +144,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
         this.email = email;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public boolean isActivated() {
         return activated;
     }
@@ -189,6 +184,22 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
         this.langKey = langKey;
     }
 
+    public byte[] getPicture() {
+        return this.picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public String getPictureContentType() {
+        return this.pictureContentType;
+    }
+
+    public void setPictureContentType(String pictureContentType) {
+        this.pictureContentType = pictureContentType;
+    }
+
     public Set<Authority> getAuthorities() {
         return authorities;
     }
@@ -222,10 +233,11 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +
             ", langKey='" + langKey + '\'' +
             ", activationKey='" + activationKey + '\'' +
+            ", picture='" + picture + '\'' +
+            ", pictureContentType='" + pictureContentType + '\'' +
             "}";
     }
 }
