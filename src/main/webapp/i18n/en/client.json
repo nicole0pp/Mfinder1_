@@ -18,6 +18,7 @@
         "title": "Client"
       },
       "id": "ID",
+      "userId": "User id",
       "favoriteList": "Favorite List"
     }
   }

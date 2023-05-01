@@ -38,6 +38,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="client.user.id">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.client.userId">User id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,6 +51,11 @@
         <tr *ngFor="let client of clients; trackBy: trackId" data-cy="entityTable">
           <td>
             <a [routerLink]="['/client', client.id, 'view']">{{ client.id }}</a>
+          </td>
+          <td>
+            <div *ngIf="client.user">
+              <a [routerLink]="['/client/user', client.user.id, 'view']">{{ client.user.id }}</a>
+            </div>
           </td>
           <td class="text-end">
             <div class="btn-group">

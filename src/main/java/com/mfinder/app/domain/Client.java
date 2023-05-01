@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * A Client.
  */
-@Entity(name = "user")
+@Entity(name = "client")
 @Table(name = "client")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")

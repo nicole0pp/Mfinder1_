@@ -27,6 +27,8 @@ export class UserManagementDetailComponent implements OnInit {
       window.location.href = '/artist';
     } else if (rutaActual.includes('/admin/user-management')) {
       window.location.href = '/admin/user-management';
+    } else if (rutaActual.includes('/client/user')) {
+      window.location.href = '/client';
     } else {
       // Redirigir a una ruta por defecto si la ruta actual no coincide con ninguna de las anteriores
       window.location.href = '/admin/user-management';
