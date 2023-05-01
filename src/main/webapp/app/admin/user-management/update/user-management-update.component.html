@@ -10,6 +10,43 @@
         <input type="text" class="form-control" name="id" formControlName="id" readonly />
       </div>
 
+      <div class="row mb-3">
+        <label class="form-label" jhiTranslate="userManagement.picture" for="field_picture">Picture</label>
+        <div>
+          <div *ngIf="editForm.get('picture')!.value" class="form-text text-danger clearfix">
+            <a
+              class="pull-start"
+              (click)="openFile(editForm.get('picture')!.value!, editForm.get('pictureContentType')!.value!)"
+              jhiTranslate="entity.action.open"
+              >Abrir</a
+            ><br />
+            <span class="pull-start">{{ editForm.get('pictureContentType')!.value }}, {{ byteSize(editForm.get('picture')!.value!) }}</span>
+            <button
+              type="button"
+              (click)="editForm.patchValue({ picture: undefined, pictureContentType: undefined })"
+              class="btn btn-secondary btn-xs pull-end"
+            >
+              <fa-icon icon="times"></fa-icon>
+            </button>
+          </div>
+          <input
+            type="file"
+            id="file_picture"
+            data-cy="picture"
+            (change)="setFileData($event, 'picture', false)"
+            jhiTranslate="entity.action.addblob"
+          />
+        </div>
+        <input type="hidden" class="form-control" name="picture" id="field_picture" data-cy="picture" formControlName="picture" />
+        <input
+          type="hidden"
+          class="form-control"
+          name="pictureContentType"
+          id="field_pictureContentType"
+          formControlName="pictureContentType"
+        />
+      </div>
+
       <div class="mb-3">
         <label class="form-label" jhiTranslate="userManagement.login">Login</label>
         <input type="text" class="form-control" name="login" formControlName="login" />

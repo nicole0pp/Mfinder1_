@@ -3,6 +3,7 @@
     "title": "Ajustes del usuario [<strong>{{username}}</strong>]",
     "form": {
       "firstname": "Nombre",
+      "picture": "Imagen de perfil",
       "firstname.placeholder": "Su nombre",
       "lastname": "Apellidos",
       "lastname.placeholder": "Sus apellidos",

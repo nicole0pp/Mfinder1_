@@ -194,12 +194,16 @@
           [routerLinkActiveOptions]="{ exact: true }"
         >
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
-            <span *ngIf="!account?.imageUrl">
+            <span *ngIf="!account?.picture">
               <fa-icon icon="user"></fa-icon>
               <span jhiTranslate="global.menu.account.main">Cuenta</span>
             </span>
-            <span *ngIf="account?.imageUrl">
-              <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
+            <span *ngIf="account?.picture">
+              <img
+                [src]="'data:' + account!.pictureContentType + ';base64,' + account!.picture"
+                class="profile-image rounded-circle"
+                alt="Avatar"
+              />
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">

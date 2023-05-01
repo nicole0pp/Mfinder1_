@@ -25,10 +25,9 @@
           <th scope="col" jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
+          <th scope="col"><span jhiTranslate="userManagement.picture">Image</span></th>
           <th scope="col" jhiSortBy="langKey"><span jhiTranslate="userManagement.langKey">Idioma</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"><span jhiTranslate="userManagement.profiles">Perfiles</span></th>
-          <th scope="col"><span jhiTranslate="userManagement.IdArtist">IdArtista</span></th>
-          <th scope="col"><span jhiTranslate="userManagement.IdClient">IdCliente</span></th>
           <th scope="col" jhiSortBy="createdDate">
             <span jhiTranslate="userManagement.createdDate">Fecha de creación</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -67,14 +66,22 @@
               Activado
             </button>
           </td>
+          <td>
+            <img
+              *ngIf="user.picture"
+              [src]="'data:' + user!.pictureContentType + ';base64,' + user!.picture"
+              class="profile-image rounded-circle"
+              alt="Avatar"
+              style="width: 100px; height: 100px"
+            />
+          </td>
+
           <td>{{ user.langKey }}</td>
           <td>
             <div *ngFor="let authority of user.authorities">
               <span class="badge bg-info">{{ authority }}</span>
             </div>
           </td>
-          <td>ArtistaId</td>
-          <td>ClientId</td>
           <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td>{{ user.lastModifiedBy }}</td>
           <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
