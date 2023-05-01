@@ -72,7 +72,7 @@
           </td>
           <td>
             <div *ngIf="artist.user">
-              <a [routerLink]="['/user', artist.user.id, 'view']"></a>
+              <a [routerLink]="['/artist/user', artist.user.id, 'view']">{{ artist.user.id }}</a>
             </div>
           </td>
           <td>{{ artist.artistName }}</td>

@@ -44,6 +44,7 @@ public class CacheConfiguration {
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
             createCache(cm, com.mfinder.app.repository.UserRepository.USERS_BY_LOGIN_CACHE);
+            createCache(cm, com.mfinder.app.repository.UserRepository.USERS_BY_ID_CACHE);
             createCache(cm, com.mfinder.app.repository.UserRepository.USERS_BY_EMAIL_CACHE);
             createCache(cm, com.mfinder.app.domain.User.class.getName());
             createCache(cm, com.mfinder.app.domain.Authority.class.getName());
@@ -54,6 +55,8 @@ public class CacheConfiguration {
             createCache(cm, com.mfinder.app.domain.Artist.class.getName() + ".favoriteLists");
             createCache(cm, com.mfinder.app.domain.Client.class.getName());
             createCache(cm, com.mfinder.app.domain.Client.class.getName() + ".favoriteLists");
+            createCache(cm, com.mfinder.app.domain.Event.class.getName());
+            createCache(cm, com.mfinder.app.domain.Event.class.getName() + ".artists");
             createCache(cm, com.mfinder.app.domain.Album.class.getName());
             createCache(cm, com.mfinder.app.domain.Album.class.getName() + ".sngs");
             createCache(cm, com.mfinder.app.domain.FavoriteList.class.getName());

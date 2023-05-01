@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     String USERS_BY_LOGIN_CACHE = "usersByLogin";
+    String USERS_BY_ID_CACHE = "usersById";
 
     String USERS_BY_EMAIL_CACHE = "usersByEmail";
     Optional<User> findOneByActivationKey(String activationKey);
@@ -30,8 +31,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByLogin(String login);
 
     @EntityGraph(attributePaths = "authorities")
+    @Cacheable(cacheNames = USERS_BY_ID_CACHE)
+    Optional<User> findOneWithAuthoritiesById(Long id);
+
+    @EntityGraph(attributePaths = "authorities")
     @Cacheable(cacheNames = USERS_BY_EMAIL_CACHE)
     Optional<User> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
     Page<User> findAllByIdNotNullAndActivatedIsTrue(Pageable pageable);
+    // @Query(value = "SELECT * FROM jhi_user u WHERE u.id = :id", nativeQuery = true)
+    // Optional<User> findOneWithAuthoritiesById(@Param("id") Long id);
 }

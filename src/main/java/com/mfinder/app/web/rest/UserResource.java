@@ -4,6 +4,7 @@ import com.mfinder.app.config.Constants;
 import com.mfinder.app.domain.User;
 import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
+import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.MailService;
 import com.mfinder.app.service.UserService;
 import com.mfinder.app.service.dto.AdminUserDTO;
@@ -168,7 +169,6 @@ public class UserResource {
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
         }
-
         final Page<AdminUserDTO> page = userService.getAllManagedUsers(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -189,6 +189,28 @@ public class UserResource {
     public ResponseEntity<AdminUserDTO> getUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new));
+    }
+
+    /**
+     * {@code GET /admin/users/:id} : get the user by the "id".
+     *
+     * @param id the id of the user to find.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "id" user, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/users/userId/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<AdminUserDTO> getUserById(@PathVariable Long id) {
+        log.debug("REST request to get User : {}", id);
+        return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesById(id).map(AdminUserDTO::new));
+    }
+
+    /**
+     * {@code GET /admin/users/id/:id} : get the "login" of a user.
+     *
+     * **/
+    @GetMapping("/users/id/{id}")
+    public void getLoginByUserId(Long id) {
+        userService.getLoginUserById(id);
     }
 
     /**

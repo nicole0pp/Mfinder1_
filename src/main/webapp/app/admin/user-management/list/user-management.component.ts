@@ -11,6 +11,8 @@ import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import { IArtist } from 'app/entities/artist/artist.model';
+import { ArtistService } from 'app/entities/artist/service/artist.service';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -25,11 +27,13 @@ export class UserManagementComponent implements OnInit {
   page!: number;
   predicate!: string;
   ascending!: boolean;
+  artist: IArtist[] | null = null;
 
   constructor(
     private userService: UserManagementService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
+    private artistService: ArtistService,
     private router: Router,
     private modalService: NgbModal
   ) {}

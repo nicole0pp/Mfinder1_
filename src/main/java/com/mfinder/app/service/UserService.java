@@ -385,6 +385,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public Optional<User> getUserWithAuthoritiesById(Long id) {
+        return userRepository.findOneWithAuthoritiesById(id);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
@@ -412,6 +417,17 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the loginUser by an id
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public String getLoginUserById(Long id) {
+        User user = userRepository.getReferenceById(id);
+        String login = user.getLogin();
+        return login;
     }
 
     private void clearUserCaches(User user) {

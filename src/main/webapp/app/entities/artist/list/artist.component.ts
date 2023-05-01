@@ -10,6 +10,7 @@ import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/co
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, ArtistService } from '../service/artist.service';
 import { ArtistDeleteDialogComponent } from '../delete/artist-delete-dialog.component';
+import { UserService } from 'app/entities/user/user.service';
 
 @Component({
   selector: 'jhi-artist',
@@ -18,10 +19,8 @@ import { ArtistDeleteDialogComponent } from '../delete/artist-delete-dialog.comp
 export class ArtistComponent implements OnInit {
   artists?: IArtist[];
   isLoading = false;
-
   predicate = 'id';
   ascending = true;
-
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
@@ -30,7 +29,8 @@ export class ArtistComponent implements OnInit {
     protected artistService: ArtistService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    userService: UserService
   ) {}
 
   trackId = (_index: number, item: IArtist): number => this.artistService.getArtistIdentifier(item);
@@ -77,7 +77,6 @@ export class ArtistComponent implements OnInit {
       switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending))
     );
   }
-
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     const page = params.get(PAGE_HEADER);
     this.page = +(page ?? 1);

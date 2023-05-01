@@ -27,6 +27,8 @@
           <th scope="col"></th>
           <th scope="col" jhiSortBy="langKey"><span jhiTranslate="userManagement.langKey">Idioma</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"><span jhiTranslate="userManagement.profiles">Perfiles</span></th>
+          <th scope="col"><span jhiTranslate="userManagement.IdArtist">IdArtista</span></th>
+          <th scope="col"><span jhiTranslate="userManagement.IdClient">IdCliente</span></th>
           <th scope="col" jhiSortBy="createdDate">
             <span jhiTranslate="userManagement.createdDate">Fecha de creación</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -71,6 +73,8 @@
               <span class="badge bg-info">{{ authority }}</span>
             </div>
           </td>
+          <td>ArtistaId</td>
+          <td>ClientId</td>
           <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td>{{ user.lastModifiedBy }}</td>
           <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>

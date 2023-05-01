@@ -1,5 +1,6 @@
 package com.mfinder.app.web.rest;
 
+import com.mfinder.app.domain.Artist;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.dto.ArtistDTO;
@@ -165,6 +166,19 @@ public class ArtistResource {
         log.debug("REST request to get Artist : {}", id);
         Optional<ArtistDTO> artistDTO = artistController.findOne(id);
         return ResponseUtil.wrapOrNotFound(artistDTO);
+    }
+
+    /**
+     * {@code GET  /artists/:userId} : get the "id" artist.
+     *
+     * @param userId the id of the artistDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the artistDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/artists/user/{userId}")
+    public Artist getArtistByUserId(@PathVariable Long userId) {
+        log.debug("REST request to get Artist : {}", userId);
+        Artist artist = artistRepository.findArtistByUserId(userId);
+        return artist;
     }
 
     /**

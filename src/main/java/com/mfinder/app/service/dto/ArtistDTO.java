@@ -85,11 +85,11 @@ public class ArtistDTO implements Serializable {
     @Override
     public String toString() {
         return "ArtistDTO{" +
-            "id=" + getId() +
-            "user_id='" + getUser() + "'" +
+            "id=" + getId() + "'" +
             ", artistName='" + getArtistName() + "'" +
             ", insta_link='" + getInsta_link() + "'" +
             ", spoti_link='" + getSpoti_link() + "'" +
+            ", user_id='" + getUser() + "'" +
             "}";
     }
 }

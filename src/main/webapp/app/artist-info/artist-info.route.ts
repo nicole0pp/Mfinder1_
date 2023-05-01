@@ -1,8 +1,13 @@
-import { Route } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 
 import { ArtistViewComponent } from './artist-info.component';
 
-export const ARTISTVIEW_MODULE: Route = {
-  path: '',
-  component: ArtistViewComponent,
-};
+import { UserManagementResolve } from '../admin/user-management/user-management.route';
+import { UserManagementDetailComponent } from 'app/admin/user-management/detail/user-management-detail.component';
+
+export const ARTISTVIEW_MODULE: Routes = [
+  {
+    path: '',
+    component: ArtistViewComponent,
+  },
+];

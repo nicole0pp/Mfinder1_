@@ -22,6 +22,8 @@
     "activated": "Activado",
     "deactivated": "Desactivado",
     "profiles": "Perfiles",
+    "IdArtist": "Artista Id",
+    "IdClient": "Cliente Id",
     "langKey": "Idioma",
     "createdBy": "Creado por",
     "createdDate": "Fecha de creación",

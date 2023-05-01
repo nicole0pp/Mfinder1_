@@ -25,6 +25,9 @@ export class UserManagementService {
     return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
   }
 
+  findUserById(id: string): Observable<IUser> {
+    return this.http.get<IUser>(`${this.resourceUrl}/userId/${id}`);
+  }
   query(req?: Pagination): Observable<HttpResponse<IUser[]>> {
     const options = createRequestOption(req);
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
@@ -36,5 +39,9 @@ export class UserManagementService {
 
   authorities(): Observable<string[]> {
     return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
+  }
+
+  getLoginById(id: number): Observable<string> {
+    return this.http.get<string>(`&{this.resourceUrl}/id/${id}`);
   }
 }

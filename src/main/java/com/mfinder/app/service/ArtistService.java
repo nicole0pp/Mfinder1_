@@ -25,4 +25,9 @@ public class ArtistService {
     public List<String> getArtists() {
         return artistRepository.findAll().stream().map(Artist::getArtistName).collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public Artist getArtistByUserId(Long userId) {
+        return artistRepository.findArtistByUserId(userId);
+    }
 }

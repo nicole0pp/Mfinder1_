@@ -72,4 +72,7 @@ export class ArtistService {
     }
     return artistCollection;
   }
+  getArtistByUserId(userId: number) {
+    return this.http.get<IArtist[]>(`${this.resourceUrl}/user/${userId}`, { observe: 'response' });
+  }
 }

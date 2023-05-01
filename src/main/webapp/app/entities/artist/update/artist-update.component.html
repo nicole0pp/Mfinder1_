@@ -14,8 +14,7 @@
         </div>
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="mFinder1App.artist.userId" for="field_userId">ID</label>
-          <select class="form-control" id="field_userId" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
-            <option [ngValue]="null"></option>
+          <select class="form-control" id="field_userId" data-cy="user" name="user" formControlName="user">
             <option [ngValue]="userOption" *ngFor="let userOption of userSharedCollecion">{{ userOption.id }}</option>
           </select>
         </div>

@@ -45,7 +45,7 @@ public class Album implements Serializable {
     @JsonIgnoreProperties(value = { "listDetails", "album" }, allowSetters = true)
     private Set<Song> sngs = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "albums", "favoriteLists" }, allowSetters = true)
     private Artist atist;
 

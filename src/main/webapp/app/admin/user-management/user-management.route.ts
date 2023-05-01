@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Observable, of, EMPTY } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 import { IUser } from './user-management.model';
 import { UserManagementService } from './service/user-management.service';
@@ -20,7 +22,18 @@ export class UserManagementResolve implements Resolve<IUser | null> {
     return of(null);
   }
 }
+@Injectable({ providedIn: 'root' })
+export class UserManagementResolveById implements Resolve<IUser | null> {
+  constructor(private service: UserManagementService, protected router: Router) {}
 
+  resolve(route: ActivatedRouteSnapshot): Observable<IUser | null | never> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.findUserById(id);
+    }
+    return of(null);
+  }
+}
 export const userManagementRoute: Routes = [
   {
     path: '',

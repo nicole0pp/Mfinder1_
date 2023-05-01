@@ -49,10 +49,6 @@ export class ArtistFormService {
   }
 
   getArtist(form: ArtistFormGroup): IArtist | NewArtist {
-    if (form.controls.id.disabled) {
-      // form.value returns id with null value for FormGroup with only one FormControl
-      return { id: null };
-    }
     return form.getRawValue() as IArtist | NewArtist;
   }
 
