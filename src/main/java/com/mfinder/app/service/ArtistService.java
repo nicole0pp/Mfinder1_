@@ -1,33 +1,58 @@
 package com.mfinder.app.service;
 
-import com.mfinder.app.domain.Artist;
-import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.service.dto.ArtistDTO;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional
-public class ArtistService {
+/**
+ * Service Interface for managing {@link com.mfinder.app.domain.Artist}.
+ */
+public interface ArtistService {
+    /**
+     * Save a artist.
+     *
+     * @param artistDTO the entity to save.
+     * @return the persisted entity.
+     */
+    ArtistDTO save(ArtistDTO artistDTO);
 
-    private final ArtistRepository artistRepository;
+    /**
+     * Updates a artist.
+     *
+     * @param artistDTO the entity to update.
+     * @return the persisted entity.
+     */
+    ArtistDTO update(ArtistDTO artistDTO);
 
-    public ArtistService(ArtistRepository artistRepository) {
-        this.artistRepository = artistRepository;
-    }
+    /**
+     * Partially updates a artist.
+     *
+     * @param artistDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<ArtistDTO> partialUpdate(ArtistDTO artistDTO);
 
-    @Transactional(readOnly = true)
-    public List<String> getArtists() {
-        return artistRepository.findAll().stream().map(Artist::getArtistName).collect(Collectors.toList());
-    }
+    /**
+     * Get all the artists.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<ArtistDTO> findAll(Pageable pageable);
 
-    @Transactional(readOnly = true)
-    public Artist getArtistByUserId(Long userId) {
-        return artistRepository.findArtistByUserId(userId);
-    }
+    /**
+     * Get the "id" artist.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    Optional<ArtistDTO> findOne(Long id);
+
+    /**
+     * Delete the "id" artist.
+     *
+     * @param id the id of the entity.
+     */
+    void delete(Long id);
 }
