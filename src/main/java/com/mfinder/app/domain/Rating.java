@@ -35,10 +35,6 @@ public class Rating implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "song_id")
-    private Song song;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
