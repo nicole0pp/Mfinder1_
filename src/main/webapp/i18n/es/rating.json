@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "comment": "Comment",
-      "rating": "Rating"
+      "rating": "Rating",
+      "user": "Usuario"
     }
   }
 }

@@ -20,6 +20,7 @@ type RatingFormGroupContent = {
   id: FormControl<IRating['id'] | NewRating['id']>;
   comment: FormControl<IRating['comment']>;
   rating: FormControl<IRating['rating']>;
+  user: FormControl<IRating['user']>;
 };
 
 export type RatingFormGroup = FormGroup<RatingFormGroupContent>;
@@ -43,6 +44,7 @@ export class RatingFormService {
       rating: new FormControl(ratingRawValue.rating, {
         validators: [Validators.required, Validators.min(0), Validators.max(10)],
       }),
+      user: new FormControl(ratingRawValue.user),
     });
   }
 

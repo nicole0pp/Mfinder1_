@@ -1,5 +1,6 @@
 package com.mfinder.app.service.dto;
 
+import com.mfinder.app.domain.User;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -23,6 +24,8 @@ public class RatingDTO implements Serializable {
     @DecimalMax(value = "10")
     private Double rating;
 
+    private User user;
+
     public Long getId() {
         return this.id;
     }
@@ -45,5 +48,45 @@ public class RatingDTO implements Serializable {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RatingDTO)) {
+            return false;
+        }
+
+        RatingDTO ratingDTO = (RatingDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, ratingDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "RatingDTO{" +
+            "id='" + getId() + "'" +
+            ", comment='" + getComment() + "'" +
+            ", rating='" + getRating() + "'" +
+            ", user='" + getUser() + "'" +
+            "}";
     }
 }
