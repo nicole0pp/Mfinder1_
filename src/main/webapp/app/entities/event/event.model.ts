@@ -7,11 +7,14 @@ export interface IEvent {
   image?: string | null;
   imageContentType?: string | null;
   tipoEvento?: TipoEvento | null;
-  eventDate?: dayjs.Dayjs | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
   location?: string | null;
   city?: string | null;
   description?: string | null;
+  seatCapacity?: number | null;
   artists?: string[] | null;
+  ratings?: string[] | null;
 }
 
 export type NewEvent = Omit<IEvent, 'id'> & { id: null };

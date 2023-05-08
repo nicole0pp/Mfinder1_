@@ -22,11 +22,14 @@ type EventFormGroupContent = {
   image: FormControl<IEvent['image']>;
   imageContentType: FormControl<IEvent['imageContentType']>;
   tipoEvento: FormControl<IEvent['tipoEvento']>;
-  eventDate: FormControl<IEvent['eventDate']>;
+  startDate: FormControl<IEvent['startDate']>;
+  endDate: FormControl<IEvent['endDate']>;
   location: FormControl<IEvent['location']>;
   city: FormControl<IEvent['city']>;
   description: FormControl<IEvent['description']>;
+  seatCapacity: FormControl<IEvent['seatCapacity']>;
   artists: FormControl<IEvent['artists']>;
+  ratings: FormControl<IEvent['ratings']>;
 };
 
 export type EventFormGroup = FormGroup<EventFormGroupContent>;
@@ -52,13 +55,16 @@ export class EventFormService {
       image: new FormControl(eventRawValue.image),
       imageContentType: new FormControl(eventRawValue.imageContentType),
       tipoEvento: new FormControl(eventRawValue.tipoEvento),
-      eventDate: new FormControl(eventRawValue.eventDate),
+      startDate: new FormControl(eventRawValue.startDate),
+      endDate: new FormControl(eventRawValue.endDate),
       location: new FormControl(eventRawValue.location),
       city: new FormControl(eventRawValue.city),
       description: new FormControl(eventRawValue.description, {
         validators: Validators.maxLength(254),
       }),
+      seatCapacity: new FormControl(eventRawValue.seatCapacity),
       artists: new FormControl(eventRawValue.artists),
+      ratings: new FormControl(eventRawValue.ratings),
     });
   }
 

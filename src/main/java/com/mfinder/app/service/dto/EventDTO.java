@@ -3,6 +3,7 @@ package com.mfinder.app.service.dto;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -27,7 +28,10 @@ public class EventDTO implements Serializable {
     private TipoEvento tipoEvento;
 
     @NotNull
-    private LocalDate eventDate;
+    private Date startDate;
+
+    @NotNull
+    private Date endDate;
 
     private String location;
 
@@ -75,12 +79,20 @@ public class EventDTO implements Serializable {
         this.tipoEvento = tipoEvento;
     }
 
-    public LocalDate getEventDate() {
-        return eventDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getLocation() {
@@ -142,8 +154,10 @@ public class EventDTO implements Serializable {
             ", tipoEvento='" +
             getTipoEvento() +
             "'" +
-            ", eventDate='" +
-            getEventDate() +
+            ", startDate='" +
+            getStartDate() +
+            ", endDate='" +
+            getEndDate() +
             "'" +
             ", location='" +
             getLocation() +
