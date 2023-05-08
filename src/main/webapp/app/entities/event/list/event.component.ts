@@ -12,6 +12,7 @@ import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.compon
 import { DataUtils } from 'app/core/util/data-util.service';
 import { EventUpdateComponent } from '../update/event-update.component';
 import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
+import { City } from 'app/entities/enumerations/city.model';
 
 @Component({
   selector: 'jhi-event',
@@ -23,6 +24,7 @@ export class EventComponent implements OnInit {
   isLoading = false;
   active = 1;
   tipoEventoValues = Object.keys(TipoEvento);
+  cityValues = Object.keys(City);
   predicate = 'id';
   ascending = true;
 

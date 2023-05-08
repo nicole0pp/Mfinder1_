@@ -12,12 +12,12 @@
     </div>
     <div class="modal-body">
       <jhi-alert-error></jhi-alert-error>
-      <div class="row mb-3">
-        <!-- <div class="col" *ngIf="editForm.controls.id.value !== null">
+      <!-- <div class="col" *ngIf="editForm.controls.id.value !== null">
                               <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
                               <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />               
-                         </div> -->
+        </div> -->
 
+      <div class="row mb-3">
         <div class="col">
           <label class="form-label" jhiTranslate="mFinder1App.event.name" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
@@ -27,7 +27,22 @@
             </small>
           </div>
         </div>
-
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.tipoEvento" for="field_tipoEvento">Tipo de evento</label>
+          <select
+            class="form-control form-select"
+            name="tipoEvento"
+            formControlName="tipoEvento"
+            id="field_tipoEvento"
+            data-cy="tipoEvento"
+          >
+            <option *ngFor="let tipoEvento of tipoEventoValues" [value]="tipoEvento">
+              {{ 'mFinder1App.TipoEvento.' + tipoEvento | translate }}
+            </option>
+          </select>
+        </div>
         <div class="col">
           <label class="form-label" jhiTranslate="mFinder1App.event.image" for="field_image">Image</label>
           <div>
@@ -68,44 +83,55 @@
 
       <div class="row mb-3">
         <div class="col">
-          <label class="form-label" jhiTranslate="mFinder1App.event.tipoEvento" for="field_tipoEvento">Tipo de evento</label>
-          <select
-            class="form-control form-select"
-            name="tipoEvento"
-            formControlName="tipoEvento"
-            id="field_tipoEvento"
-            data-cy="tipoEvento"
-          >
-            <option *ngFor="let tipoEvento of tipoEventoValues" [value]="tipoEvento">
-              {{ 'mFinder1App.TipoEvento.' + tipoEvento | translate }}
-            </option>
-          </select>
-        </div>
-        <div class="col">
-          <label class="form-label" jhiTranslate="mFinder1App.event.eventDate" for="field_eventDate">Event Date</label>
+          <label class="form-label" jhiTranslate="mFinder1App.event.startDate" for="field_startDate">Event start Date</label>
           <div class="input-group" style="align-items: baseline">
             <input
-              id="field_eventDate"
-              data-cy="eventDate"
+              id="field_startDate"
+              data-cy="startDate"
               type="text"
               class="form-control"
-              name="eventDate"
+              name="startDate"
               ngbDatepicker
-              #eventDateDp="ngbDatepicker"
-              formControlName="eventDate"
+              #startDateDp="ngbDatepicker"
+              formControlName="startDate"
               style="height: fit-content"
             />
             <button
               type="button"
               class="btn btn-secondary fixed-top"
               style="height: fit-content; margin-top: 0"
-              (click)="eventDateDp.toggle()"
+              (click)="startDateDp.toggle()"
+            >
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.endDate" for="field_endDate">Event end Date</label>
+          <div class="input-group" style="align-items: baseline">
+            <input
+              id="field_endDate"
+              data-cy="endDate"
+              type="text"
+              class="form-control"
+              name="endDate"
+              ngbDatepicker
+              #endDateDp="ngbDatepicker"
+              formControlName="endDate"
+              style="height: fit-content"
+            />
+            <button
+              type="button"
+              class="btn btn-secondary fixed-top"
+              style="height: fit-content; margin-top: 0"
+              (click)="endDateDp.toggle()"
             >
               <fa-icon icon="calendar-alt"></fa-icon>
             </button>
           </div>
         </div>
       </div>
+
       <div class="row mb-3">
         <div class="col">
           <label class="form-label" jhiTranslate="mFinder1App.event.location" for="field_location">Location</label>
@@ -122,7 +148,11 @@
         </div>
         <div class="col">
           <label class="form-label" jhiTranslate="mFinder1App.event.city" for="field_city">City</label>
-          <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
+          <select class="form-control form-select" name="city" formControlName="city" id="field_city" data-cy="city">
+            <option *ngFor="let city of cityValues" [value]="city">
+              {{ 'mFinder1App.city.' + city | translate }}
+            </option>
+          </select>
           <div *ngIf="editForm.get('city')!.invalid && (editForm.get('city')!.dirty || editForm.get('city')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('city')?.errors?.required" jhiTranslate="entity.validation.required">
               Este campo es obligatorio.
@@ -145,7 +175,7 @@
           <option *ngFor="let artist of artists" [value]="artist">{{ artist }}</option>
         </select>
       </div>
-      <div class="row" style="margin-right: 0px; margin-left: 0px">
+      <div class="row mb-3" style="margin-right: 0px; margin-left: 0px">
         <label class="form-label" jhiTranslate="mFinder1App.event.description" for="field_description">Event's description</label>
         <textarea
           type="text"

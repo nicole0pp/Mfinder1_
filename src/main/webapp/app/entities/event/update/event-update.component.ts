@@ -15,6 +15,7 @@ import { IArtist } from 'app/entities/artist/artist.model';
 import { ArtistService } from 'app/entities/artist/service/artist.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
+import { City } from 'app/entities/enumerations/city.model';
 
 @Component({
   selector: 'jhi-event-update',
@@ -24,6 +25,7 @@ export class EventUpdateComponent implements OnInit {
   isSaving = false;
   event: IEvent | null = null;
   tipoEventoValues = Object.keys(TipoEvento);
+  cityValues = Object.keys(City);
   artists: string[] = [];
 
   editForm: EventFormGroup = this.eventFormService.createEventFormGroup();

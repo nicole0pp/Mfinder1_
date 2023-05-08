@@ -2,6 +2,7 @@ package com.mfinder.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class Event implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_evento")
+    @Column(name = "tipo_evento", nullable = false)
     private TipoEvento tipoEvento;
 
     @NotNull
@@ -55,13 +56,16 @@ public class Event implements Serializable {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "city")
-    private String city;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "city", nullable = false)
+    private City city;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "seating_capacity")
+    @NotNull
+    @Column(name = "seating_capacity", nullable = false)
     private Integer seatCapacity;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -188,16 +192,16 @@ public class Event implements Serializable {
         this.location = location;
     }
 
-    public String getCity() {
+    public City getCity() {
         return this.city;
     }
 
-    public Event city(String city) {
+    public Event city(City city) {
         this.setCity(city);
         return this;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 

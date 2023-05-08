@@ -54,15 +54,23 @@ export class EventFormService {
       }),
       image: new FormControl(eventRawValue.image),
       imageContentType: new FormControl(eventRawValue.imageContentType),
-      tipoEvento: new FormControl(eventRawValue.tipoEvento),
-      startDate: new FormControl(eventRawValue.startDate),
-      endDate: new FormControl(eventRawValue.endDate),
+      tipoEvento: new FormControl(eventRawValue.tipoEvento, {
+        validators: [Validators.required],
+      }),
+      startDate: new FormControl(eventRawValue.startDate, {
+        validators: [Validators.required],
+      }),
+      endDate: new FormControl(eventRawValue.endDate, {
+        validators: [Validators.required],
+      }),
       location: new FormControl(eventRawValue.location),
       city: new FormControl(eventRawValue.city),
       description: new FormControl(eventRawValue.description, {
         validators: Validators.maxLength(254),
       }),
-      seatCapacity: new FormControl(eventRawValue.seatCapacity),
+      seatCapacity: new FormControl(eventRawValue.seatCapacity, {
+        validators: [Validators.min(2), Validators.required],
+      }),
       artists: new FormControl(eventRawValue.artists),
       ratings: new FormControl(eventRawValue.ratings),
     });

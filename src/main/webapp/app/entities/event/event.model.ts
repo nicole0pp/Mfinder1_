@@ -1,5 +1,6 @@
 import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
 import dayjs from 'dayjs/esm';
+import { City } from '../enumerations/city.model';
 
 export interface IEvent {
   id: number;
@@ -10,7 +11,7 @@ export interface IEvent {
   startDate?: Date | null;
   endDate?: Date | null;
   location?: string | null;
-  city?: string | null;
+  city?: City | null;
   description?: string | null;
   seatCapacity?: number | null;
   artists?: string[] | null;

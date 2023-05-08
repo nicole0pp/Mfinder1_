@@ -1,5 +1,6 @@
 package com.mfinder.app.service.dto;
 
+import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -35,9 +36,13 @@ public class EventDTO implements Serializable {
 
     private String location;
 
-    private String city;
+    @NotNull
+    private City city;
 
     private String description;
+
+    @NotNull
+    private Integer seatCapacity;
 
     public Long getId() {
         return id;
@@ -103,11 +108,11 @@ public class EventDTO implements Serializable {
         this.location = location;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
@@ -117,6 +122,14 @@ public class EventDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getSeatCapacity() {
+        return seatCapacity;
+    }
+
+    public void setSeatCapacity(Integer seatCapacity) {
+        this.seatCapacity = seatCapacity;
     }
 
     @Override

@@ -11,7 +11,7 @@
      -->
      <changeSet id="20230506124616" author="nicole">
           <addColumn tableName="event" >
-               <column name="end_date" type="date">
+               <column name="end_date" type="timestamp">
                     <constraints nullable="false" />
                </column>
           </addColumn>
