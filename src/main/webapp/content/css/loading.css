@@ -133,10 +133,10 @@
   left: -8px;
   width: 24px;
   height: 10px;
-  background-image: url('../images/logo-jhipster.png');
+  background-image: url('../images/IconoMFinder.png');
   background-size: contain;
   -webkit-animation: lds-pacman-3 1s linear infinite;
-  animation: lds-pacman-3 1.5s linear infinite;
+  animation: lds-pacman-3 2s linear infinite;
 }
 .app-loading .lds-pacman > div:nth-child(1) div:nth-child(1) {
   -webkit-animation-delay: -0.67s;
