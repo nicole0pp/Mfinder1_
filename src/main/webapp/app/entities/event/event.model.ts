@@ -8,8 +8,8 @@ export interface IEvent {
   image?: string | null;
   imageContentType?: string | null;
   tipoEvento?: TipoEvento | null;
-  startDate?: Date | null;
-  endDate?: Date | null;
+  startDate?: dayjs.Dayjs | null;
+  endDate?: dayjs.Dayjs | null;
   location?: string | null;
   city?: City | null;
   description?: string | null;
