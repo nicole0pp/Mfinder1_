@@ -11,7 +11,9 @@
       "city": "Ciudad",
       "guestArtists": "Artistas Invitados",
       "description": "Descripción del evento",
-
+      "startTime": "Hora estimada del comienzo del evento",
+      "endTime": "Hora estimada del final del evento",
+      "seatCapacity": "Capacidad de aforo",
       "home": {
         "notFound": "Ningun evento encontrado",
         "createLabel": "Crear un nuevo evento",

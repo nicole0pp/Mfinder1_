@@ -11,7 +11,9 @@
       "city": "City",
       "guestArtists": "Guest artists",
       "description": "Event description",
-
+      "startTime": "Estimated start time of the event",
+      "endTime": "Estimated time of the end of the event",
+      "seatCapacity": "Seating capacity",
       "home": {
         "notFound": "No event found",
         "createLabel": "Create a new event",
