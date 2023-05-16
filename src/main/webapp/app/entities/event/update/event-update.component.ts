@@ -16,6 +16,7 @@ import { ArtistService } from 'app/entities/artist/service/artist.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
 import { City } from 'app/entities/enumerations/city.model';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-event-update',
@@ -43,6 +44,14 @@ export class EventUpdateComponent implements OnInit {
   compareArtist = (o1: IArtist | null, o2: IArtist | null): boolean => this.artistService.compareArtist(o1, o2);
 
   ngOnInit(): void {
+    //   dayjs.locale('es');
+    //   this.editForm.get('startDate') ? null
+    //   this.editForm.get('startDate').valueChanges.subscribe((startDate: dayjs.Dayjs) => {
+    //   if(startDate){
+    //     const startTime = startDate.format('HH:mm');
+    //     this.editForm.get('startTime').setValue(startTime);
+    //   }
+    // });
     this.activatedRoute.data.subscribe(({ event }) => {
       this.event = event;
       if (event) {
@@ -75,6 +84,27 @@ export class EventUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
+    dayjs.locale('es');
+    this.editForm.get('startDate' && 'endDate')?.valueChanges.subscribe((startDate?: dayjs.Dayjs | null, endDate?: dayjs.Dayjs) => {
+      if (startDate && endDate) {
+        const startTime = startDate.format('HH:mm');
+        const endTime = endDate.format('HH:mm');
+        this.editForm.get('startTime' && 'endTime')?.setValue(startTime && endTime);
+      }
+    });
+    this.editForm.get('startTime' && 'endTime')?.valueChanges.subscribe((startTime?: string | null, endTime?: string | null) => {
+      if (startTime && endTime) {
+        const startDate = dayjs(this.editForm.get('startDate')?.value, 'DD/MM/YYYY');
+        const endDate = dayjs(this.editForm.get('endDate')?.value, 'DD/MM/YYYY');
+        const startDateTime = dayjs(startTime, 'HH:mm');
+        const endDateTime = dayjs(endTime, 'HH:mm');
+        startDate.set('hour', startDateTime.hour());
+        startDate.set('minute', startDateTime.minute());
+        endDate.set('hour', endDateTime.hour());
+        endDate.set('minute', endDateTime.minute());
+        this.editForm.get('startDate' && 'endDate')?.setValue(startDate && endDate);
+      }
+    });
     const event = this.eventFormService.getEvent(this.editForm);
     if (event.id !== null) {
       this.subscribeToSaveResponse(this.eventService.update(event));

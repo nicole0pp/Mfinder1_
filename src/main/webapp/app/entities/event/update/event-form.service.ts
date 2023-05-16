@@ -2,16 +2,10 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { IEvent, NewEvent } from '../event.model';
+import dayjs from 'dayjs/esm';
 
-/**
- * A partial Type with required key is used as form input.
- */
 type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>> & { id: T['id'] };
 
-/**
- * Type for createFormGroup and resetForm argument.
- * It accepts IEvent for edit and NewEventFormGroupInput for create.
- */
 type EventFormGroupInput = IEvent | PartialWithRequiredKeyOf<NewEvent>;
 
 type EventFormDefaults = Pick<NewEvent, 'id'>;
@@ -24,6 +18,8 @@ type EventFormGroupContent = {
   tipoEvento: FormControl<IEvent['tipoEvento']>;
   startDate: FormControl<IEvent['startDate']>;
   endDate: FormControl<IEvent['endDate']>;
+  startTime: FormControl<string | null>;
+  endTime: FormControl<string | null>;
   location: FormControl<IEvent['location']>;
   city: FormControl<IEvent['city']>;
   description: FormControl<IEvent['description']>;
@@ -61,6 +57,12 @@ export class EventFormService {
         validators: [Validators.required],
       }),
       endDate: new FormControl(eventRawValue.endDate, {
+        validators: [Validators.required],
+      }),
+      startTime: new FormControl('', {
+        validators: [Validators.required],
+      }),
+      endTime: new FormControl('', {
         validators: [Validators.required],
       }),
       location: new FormControl(eventRawValue.location),

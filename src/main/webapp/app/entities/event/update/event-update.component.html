@@ -131,7 +131,16 @@
           </div>
         </div>
       </div>
-
+      <div class="row mb-3">
+        <div class="col">
+          <label for="field_startTime"> Hora de comienzo del evento</label>
+          <ngb-timepicker class="form-control" id="field_startTime" type="text" minuteStep:5 formControlName="startTime"></ngb-timepicker>
+        </div>
+        <div class="col">
+          <label for="field_endTime"> Hora de comienzo del evento</label>
+          <ngb-timepicker class="form-control" id="field_endTime" type="text" minuteStep:5 formControlName="endTime"></ngb-timepicker>
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col">
           <label class="form-label" jhiTranslate="mFinder1App.event.location" for="field_location">Location</label>
