@@ -33,6 +33,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },
         {
+          path: 'artist-info.component/account',
+          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
+        },
+        {
           path: 'login',
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         },
