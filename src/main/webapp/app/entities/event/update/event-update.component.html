@@ -133,12 +133,29 @@
       </div>
       <div class="row mb-3">
         <div class="col">
-          <label for="field_startTime"> Hora de comienzo del evento</label>
-          <ngb-timepicker class="form-control" id="field_startTime" type="text" minuteStep:5 formControlName="startTime"></ngb-timepicker>
+          <label class="form-label" for="field_startTime" jhiTranslate="mFinder1App.event.startTime"> Hora de comienzo del evento</label>
+          <div class="input-group" style="align-items: baseline; justify-content: center">
+            <ngb-timepicker
+              id="field_startTime"
+              type="text"
+              style="height: fit-content"
+              minuteStep:5
+              formControlName="startTime"
+            ></ngb-timepicker>
+          </div>
         </div>
+
         <div class="col">
-          <label for="field_endTime"> Hora de comienzo del evento</label>
-          <ngb-timepicker class="form-control" id="field_endTime" type="text" minuteStep:5 formControlName="endTime"></ngb-timepicker>
+          <label class="form-label" for="field_endTime" jhiTranslate="mFinder1App.event.endTime"> Hora de final del evento</label>
+          <div class="input-group" style="align-items: baseline; justify-content: center">
+            <ngb-timepicker
+              id="field_endTime"
+              type="text"
+              style="height: fit-content"
+              minuteStep:5
+              formControlName="endTime"
+            ></ngb-timepicker>
+          </div>
         </div>
       </div>
       <div class="row mb-3">
@@ -207,6 +224,29 @@
           </small>
         </div>
       </div>
+      <div class="row mb-3" style="margin-right: 0px; margin-left: 0px">
+        <label class="form-label" jhiTranslate="mFinder1App.event.seatCapacity" for="field_seatCapacity">Event's seatCapacity</label>
+        <input
+          type="number"
+          class="form-control"
+          name="seatCapacity"
+          id="field_seatCapacity"
+          data-cy="seatCapacity"
+          formControlName="seatCapacity"
+        />
+        <div
+          *ngIf="editForm.get('seatCapacity')!.invalid && (editForm.get('seatCapacity')!.dirty || editForm.get('seatCapacity')!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('seatCapacity')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Este campo es obligatorio.
+          </small>
+        </div>
+      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()" jhiTranslate="entity.action.cancel">
           Close

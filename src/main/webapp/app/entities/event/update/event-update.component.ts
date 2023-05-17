@@ -44,14 +44,6 @@ export class EventUpdateComponent implements OnInit {
   compareArtist = (o1: IArtist | null, o2: IArtist | null): boolean => this.artistService.compareArtist(o1, o2);
 
   ngOnInit(): void {
-    //   dayjs.locale('es');
-    //   this.editForm.get('startDate') ? null
-    //   this.editForm.get('startDate').valueChanges.subscribe((startDate: dayjs.Dayjs) => {
-    //   if(startDate){
-    //     const startTime = startDate.format('HH:mm');
-    //     this.editForm.get('startTime').setValue(startTime);
-    //   }
-    // });
     this.activatedRoute.data.subscribe(({ event }) => {
       this.event = event;
       if (event) {
@@ -81,35 +73,36 @@ export class EventUpdateComponent implements OnInit {
     // window.history.back();
     this.activeModal.dismiss();
   }
-
   save(): void {
     this.isSaving = true;
     dayjs.locale('es');
-    this.editForm.get('startDate' && 'endDate')?.valueChanges.subscribe((startDate?: dayjs.Dayjs | null, endDate?: dayjs.Dayjs) => {
-      if (startDate && endDate) {
-        const startTime = startDate.format('HH:mm');
-        const endTime = endDate.format('HH:mm');
-        this.editForm.get('startTime' && 'endTime')?.setValue(startTime && endTime);
+    const startTime = Object(this.editForm.get('startTime')?.value);
+    var stringStartTime = '';
+    if (startTime != null) {
+      for (const clave in startTime) {
+        if (startTime.hasOwnProperty(clave)) {
+          const valor = startTime[clave];
+          stringStartTime += `${valor}: `;
+        }
       }
-    });
-    this.editForm.get('startTime' && 'endTime')?.valueChanges.subscribe((startTime?: string | null, endTime?: string | null) => {
-      if (startTime && endTime) {
-        const startDate = dayjs(this.editForm.get('startDate')?.value, 'DD/MM/YYYY');
-        const endDate = dayjs(this.editForm.get('endDate')?.value, 'DD/MM/YYYY');
-        const startDateTime = dayjs(startTime, 'HH:mm');
-        const endDateTime = dayjs(endTime, 'HH:mm');
-        startDate.set('hour', startDateTime.hour());
-        startDate.set('minute', startDateTime.minute());
-        endDate.set('hour', endDateTime.hour());
-        endDate.set('minute', endDateTime.minute());
-        this.editForm.get('startDate' && 'endDate')?.setValue(startDate && endDate);
+      stringStartTime = stringStartTime.slice(0, -2);
+    }
+    const endTime = Object(this.editForm.get('endTime')?.value);
+    var stringEndTime = '';
+    if (endTime != null) {
+      for (const clave in endTime) {
+        if (endTime.hasOwnProperty(clave)) {
+          const valor = endTime[clave];
+          stringEndTime += `${valor}: `;
+        }
       }
-    });
+      stringEndTime = stringEndTime.slice(0, -2);
+    }
     const event = this.eventFormService.getEvent(this.editForm);
     if (event.id !== null) {
       this.subscribeToSaveResponse(this.eventService.update(event));
     } else {
-      this.subscribeToSaveResponse(this.eventService.create(event));
+      this.subscribeToSaveResponse(this.eventService.create(event, stringStartTime, stringEndTime));
     }
   }
 

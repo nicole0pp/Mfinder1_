@@ -7,18 +7,19 @@ import com.mfinder.app.service.dto.controller.EventController;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -58,9 +59,32 @@ public class EventResource {
      * @param eventDTO the eventDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new eventDTO, or with status {@code 400 (Bad Request)} if the event has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws ParseException
      */
     @PostMapping("/events")
-    public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventDTO eventDTO) throws URISyntaxException {
+    public ResponseEntity<EventDTO> createEvent(
+        @Valid @RequestBody EventDTO eventDTO,
+        @RequestParam(value = "startTime") String startTime,
+        @RequestParam(value = "endTime") String endTime
+    ) throws URISyntaxException, ParseException {
+        String pattern = "HH:mm";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        Date horaStart = simpleDateFormat.parse(startTime);
+        Date horaEnd = simpleDateFormat.parse(endTime);
+
+        Long fechaHoraStart = eventDTO.getStartDate().getTime() + horaStart.getTime();
+        Long fechaHoraEnd = eventDTO.getEndDate().getTime() + horaEnd.getTime();
+
+        Date fechaStart = new Date();
+        Date fechaEnd = new Date();
+
+        fechaStart.setTime(fechaHoraStart);
+        fechaEnd.setTime(fechaHoraEnd);
+
+        eventDTO.setStartDate(fechaStart);
+        eventDTO.setEndDate(fechaEnd);
+
         log.debug("REST request to save Event : {}", eventDTO);
         if (eventDTO.getId() != null) {
             throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");

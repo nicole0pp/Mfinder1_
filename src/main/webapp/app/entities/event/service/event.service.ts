@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,13 +7,14 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEvent, NewEvent } from '../event.model';
-import { DATE_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
 import dayjs from 'dayjs/esm';
 
 export type PartialUpdateEvent = Partial<IEvent> & Pick<IEvent, 'id'>;
 
 type RestOf<T extends IEvent | NewEvent> = Omit<T, 'eventDate'> & {
-  eventDate?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
 };
 export type RestEvent = RestOf<IEvent>;
 
@@ -29,12 +30,20 @@ export class EventService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/events');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+  create(event: NewEvent, startTime?: string | null, endTime?: string | null): Observable<EntityResponseType> {
+    if (startTime && endTime) {
+      let params = new HttpParams().set('startTime', startTime).set('endTime', endTime);
 
-  create(event: NewEvent): Observable<EntityResponseType> {
-    // const copy = this.convertDateFromClient(event);
-    // return this.http.post<RestEvent>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
-
-    return this.http.post<IEvent>(this.resourceUrl, event, { observe: 'response' });
+      const copy = this.convertDateFromClient(event);
+      return this.http
+        .post<RestEvent>(this.resourceUrl, copy, { observe: 'response', params: params })
+        .pipe(map(res => this.convertResponseFromServer(res)));
+    } else {
+      const copy = this.convertDateFromClient(event);
+      return this.http
+        .post<RestEvent>(this.resourceUrl, copy, { observe: 'response' })
+        .pipe(map(res => this.convertResponseFromServer(res)));
+    }
   }
 
   update(event: IEvent): Observable<EntityResponseType> {
@@ -93,29 +102,31 @@ export class EventService {
     return eventCollection;
   }
 
-  // protected convertDateFromClient<T extends IEvent | NewEvent | PartialUpdateEvent>(event: T): RestOf<T> {
-  //   return {
-  //     ...event,
-  //     eventDate: event.startDate?.format(DATE_FORMAT) ?? null,
-  //   };
-  // }
+  protected convertDateFromClient<T extends IEvent | NewEvent | PartialUpdateEvent>(event: T): RestOf<T> {
+    return {
+      ...event,
+      startDate: event.startDate?.format(DATE_FORMAT) ?? null,
+      endDate: event.endDate?.format(DATE_FORMAT) ?? null,
+    };
+  }
 
-  // protected convertDateFromServer(restEvent: RestEvent): IEvent {
-  //   return {
-  //     ...restEvent,
-  //     eventDate: restEvent.eventDate ? dayjs(restEvent.eventDate) : undefined,
-  //   };
-  // }
+  protected convertDateFromServer(restEvent: RestEvent): IEvent {
+    return {
+      ...restEvent,
+      startDate: restEvent.startDate ? dayjs(restEvent.startDate) : undefined,
+      endDate: restEvent.endDate ? dayjs(restEvent.endDate) : undefined,
+    };
+  }
 
-  // protected convertResponseFromServer(res: HttpResponse<RestEvent>): HttpResponse<IEvent> {
-  //   return res.clone({
-  //     body: res.body ? this.convertDateFromServer(res.body) : null,
-  //   });
-  // }
+  protected convertResponseFromServer(res: HttpResponse<RestEvent>): HttpResponse<IEvent> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
 
-  // protected convertResponseArrayFromServer(res: HttpResponse<RestEvent[]>): HttpResponse<IEvent[]> {
-  //   return res.clone({
-  //     body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
-  //   });
-  // }
+  protected convertResponseArrayFromServer(res: HttpResponse<RestEvent[]>): HttpResponse<IEvent[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
+  }
 }
