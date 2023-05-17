@@ -2,10 +2,10 @@
   "mFinder1App": {
     "TipoEvento": {
       "null": "null",
-      "CONCIERTO": "CONCIERTO",
+      "CONCIERTO": "CONCIERTO ",
       "MEETANDGREET": "MEET AND GREET",
-      "FESTIVAL": "FESTIVAL",
-      "CONFERENCIA": "CONFERENCIA"
+      "FESTIVAL": "FESTIVAL ",
+      "CONFERENCIA": "CONFERENCIA "
     }
   }
 }

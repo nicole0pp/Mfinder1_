@@ -7,6 +7,7 @@ import { EventDetailComponent } from '../detail/event-detail.component';
 import { EventUpdateComponent } from '../update/event-update.component';
 import { EventRoutingResolveService } from './event-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
+import { EventUpdateViewComponent } from '../update/event-update.view.component';
 
 const eventRoute: Routes = [
   {
@@ -36,6 +37,14 @@ const eventRoute: Routes = [
   {
     path: ':id/edit',
     component: EventUpdateComponent,
+    resolve: {
+      Event: EventRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/update-view',
+    component: EventUpdateViewComponent,
     resolve: {
       Event: EventRoutingResolveService,
     },

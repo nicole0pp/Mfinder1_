@@ -66,7 +66,7 @@
                       <span jhiTranslate="mFinder1App.event.home.city">Ciudad del evento</span>
                       <a>{{ event.city }}</a>
                     </p>
-                    <div class="btn-group text-center">
+                    <div class="btn-group text-center align-items-center justify-self-center">
                       <button
                         type="submit"
                         [routerLink]="['/event', event.id, 'view']"
@@ -75,6 +75,19 @@
                       >
                         <fa-icon icon="eye"></fa-icon>
                         <span class="d-none d-md-inline" jhiTranslate="mFinder1App.event.action.view">Detalles</span>
+                      </button>
+                      <button
+                        type="submit"
+                        [routerLink]="['/event', event.id, 'update-view']"
+                        class="btn btn-primary btn-sm"
+                        data-cy="entityDetailsButton"
+                      >
+                        <fa-icon icon="eye"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                      </button>
+                      <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                        <fa-icon icon="times"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
                       </button>
                     </div>
                   </div>

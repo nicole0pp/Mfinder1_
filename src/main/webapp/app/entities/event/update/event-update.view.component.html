@@ -1,0 +1,254 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-event-heading" data-cy="EventCreateUpdateHeading" jhiTranslate="mFinder1App.event.home.createOrEditLabel">
+        Crear o editar un Evento
+      </h2>
+      <jhi-alert-error></jhi-alert-error>
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.tipoEvento" for="field_tipoEvento">Tipo de evento</label>
+          <select
+            class="form-control form-select"
+            name="tipoEvento"
+            formControlName="tipoEvento"
+            id="field_tipoEvento"
+            data-cy="tipoEvento"
+          >
+            <option *ngFor="let tipoEvento of tipoEventoValues" [value]="tipoEvento">
+              {{ 'mFinder1App.TipoEvento.' + tipoEvento | translate }}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.image" for="field_image">Image</label>
+          <div>
+            <div *ngIf="editForm.get('image')!.value" class="form-text text-danger clearfix">
+              <a
+                class="pull-start"
+                (click)="openFile(editForm.get('image')!.value!, editForm.get('imageContentType')!.value!)"
+                jhiTranslate="entity.action.open"
+                >Abrir</a
+              ><br />
+              <span class="pull-start">{{ editForm.get('imageContentType')!.value }}, {{ byteSize(editForm.get('image')!.value!) }}</span>
+              <button
+                type="button"
+                (click)="editForm.patchValue({ image: undefined, imageContentType: undefined })"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_image"
+              data-cy="image"
+              (change)="setFileData($event, 'image', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="image" id="field_image" data-cy="image" formControlName="image" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="imageContentType"
+            id="field_imageContentType"
+            formControlName="imageContentType"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.startDate" for="field_startDate">Event start Date</label>
+          <div class="input-group" style="align-items: baseline">
+            <input
+              id="field_startDate"
+              data-cy="startDate"
+              type="text"
+              class="form-control"
+              name="startDate"
+              ngbDatepicker
+              #startDateDp="ngbDatepicker"
+              formControlName="startDate"
+              style="height: fit-content"
+            />
+            <button
+              type="button"
+              class="btn btn-secondary fixed-top"
+              style="height: fit-content; margin-top: 0"
+              (click)="startDateDp.toggle()"
+            >
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.endDate" for="field_endDate">Event end Date</label>
+          <div class="input-group" style="align-items: baseline">
+            <input
+              id="field_endDate"
+              data-cy="endDate"
+              type="text"
+              class="form-control"
+              name="endDate"
+              ngbDatepicker
+              #endDateDp="ngbDatepicker"
+              formControlName="endDate"
+              style="height: fit-content"
+            />
+            <button
+              type="button"
+              class="btn btn-secondary fixed-top"
+              style="height: fit-content; margin-top: 0"
+              (click)="endDateDp.toggle()"
+            >
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label" for="field_startTime" jhiTranslate="mFinder1App.event.startTime"> Hora de comienzo del evento</label>
+          <div class="input-group" style="align-items: baseline; justify-content: center">
+            <ngb-timepicker
+              id="field_startTime"
+              type="text"
+              style="height: fit-content"
+              minuteStep:5
+              formControlName="startTime"
+            ></ngb-timepicker>
+          </div>
+        </div>
+
+        <div class="col">
+          <label class="form-label" for="field_endTime" jhiTranslate="mFinder1App.event.endTime"> Hora de final del evento</label>
+          <div class="input-group" style="align-items: baseline; justify-content: center">
+            <ngb-timepicker
+              id="field_endTime"
+              type="text"
+              style="height: fit-content"
+              minuteStep:5
+              formControlName="endTime"
+            ></ngb-timepicker>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.location" for="field_location">Location</label>
+          <input type="text" class="form-control" name="location" id="field_location" data-cy="location" formControlName="location" />
+          <div *ngIf="editForm.get('location')!.invalid && (editForm.get('location')!.dirty || editForm.get('location')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('location')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+              >Este campo es obligatorio.</small
+            >
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label" jhiTranslate="mFinder1App.event.city" for="field_city">City</label>
+          <select class="form-control form-select" name="city" formControlName="city" id="field_city" data-cy="city">
+            <option *ngFor="let city of cityValues" [value]="city">
+              {{ 'mFinder1App.city.' + city | translate }}
+            </option>
+          </select>
+          <div *ngIf="editForm.get('city')!.invalid && (editForm.get('city')!.dirty || editForm.get('city')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('city')?.errors?.required" jhiTranslate="entity.validation.required">
+              Este campo es obligatorio.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="mFinder1App.event.guestArtists" for="field_artists">Artistas invitados</label>
+        <select
+          class="form-control select"
+          multiple
+          size="3"
+          data-mdb-filter="true"
+          name="artist"
+          formControlName="artists"
+          id="field_artists"
+          aria-label="Disabled select example"
+        >
+          <option *ngFor="let artist of artists" [value]="artist">{{ artist }}</option>
+        </select>
+      </div>
+      <div class="row mb-3" style="margin-right: 0px; margin-left: 0px">
+        <label class="form-label" jhiTranslate="mFinder1App.event.description" for="field_description">Event's description</label>
+        <textarea
+          type="text"
+          class="form-control"
+          name="description"
+          rows="3"
+          id="field_description"
+          data-cy="description"
+          style="resize: none"
+          formControlName="description"
+        ></textarea>
+        <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('description')?.errors?.maxlength"
+            jhiTranslate="entity.validation.maxlength"
+            [translateValues]="{ max: 100 }"
+          >
+            Este campo no puede superar más de 100 caracteres.
+          </small>
+        </div>
+      </div>
+      <div class="row mb-3" style="margin-right: 0px; margin-left: 0px">
+        <label class="form-label" jhiTranslate="mFinder1App.event.seatCapacity" for="field_seatCapacity">Event's seatCapacity</label>
+        <input
+          type="number"
+          class="form-control"
+          name="seatCapacity"
+          id="field_seatCapacity"
+          data-cy="seatCapacity"
+          formControlName="seatCapacity"
+        />
+        <div
+          *ngIf="editForm.get('seatCapacity')!.invalid && (editForm.get('seatCapacity')!.dirty || editForm.get('seatCapacity')!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('seatCapacity')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            Este campo es obligatorio.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

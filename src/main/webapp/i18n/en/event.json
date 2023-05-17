@@ -30,6 +30,20 @@
 
       "action": {
         "view": "Detalles"
+      },
+      "list": {
+        "title": "Detalles del evento",
+        "image": "Image",
+        "tipoEvento": "Event type",
+        "startDate": "Event start date",
+        "endDate": "End date of the event",
+        "location": "Address of the event",
+        "city": "City of the event",
+        "description": "Description",
+        "seatingCapacity": "Capacity of people at the event"
+      },
+      "delete": {
+        "question": "¿Are you sure you want to delete this event?"
       }
     }
   }
