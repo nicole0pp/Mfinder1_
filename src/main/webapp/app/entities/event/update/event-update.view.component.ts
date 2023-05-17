@@ -16,6 +16,7 @@ import { ArtistService } from 'app/entities/artist/service/artist.service';
 import { ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
 import { City } from 'app/entities/enumerations/city.model';
 import dayjs from 'dayjs/esm';
+import { IUser } from 'app/admin/user-management/user-management.model';
 
 @Component({
   selector: 'jhi-event-update.view',
@@ -24,6 +25,7 @@ import dayjs from 'dayjs/esm';
 export class EventUpdateViewComponent implements OnInit {
   isSaving = false;
   event: IEvent | null = null;
+  userSharedCollecion: IUser[] = [];
   tipoEventoValues = Object.keys(TipoEvento);
   cityValues = Object.keys(City);
   artists: string[] = [];
@@ -32,6 +34,7 @@ export class EventUpdateViewComponent implements OnInit {
 
   constructor(
     protected dataUtils: DataUtils,
+    private route: ActivatedRoute,
     protected eventManager: EventManager,
     protected eventService: EventService,
     protected eventFormService: EventFormService,
@@ -42,12 +45,19 @@ export class EventUpdateViewComponent implements OnInit {
   compareArtist = (o1: IArtist | null, o2: IArtist | null): boolean => this.artistService.compareArtist(o1, o2);
 
   ngOnInit(): void {
+    this.route.data.subscribe(({ event }) => {
+      if (event) {
+        this.editForm.reset(event);
+      } else {
+        this.editForm.reset(event.newEvent);
+      }
+    });
     this.activatedRoute.data.subscribe(({ event }) => {
       this.event = event;
       if (event) {
         this.updateForm(event);
       }
-
+      this.eventService.query();
       this.loadRelationshipsOptions();
     });
   }
@@ -97,7 +107,11 @@ export class EventUpdateViewComponent implements OnInit {
     }
     const event = this.eventFormService.getEvent(this.editForm);
     if (event.id !== null) {
-      this.subscribeToSaveResponse(this.eventService.update(event));
+      this.eventService.update(event).subscribe({
+        next: () => this.onSaveSuccess(),
+        error: () => this.onSaveError(),
+      });
+      // this.subscribeToSaveResponse(this.eventService.update(event));
     } else {
       this.subscribeToSaveResponse(this.eventService.create(event, stringStartTime, stringEndTime));
     }
@@ -111,11 +125,13 @@ export class EventUpdateViewComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
+    this.isSaving = false;
     this.previousState();
   }
 
   protected onSaveError(): void {
     // Api for inheritance.
+    this.isSaving = false;
   }
 
   protected onSaveFinalize(): void {

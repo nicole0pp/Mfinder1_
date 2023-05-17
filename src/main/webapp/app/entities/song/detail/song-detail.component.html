@@ -10,8 +10,8 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
           <span>{{ song.id }}</span>
         </dd>
         <dt><span jhiTranslate="mFinder1App.song.name">Name</span></dt>
@@ -21,6 +21,12 @@
         <dt><span jhiTranslate="mFinder1App.song.picture">Picture</span></dt>
         <dd>
           <div *ngIf="song.picture">
+            <img
+              class="card-img-top"
+              *ngIf="song.picture"
+              style="width: 20%"
+              [src]="'data:' + song.pictureContentType + ';base64,' + song.picture"
+            />
             <a (click)="openFile(song.picture, song.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
             {{ song.pictureContentType }}, {{ byteSize(song.picture) }}
           </div>
@@ -32,6 +38,12 @@
         <dt><span jhiTranslate="mFinder1App.song.audio">Audio</span></dt>
         <dd>
           <div *ngIf="song.audio">
+            <audio
+              *ngIf="song.audio"
+              [src]="'data:' + song.audioContentType + ';base64,' + song.audio"
+              controls="controls"
+              preload="none"
+            ></audio>
             <a (click)="openFile(song.audio, song.audioContentType)" jhiTranslate="entity.action.open">Abrir</a>
             {{ song.audioContentType }}, {{ byteSize(song.audio) }}
           </div>

@@ -8,6 +8,7 @@ public enum MusicGenre {
     BLUES,
     RB,
     POP,
+    RAP,
     ROCKROLL,
     COUNTRY,
     TECHNO,

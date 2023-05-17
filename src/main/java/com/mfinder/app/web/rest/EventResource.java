@@ -4,6 +4,7 @@ import com.mfinder.app.repository.EventRepository;
 import com.mfinder.app.service.EventService;
 import com.mfinder.app.service.dto.EventDTO;
 import com.mfinder.app.service.dto.controller.EventController;
+import com.mfinder.app.service.mapper.EventMapper;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,7 +48,12 @@ public class EventResource {
 
     private final EventController eventController;
 
-    public EventResource(EventService eventService, EventRepository eventRepository, EventController eventController) {
+    public EventResource(
+        EventService eventService,
+        EventRepository eventRepository,
+        EventController eventController,
+        EventMapper eventMapper
+    ) {
         this.eventService = eventService;
         this.eventRepository = eventRepository;
         this.eventController = eventController;
@@ -189,8 +195,8 @@ public class EventResource {
     @GetMapping("/events/{id}")
     public ResponseEntity<EventDTO> getevent(@PathVariable Long id) {
         log.debug("REST request to get event : {}", id);
-        Optional<EventDTO> eventDTO = eventController.findOne(id);
-        return ResponseUtil.wrapOrNotFound(eventDTO);
+        Optional<EventDTO> event = eventController.findOne(id);
+        return ResponseUtil.wrapOrNotFound(event);
     }
 
     /**

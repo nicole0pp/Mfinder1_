@@ -30,6 +30,7 @@ export class EventService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/events');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
   create(event: NewEvent, startTime?: string | null, endTime?: string | null): Observable<EntityResponseType> {
     if (startTime && endTime) {
       let params = new HttpParams().set('startTime', startTime).set('endTime', endTime);
@@ -58,8 +59,8 @@ export class EventService {
     // .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<RestEvent>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(id: number): Observable<IEvent> {
+    return this.http.get<IEvent>(`${this.resourceUrl}/${id}`);
     // .pipe(map(res => this.convertResponseFromServer(res)));
     // return this.http.get<IEvent>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

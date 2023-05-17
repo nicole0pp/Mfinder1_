@@ -8,13 +8,13 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "song": "Song",
-        "artist": "Artist",
+        "song": "Songs",
+        "artist": "Artists",
         "client": "Client",
-        "album": "Album",
-        "favoriteList": "Favorite List",
+        "album": "Albums",
+        "favoriteList": "Your favorite lists",
         "listDetails": "List Details",
-        "rating": "Rating",
+        "rating": "Your ratings",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

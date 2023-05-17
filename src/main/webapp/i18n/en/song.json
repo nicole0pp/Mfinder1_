@@ -18,14 +18,14 @@
         "title": "Song"
       },
       "id": "ID",
-      "name": "Name",
-      "picture": "Picture",
-      "duration": "Duration",
-      "audio": "Audio",
-      "artists": "Artists",
-      "musicGenre": "Music Genre",
-      "listDetails": "List Details",
-      "album": "Album"
+      "name": "Name: ",
+      "picture": "Picture: ",
+      "duration": "Duration: ",
+      "audio": "Audio: ",
+      "artists": "Artist: ",
+      "musicGenre": "Music Genre: ",
+      "listDetails": "List Details: ",
+      "album": "Album: "
     }
   }
 }

@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 /**
  * A DTO for the {@link com.mfinder.app.domain.Event} entity.
  */
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventDTO implements Serializable {
 
     private Long id;

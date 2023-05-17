@@ -74,7 +74,7 @@
                 <span jhiTranslate="global.menu.entities.artist">Artist</span>
               </a>
             </li>
-            <li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
               <a
                 class="dropdown-item"
                 routerLink="client"
@@ -110,7 +110,7 @@
                 <span jhiTranslate="global.menu.entities.favoriteList">Favorite List</span>
               </a>
             </li>
-            <li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
               <a
                 class="dropdown-item"
                 routerLink="list-details"

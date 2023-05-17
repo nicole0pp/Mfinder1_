@@ -27,116 +27,64 @@
   <div class="alert alert-warning" id="no-result" *ngIf="songs?.length === 0">
     <span jhiTranslate="mFinder1App.song.home.notFound">Ningún Songs encontrado</span>
   </div>
+  <div class="container" *ngIf="songs && songs.length > 0">
+    <div class="row row-cols-md-4 g-3">
+      <span *ngFor="let song of songs; trackBy: trackId" data-cy="entityTable">
+        <div class="col" style="border-style: solid; color: white">
+          <div class="card justify-content-center align-items-center">
+            <img
+              class="card-img-top"
+              *ngIf="song.picture"
+              style="width: 100%"
+              [src]="'data:' + song.pictureContentType + ';base64,' + song.picture"
+            />
+            <div class="card-body">
+              <h3 class="card-title">
+                <span jhiTranslate="mFinder1App.song.name" style="font-weight: bold">Nombre de la canción</span>
+                &nbsp;{{ song.name }}
+              </h3>
+              <p class="card-text">
+                <span jhiTranslate="mFinder1App.song.duration">Duration</span>
+                &nbsp;{{ song.duration | duration }}
+              </p>
+              <p class="card-text">
+                <span jhiTranslate="mFinder1App.song.artists">Artist</span>
+                &nbsp;{{ song.artists }}
+              </p>
+              <p class="card-text">
+                <!-- <span jhiTranslate="mFinder1App.song.audio">Audio</span> -->
+                <audio
+                  *ngIf="song.audio"
+                  [src]="'data:' + song.audioContentType + ';base64,' + song.audio"
+                  controls="controls"
+                  preload="none"
+                ></audio>
+              </p>
+              <p class="card-text">
+                <span jhiTranslate="mFinder1App.song.album">Album</span>
+                &nbsp;{{ song.album }}
+              </p>
+              <div class="btn-group">
+                <button type="submit" [routerLink]="['/song', song.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                </button>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="songs && songs.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="name">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="picture">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.picture">Picture</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="duration">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.duration">Duration</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="audio">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.audio">Audio</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="artists">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.artists">Artists</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="musicGenre">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.musicGenre">Music Genre</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="listDetails.id">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.listDetails">List Details</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="album.id">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.song.album">Album</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let song of songs; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/song', song.id, 'view']">{{ song.id }}</a>
-          </td>
-          <td>{{ song.name }}</td>
-          <td>
-            <a *ngIf="song.picture" (click)="openFile(song.picture, song.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
-            <span *ngIf="song.picture">{{ song.pictureContentType }}, {{ byteSize(song.picture) }}</span>
-          </td>
-          <td title="{{ song.duration }}">{{ song.duration | duration }}</td>
-          <td>
-            <a *ngIf="song.audio" (click)="openFile(song.audio, song.audioContentType)" jhiTranslate="entity.action.open">Abrir</a>
-            <span *ngIf="song.audio">{{ song.audioContentType }}, {{ byteSize(song.audio) }}</span>
-          </td>
-          <td>{{ song.artists }}</td>
-          <td jhiTranslate="{{ 'mFinder1App.MusicGenre.' + song.musicGenre }}">{{ song.musicGenre }}</td>
-          <td>
-            <div *ngIf="song.listDetails">
-              <a [routerLink]="['/list-details', song.listDetails.id, 'view']">{{ song.listDetails.id }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="song.album">
-              <a [routerLink]="['/album', song.album.id, 'view']">{{ song.album.id }}</a>
-            </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/song', song.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
-              </button>
+                <button type="submit" [routerLink]="['/song', song.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                </button>
 
-              <button type="submit" [routerLink]="['/song', song.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
-              </button>
-
-              <button type="submit" (click)="delete(song)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
-              </button>
+                <button type="submit" (click)="delete(song)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <fa-icon icon="times"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                </button>
+              </div>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </span>
+    </div>
   </div>
 
   <div *ngIf="songs && songs.length > 0">

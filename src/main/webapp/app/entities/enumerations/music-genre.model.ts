@@ -7,6 +7,8 @@ export enum MusicGenre {
 
   POP = 'POP',
 
+  RAP = 'RAP',
+
   ROCKROLL = 'ROCKROLL',
 
   COUNTRY = 'COUNTRY',

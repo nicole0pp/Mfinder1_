@@ -1,6 +1,8 @@
 package com.mfinder.app.service.mapper;
 
+import com.mfinder.app.domain.Event;
 import java.util.List;
+import java.util.Optional;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
@@ -17,6 +19,8 @@ public interface EntityMapper<D, E> {
     E toEntity(D dto);
 
     D toDto(E entity);
+
+    D toDtoOptional(Optional<Event> event);
 
     List<E> toEntity(List<D> dtoList);
 
