@@ -57,6 +57,7 @@ public class CacheConfiguration {
             createCache(cm, com.mfinder.app.domain.Client.class.getName() + ".favoriteLists");
             createCache(cm, com.mfinder.app.domain.Event.class.getName());
             createCache(cm, com.mfinder.app.domain.Event.class.getName() + ".artists");
+            createCache(cm, com.mfinder.app.domain.Event.class.getName() + ".rating");
             createCache(cm, com.mfinder.app.domain.Album.class.getName());
             createCache(cm, com.mfinder.app.domain.Album.class.getName() + ".sngs");
             createCache(cm, com.mfinder.app.domain.FavoriteList.class.getName());

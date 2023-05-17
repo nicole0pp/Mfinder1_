@@ -1,8 +1,10 @@
 package com.mfinder.app.service.dto;
 
+import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -27,13 +29,20 @@ public class EventDTO implements Serializable {
     private TipoEvento tipoEvento;
 
     @NotNull
-    private LocalDate eventDate;
+    private Date startDate;
+
+    @NotNull
+    private Date endDate;
 
     private String location;
 
-    private String city;
+    @NotNull
+    private City city;
 
     private String description;
+
+    @NotNull
+    private Integer seatCapacity;
 
     public Long getId() {
         return id;
@@ -75,12 +84,20 @@ public class EventDTO implements Serializable {
         this.tipoEvento = tipoEvento;
     }
 
-    public LocalDate getEventDate() {
-        return eventDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getLocation() {
@@ -91,11 +108,11 @@ public class EventDTO implements Serializable {
         this.location = location;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
@@ -105,6 +122,14 @@ public class EventDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getSeatCapacity() {
+        return seatCapacity;
+    }
+
+    public void setSeatCapacity(Integer seatCapacity) {
+        this.seatCapacity = seatCapacity;
     }
 
     @Override
@@ -142,8 +167,10 @@ public class EventDTO implements Serializable {
             ", tipoEvento='" +
             getTipoEvento() +
             "'" +
-            ", eventDate='" +
-            getEventDate() +
+            ", startDate='" +
+            getStartDate() +
+            ", endDate='" +
+            getEndDate() +
             "'" +
             ", location='" +
             getLocation() +

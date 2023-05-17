@@ -1,0 +1,13 @@
+{
+  "mFinder1App": {
+    "City": {
+      "null": "null",
+      "MADRID_SPAIN": "Madrid - Spain",
+      "BARCELONA_SPAIN": "Barcelona - Spain",
+      "LONDRES_UK": "London - Reino Unido",
+      "LASVEGAS_EEUU": "Las vegas - EE. UU",
+      "LOSANGELES_EEUU": "Los ángeles - EE. UU",
+      "NUEVAYORK_EEUU": "New York - EE. UU"
+    }
+  }
+}

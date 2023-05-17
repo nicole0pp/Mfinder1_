@@ -4,9 +4,10 @@ import com.mfinder.app.domain.Artist;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.dto.ArtistDTO;
-import com.mfinder.app.service.dto.controller.ArtistController;
 import com.mfinder.app.service.mapper.ArtistMapper;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class ArtistServiceImpl implements ArtistController {
+public class ArtistServiceImpl implements ArtistService {
 
     private final Logger log = LoggerFactory.getLogger(ArtistServiceImpl.class);
 
@@ -44,7 +45,7 @@ public class ArtistServiceImpl implements ArtistController {
     public ArtistDTO update(ArtistDTO artistDTO) {
         log.debug("Request to update Artist : {}", artistDTO);
         Artist artist = artistMapper.toEntity(artistDTO);
-        // no save call needed as we have no fields that can be updated
+        artist = artistRepository.save(artist);
         return artistMapper.toDto(artist);
     }
 
@@ -59,7 +60,7 @@ public class ArtistServiceImpl implements ArtistController {
 
                 return existingArtist;
             })
-            // .map(artistRepository::save)
+            .map(artistRepository::save)
             .map(artistMapper::toDto);
     }
 
@@ -80,7 +81,16 @@ public class ArtistServiceImpl implements ArtistController {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Artist : {}", id);
-        Artist artist = artistRepository.findById(id).get();
         artistRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getArtists() {
+        return artistRepository.findAll().stream().map(Artist::getArtistName).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Artist getArtistByUserId(Long userId) {
+        return artistRepository.findArtistByUserId(userId);
     }
 }

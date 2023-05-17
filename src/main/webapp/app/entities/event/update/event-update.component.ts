@@ -15,6 +15,8 @@ import { IArtist } from 'app/entities/artist/artist.model';
 import { ArtistService } from 'app/entities/artist/service/artist.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
+import { City } from 'app/entities/enumerations/city.model';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-event-update',
@@ -24,6 +26,7 @@ export class EventUpdateComponent implements OnInit {
   isSaving = false;
   event: IEvent | null = null;
   tipoEventoValues = Object.keys(TipoEvento);
+  cityValues = Object.keys(City);
   artists: string[] = [];
 
   editForm: EventFormGroup = this.eventFormService.createEventFormGroup();
@@ -70,14 +73,36 @@ export class EventUpdateComponent implements OnInit {
     // window.history.back();
     this.activeModal.dismiss();
   }
-
   save(): void {
     this.isSaving = true;
+    dayjs.locale('es');
+    const startTime = Object(this.editForm.get('startTime')?.value);
+    var stringStartTime = '';
+    if (startTime != null) {
+      for (const clave in startTime) {
+        if (startTime.hasOwnProperty(clave)) {
+          const valor = startTime[clave];
+          stringStartTime += `${valor}: `;
+        }
+      }
+      stringStartTime = stringStartTime.slice(0, -2);
+    }
+    const endTime = Object(this.editForm.get('endTime')?.value);
+    var stringEndTime = '';
+    if (endTime != null) {
+      for (const clave in endTime) {
+        if (endTime.hasOwnProperty(clave)) {
+          const valor = endTime[clave];
+          stringEndTime += `${valor}: `;
+        }
+      }
+      stringEndTime = stringEndTime.slice(0, -2);
+    }
     const event = this.eventFormService.getEvent(this.editForm);
     if (event.id !== null) {
       this.subscribeToSaveResponse(this.eventService.update(event));
     } else {
-      this.subscribeToSaveResponse(this.eventService.create(event));
+      this.subscribeToSaveResponse(this.eventService.create(event, stringStartTime, stringEndTime));
     }
   }
 

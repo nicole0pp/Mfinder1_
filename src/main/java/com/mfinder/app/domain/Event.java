@@ -2,9 +2,10 @@ package com.mfinder.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -41,21 +42,31 @@ public class Event implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_evento")
+    @Column(name = "tipo_evento", nullable = false)
     private TipoEvento tipoEvento;
 
     @NotNull
-    @Column(name = "event_date")
-    private LocalDate eventDate;
+    @Column(name = "start_date", nullable = false)
+    private Date startDate;
+
+    @NotNull
+    @Column(name = "end_date", nullable = false)
+    private Date endDate;
 
     @Column(name = "location")
     private String location;
 
-    @Column(name = "city")
-    private String city;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "city", nullable = false)
+    private City city;
 
     @Column(name = "description")
     private String description;
+
+    @NotNull
+    @Column(name = "seating_capacity", nullable = false)
+    private Integer seatCapacity;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
@@ -66,6 +77,16 @@ public class Event implements Serializable {
     )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Artist> artists = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JoinTable(
+        name = "rating_event",
+        joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "rating_id", referencedColumnName = "id") }
+    )
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Rating> ratings = new HashSet<>();
 
     public Long getId() {
         return this.id;
@@ -132,17 +153,30 @@ public class Event implements Serializable {
         this.tipoEvento = tipoEvento;
     }
 
-    public LocalDate getEventDate() {
-        return this.eventDate;
+    public Date getStartDate() {
+        return this.startDate;
     }
 
-    public Event eventDate(LocalDate eventDate) {
-        this.setEventDate(eventDate);
+    public Event startDate(Date startDate) {
+        this.setStartDate(startDate);
         return this;
     }
 
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return this.endDate;
+    }
+
+    public Event endEvent(Date endDate) {
+        this.setEndDate(endDate);
+        return this;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getLocation() {
@@ -158,16 +192,16 @@ public class Event implements Serializable {
         this.location = location;
     }
 
-    public String getCity() {
+    public City getCity() {
         return this.city;
     }
 
-    public Event city(String city) {
+    public Event city(City city) {
         this.setCity(city);
         return this;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
@@ -184,12 +218,33 @@ public class Event implements Serializable {
         this.description = description;
     }
 
+    public Integer getSeatCapacity() {
+        return this.seatCapacity;
+    }
+
+    public Event seatCapacity(Integer seatCapacity) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setSeatCapacity(Integer seatCapacity) {
+        this.seatCapacity = seatCapacity;
+    }
+
     public Set<Artist> getArtists() {
         return artists;
     }
 
     public void setArtists(Set<Artist> artists) {
         this.artists = artists;
+    }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     @Override
@@ -217,7 +272,8 @@ public class Event implements Serializable {
         ", name='" + getName() + "'" +
         ", picture='" + getImage() + "'" +
         ", tipoEvento='" + getTipoEvento() + "'" +
-        ", eventDate='" + getEventDate() + "'" +
+        ", startDate='" + getStartDate() + "'" +
+        ", endDate='" + getEndDate() + "'" +
         ", location='" + getLocation() + "'" +
         ", city='" + getCity() + "'" +
         ", description='" + getDescription() + "'" +

@@ -59,8 +59,8 @@
                       <a *ngFor="let tipoEvento of tipoEventoValues">{{ 'mFinder1App.TipoEvento.' + tipoEvento | translate }}</a>
                     </p>
                     <p class="card-text">
-                      <span jhiTranslate="mFinder1App.event.home.eventDate">Fecha del evento</span>
-                      <a>{{ event.eventDate }}</a>
+                      <span jhiTranslate="mFinder1App.event.home.startDate">Fecha del evento</span>
+                      <a>{{ event.startDate }}</a>
                     </p>
                     <p class="card-text">
                       <span jhiTranslate="mFinder1App.event.home.city">Ciudad del evento</span>
@@ -125,7 +125,6 @@
     </ng-container>
   </nav>
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
-  <pre>Active: {{ active }}</pre>
   <div *ngIf="events && events.length > 0">
     <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>

@@ -2,16 +2,10 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { IEvent, NewEvent } from '../event.model';
+import dayjs from 'dayjs/esm';
 
-/**
- * A partial Type with required key is used as form input.
- */
 type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>> & { id: T['id'] };
 
-/**
- * Type for createFormGroup and resetForm argument.
- * It accepts IEvent for edit and NewEventFormGroupInput for create.
- */
 type EventFormGroupInput = IEvent | PartialWithRequiredKeyOf<NewEvent>;
 
 type EventFormDefaults = Pick<NewEvent, 'id'>;
@@ -22,11 +16,16 @@ type EventFormGroupContent = {
   image: FormControl<IEvent['image']>;
   imageContentType: FormControl<IEvent['imageContentType']>;
   tipoEvento: FormControl<IEvent['tipoEvento']>;
-  eventDate: FormControl<IEvent['eventDate']>;
+  startDate: FormControl<IEvent['startDate']>;
+  endDate: FormControl<IEvent['endDate']>;
+  startTime: FormControl<string | null>;
+  endTime: FormControl<string | null>;
   location: FormControl<IEvent['location']>;
   city: FormControl<IEvent['city']>;
   description: FormControl<IEvent['description']>;
+  seatCapacity: FormControl<IEvent['seatCapacity']>;
   artists: FormControl<IEvent['artists']>;
+  ratings: FormControl<IEvent['ratings']>;
 };
 
 export type EventFormGroup = FormGroup<EventFormGroupContent>;
@@ -51,14 +50,31 @@ export class EventFormService {
       }),
       image: new FormControl(eventRawValue.image),
       imageContentType: new FormControl(eventRawValue.imageContentType),
-      tipoEvento: new FormControl(eventRawValue.tipoEvento),
-      eventDate: new FormControl(eventRawValue.eventDate),
+      tipoEvento: new FormControl(eventRawValue.tipoEvento, {
+        validators: [Validators.required],
+      }),
+      startDate: new FormControl(eventRawValue.startDate, {
+        validators: [Validators.required],
+      }),
+      endDate: new FormControl(eventRawValue.endDate, {
+        validators: [Validators.required],
+      }),
+      startTime: new FormControl('', {
+        validators: [Validators.required],
+      }),
+      endTime: new FormControl('', {
+        validators: [Validators.required],
+      }),
       location: new FormControl(eventRawValue.location),
       city: new FormControl(eventRawValue.city),
       description: new FormControl(eventRawValue.description, {
         validators: Validators.maxLength(254),
       }),
+      seatCapacity: new FormControl(eventRawValue.seatCapacity, {
+        validators: [Validators.min(2), Validators.required],
+      }),
       artists: new FormControl(eventRawValue.artists),
+      ratings: new FormControl(eventRawValue.ratings),
     });
   }
 
