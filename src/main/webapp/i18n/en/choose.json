@@ -1,0 +1,10 @@
+{
+  "mFinder1App": {
+    "choose": {
+      "usePlatform": "¿How will you use this platform?",
+      "pick": "Pick what is your profile and register",
+      "listenMusic": "I will only listen to music",
+      "shareMusic": "I will share my own music"
+    }
+  }
+}

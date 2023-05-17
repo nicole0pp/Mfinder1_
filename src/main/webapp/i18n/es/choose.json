@@ -1,0 +1,10 @@
+{
+  "mFinder1App": {
+    "choose": {
+      "usePlatform": "¿De qué forma usarás la plataforma??",
+      "pick": "Elige con cuál perfil eliges",
+      "listenMusic": "Solo escucharé música",
+      "shareMusic": "Compartiré mi propia música"
+    }
+  }
+}
