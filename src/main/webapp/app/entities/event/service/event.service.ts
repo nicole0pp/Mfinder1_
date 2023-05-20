@@ -67,8 +67,9 @@ export class EventService {
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IEvent[]>(this.resourceUrl, { params: options, observe: 'response' });
-    // .pipe(map(res => this.convertResponseArrayFromServer(res)));
+    return this.http
+      .get<RestEvent[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

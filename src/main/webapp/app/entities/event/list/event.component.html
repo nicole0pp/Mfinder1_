@@ -35,39 +35,38 @@
           <span jhiTranslate="mFinder1App.event.home.notFound">Ningún Evento encontrado</span>
         </div>
         <div class="container" *ngIf="events && events.length > 0">
-          <div class="row row-cols-md-3 g-3">
+          <div class="row row-cols-md-4 g-6">
             <span *ngFor="let event of events; trackBy: trackId" data-cy="entityTable">
-              <div class="col" style="border-style: solid; color: white">
-                <div class="card justify-content-center align-items-center">
+              <div class="col" style="border-style: solid; color: white; width: 30rem">
+                <div class="card justify-content-center align-items-center" style="width: 30rem; height: fit-content">
                   <img
                     class="card-img-top"
                     *ngIf="event.image"
-                    style="width: 100%"
+                    style="width: 90%"
                     [src]="'data:' + event.imageContentType + ';base64,' + event.image"
                   />
-                  <div class="card-body">
+                  <div class="card-body" style="width: 90%">
                     <h3 class="card-title">
-                      <span jhiTranslate="mFinder1App.event.home.name" style="font-weight: bold">Nombre del evento</span>
-                      &nbsp;{{ event.name }}
+                      <span style="font-weight: bold"
+                        ><a [routerLink]="['/event', event.id, 'view']">{{ event.name }}</a></span
+                      >
                     </h3>
                     <p class="card-text">
-                      <span jhiTranslate="mFinder1App.event.home.artist">Artistas Invitados</span>
-                      <a *ngFor="let artist of event.artists"> {{ event.artists }} </a>
+                      <span style="color: rgb(221, 65, 65); font-weight: bold">{{ event.startDate | formatMediumDatetime }}</span>
+                    </p>
+                    <p class="card-text">
+                      <span
+                        >{{ event.location }} • &nbsp;<span jhiTranslate="{{ 'mFinder1App.city.' + event.city }}">{{
+                          event.city
+                        }}</span></span
+                      >
                     </p>
                     <p class="card-text">
                       <span jhiTranslate="mFinder1App.event.home.tipoEvento"> Tipo de evento</span>
-                      <a *ngFor="let tipoEvento of tipoEventoValues">{{ 'mFinder1App.TipoEvento.' + tipoEvento | translate }}</a>
+                      <a jhiTranslate="{{ 'mFinder1App.TipoEvento.' + event.tipoEvento }}">{{ event.tipoEvento }}</a>
                     </p>
-                    <p class="card-text">
-                      <span jhiTranslate="mFinder1App.event.home.startDate">Fecha del evento</span>
-                      <a>{{ event.startDate }}</a>
-                    </p>
-                    <p class="card-text">
-                      <span jhiTranslate="mFinder1App.event.home.city">Ciudad del evento</span>
-                      <a>{{ event.city }}</a>
-                    </p>
-                    <div class="btn-group text-center align-items-center justify-self-center">
-                      <button
+                    <div class="btn-group text-center align-items-center justify-self-center" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                      <!-- <button
                         type="submit"
                         [routerLink]="['/event', event.id, 'view']"
                         class="btn btn-info btn-sm"
@@ -75,7 +74,7 @@
                       >
                         <fa-icon icon="eye"></fa-icon>
                         <span class="d-none d-md-inline" jhiTranslate="mFinder1App.event.action.view">Detalles</span>
-                      </button>
+                      </button> -->
                       <button
                         type="submit"
                         queryParamsHandling="merge"

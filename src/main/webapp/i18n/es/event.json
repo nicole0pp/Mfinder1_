@@ -19,7 +19,7 @@
         "createLabel": "Crear un nuevo evento",
         "createOrEditLabel": "Crear o Editar un Evento",
         "name": "Titulo del evento: ",
-        "tipoEvento": "El tipo de evento: ",
+        "tipoEvento": "Tipo de evento: ",
         "startDate": "Fecha de incio del evento",
         "endDate": "Fecha de final del evento",
         "location": "Dirección: ",
