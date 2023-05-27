@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -18,7 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "event")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Event implements Serializable {
 
@@ -47,11 +47,11 @@ public class Event implements Serializable {
 
     @NotNull
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private Instant startDate;
 
     @NotNull
     @Column(name = "end_date", nullable = false)
-    private Date endDate;
+    private Instant endDate;
 
     @Column(name = "location")
     private String location;
@@ -68,24 +68,20 @@ public class Event implements Serializable {
     @Column(name = "seating_capacity", nullable = false)
     private Integer seatCapacity;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    @JoinTable(
-        name = "artist_event",
-        joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
-        inverseJoinColumns = { @JoinColumn(name = "artist_id", referencedColumnName = "id") }
-    )
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @ManyToMany
+    @JoinTable(name = "artist_event", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "artist_id"))
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "events" }, allowSetters = true)
     private Set<Artist> artists = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JsonIgnore
     @JoinTable(
         name = "rating_event",
         joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "rating_id", referencedColumnName = "id") }
     )
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Rating> ratings = new HashSet<>();
 
     public Long getId() {
@@ -153,29 +149,29 @@ public class Event implements Serializable {
         this.tipoEvento = tipoEvento;
     }
 
-    public Date getStartDate() {
+    public Instant getStartDate() {
         return this.startDate;
     }
 
-    public Event startDate(Date startDate) {
+    public Event startDate(Instant startDate) {
         this.setStartDate(startDate);
         return this;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Instant getEndDate() {
         return this.endDate;
     }
 
-    public Event endEvent(Date endDate) {
+    public Event endEvent(Instant endDate) {
         this.setEndDate(endDate);
         return this;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 
@@ -232,11 +228,28 @@ public class Event implements Serializable {
     }
 
     public Set<Artist> getArtists() {
-        return artists;
+        return this.artists;
     }
 
     public void setArtists(Set<Artist> artists) {
         this.artists = artists;
+    }
+
+    public Event artists(Set<Artist> artists) {
+        this.setArtists(artists);
+        return this;
+    }
+
+    public Event addArtist(Artist artist) {
+        this.artists.add(artist);
+        artist.getEvents().add(this);
+        return this;
+    }
+
+    public Event removeArtist(Artist artist) {
+        this.artists.remove(artist);
+        artist.getEvents().remove(this);
+        return this;
     }
 
     public Set<Rating> getRatings() {

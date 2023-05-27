@@ -8,6 +8,8 @@ import {
   faBook,
   faCalendarAlt,
   faCalendarDays,
+  faCalendar,
+  faCalendarTimes,
   faCheck,
   faCloud,
   faCogs,
@@ -44,6 +46,8 @@ import {
   faSchool,
   faStar,
   faMapLocationDot,
+  faLocationDot,
+  faLocationPin,
   faHourglassEmpty,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
@@ -58,6 +62,8 @@ export const fontAwesomeIcons = [
   faBook,
   faCalendarAlt,
   faCalendarDays,
+  faCalendar,
+  faCalendarTimes,
   faCheck,
   faCloud,
   faCogs,
@@ -94,6 +100,8 @@ export const fontAwesomeIcons = [
   faSchool,
   faStar,
   faMapLocationDot,
+  faLocationDot,
+  faLocationPin,
   faHourglassEmpty,
   // jhipster-needle-add-icon-import
 ];

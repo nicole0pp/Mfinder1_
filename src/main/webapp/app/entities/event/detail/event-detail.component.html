@@ -1,61 +1,134 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="event">
-      <h2 data-cy="eventDetailsHeading"><span jhiTranslate="mFinder1App.event.list.title">Event</span></h2>
-
-      <hr />
-
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ event.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.event.name">Name</span></dt>
-        <dd>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet" />
+<div class="container">
+  <div class="row" *ngIf="event && event.image">
+    <div
+      class="bg-image text-center"
+      style="
+        background-image: url('./../../../../content/images/background-event-detail.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      "
+    >
+      <img
+        width="800"
+        height="400"
+        style="align-self: center; justify-self: center"
+        *ngIf="event.image"
+        [src]="'data:' + event.imageContentType + ';base64,' + event.image"
+      />
+    </div>
+  </div>
+</div>
+<div class="d-flex">
+  <div *ngIf="event">
+    <div class="row jh-entity-details">
+      <div class="col-8" style="position: initial; padding-left: 6%">
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+        &nbsp;
+        <h2>
+          <span jhiTranslate="mFinder1App.event.list.title">Event</span>
           <span>{{ event.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.event.list.image">Picture</span></dt>
-        <dd>
-          <div *ngIf="event.image">
-            <img
-              class="card-img-top"
-              *ngIf="event.image"
-              style="width: 100%"
-              [src]="'data:' + event.imageContentType + ';base64,' + event.image"
-            />
+        </h2>
+        <p *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <span jhiTranslate="mFinder1App.event.list.id" style="font-weight: bold; color: rgb(59, 127, 244)">ID</span
+          ><span>{{ event.id }}</span>
+        </p>
+        <div class="row rounded p-1" style="background-color: #fff; position: relative; margin: 2% 0 5% 2%">
+          <h3 style="color: black; font-size: 20.5 px; font-family: 'Inter'">Cuándo y dónde</h3>
+          <div class="col rounded m-3" style="background-color: rgb(194, 193, 193)">
+            <div class="row">
+              <div class="col-2">
+                <fa-icon icon="calendar" id="calendar" [fixedWidth]="true"></fa-icon>
+              </div>
+              <div class="col" style="color: black; margin-top: 2%">
+                <h4 style="color: black; font-weight: bold; font-family: 'Roboto Condensed'">Fecha y Hora</h4>
+                <p>
+                  <span jhiTranslate="mFinder1App.event.list.startDate">startDate</span>
+                  <span style="color: aliceblue">{{ event.startDate | formatMediumDatetime }}</span>
+                  <br />
+                  <span jhiTranslate="mFinder1App.event.list.endDate">endDate</span>
+                  <span style="color: aliceblue">{{ event.endDate | formatMediumDatetime }}</span>
+                </p>
+              </div>
+            </div>
           </div>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.event.list.tipoEvento">TipoEvento</span></dt>
-        <dd>
-          <span
-            ><a jhiTranslate="{{ 'mFinder1App.TipoEvento.' + event.tipoEvento }}">{{ event.tipoEvento }}, </a></span
-          >
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.event.list.startDate">startDate</span></dt>
-        <dd>
-          <span>{{ event.startDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.event.list.endDate">endDate</span></dt>
-        <dd>
-          <span>{{ event.endDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.event.list.city">Event City</span></dt>
-        <dd>
-          <span>{{ event.city }}</span>
-        </dd>
-      </dl>
+          <div class="col rounded m-3" style="background-color: rgb(194, 193, 193)">
+            <div class="row">
+              <div class="col-2">
+                <fa-icon icon="location-dot" id="location" [fixedWidth]="true"></fa-icon>
+              </div>
+              <div class="col" style="margin-top: 2%">
+                <h4 style="color: black; font-weight: bold; font-family: 'Roboto Condensed'">Ubicación</h4>
+                <p style="color: aliceblue">
+                  {{ event.location }}
+                  <br />
+                  <span jhiTranslate="{{ 'mFinder1App.city.' + event.city }}"> {{ event.city }} </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- ESTO SERIA UNA MAPA DEPENDIENDO DE LA LOCALIZACION, ES UNA EJEMPLO, DEBERIA DE HABILITAR LA API DE GOOGLE MAPS-->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d35146.64130571919!2d-3.919862570187618!3d40.26731586528576!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd41934aaa7d9dc5%3A0x82b5565e03ea47c4!2sSenda%20M%C3%A1gica!5e0!3m2!1ses!2ses!4v1684591757347!5m2!1ses!2ses"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
-      </button>
+        <div class="row rounded p-1" style="background-color: #fff; position: relative; margin: 2% 0 5% 2%">
+          <h3 style="color: black; font-size: 20.5 px; font-family: 'Inter'">Acerca de este evento</h3>
 
-      <button type="button" [routerLink]="['/event', event.id, 'update-view']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
-      </button>
+          <div class="container rounded" style="border-width: 3px; border-style: solid; border-color: #8f8f8f">
+            <h4 hiTranslate="mFinder1App.event.list.tipoEvento" style="color: black; font-weight: bold; font-family: 'Roboto Condensed'">
+              Tipo de evento
+            </h4>
+            <span style="color: rgb(120, 120, 120)" jhiTranslate="{{ 'mFinder1App.TipoEvento.' + event.tipoEvento }}">
+              {{ event.tipoEvento }},
+            </span>
+          </div>
+          <div class="container rounded" style="border-width: 3px; border-style: solid; border-color: #8f8f8f">
+            <h4 jhiTranslate="mFinder1App.event.list.description" style="color: black; font-weight: bold; font-family: 'Roboto Condensed'">
+              Descripcion del evento
+            </h4>
+            <p style="color: rgb(120, 120, 120)">{{ event.description }}</p>
+          </div>
+          <div class="container rounded" style="border-width: 3px; border-style: solid; border-color: #8f8f8f">
+            <h4 jhiTranslate="mFinder1App.event.list.artist" style="color: black; font-weight: bold; font-family: 'Roboto Condensed'">
+              Artistas del evento
+            </h4>
+            <span *ngFor="let artist of event.artists; let last = last">
+              <a [routerLink]="['/artist', artist.id, 'view']">{{ artist.artistName }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
+            <p style="color: rgb(120, 120, 120)">hol</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="position: initial; padding-left: 6%">
+        <button
+          *jhiHasAnyAuthority="'ROLE_ADMIN'"
+          style="margin-top: 4%"
+          type="button"
+          [routerLink]="['/event', event.id, 'update-view']"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+        <!-- <button type="submit" (click)="create()" data-cy="entityCreateButton" class="btn btn-primary jh-create-entity create-event">
+            <fa-icon icon="plus"></fa-icon>
+            <span jhiTranslate="mFinder1App.event.home.createLabel"> Crear un nuevo Evento </span>
+          </button> -->
+      </div>
     </div>
   </div>
 </div>

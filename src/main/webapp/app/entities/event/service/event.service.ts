@@ -7,7 +7,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEvent, NewEvent } from '../event.model';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT, DATE_HOURS, DATE_TIME_FORMAT } from 'app/config/input.constants';
 import dayjs from 'dayjs/esm';
 
 export type PartialUpdateEvent = Partial<IEvent> & Pick<IEvent, 'id'>;
@@ -31,20 +31,9 @@ export class EventService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(event: NewEvent, startTime?: string | null, endTime?: string | null): Observable<EntityResponseType> {
-    if (startTime && endTime) {
-      let params = new HttpParams().set('startTime', startTime).set('endTime', endTime);
-
-      const copy = this.convertDateFromClient(event);
-      return this.http
-        .post<RestEvent>(this.resourceUrl, copy, { observe: 'response', params: params })
-        .pipe(map(res => this.convertResponseFromServer(res)));
-    } else {
-      const copy = this.convertDateFromClient(event);
-      return this.http
-        .post<RestEvent>(this.resourceUrl, copy, { observe: 'response' })
-        .pipe(map(res => this.convertResponseFromServer(res)));
-    }
+  create(event: NewEvent): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(event);
+    return this.http.post<RestEvent>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(event: IEvent): Observable<EntityResponseType> {
@@ -59,10 +48,10 @@ export class EventService {
     // .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<IEvent> {
-    return this.http.get<IEvent>(`${this.resourceUrl}/${id}`);
-    // .pipe(map(res => this.convertResponseFromServer(res)));
-    // return this.http.get<IEvent>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<RestEvent>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -107,8 +96,8 @@ export class EventService {
   protected convertDateFromClient<T extends IEvent | NewEvent | PartialUpdateEvent>(event: T): RestOf<T> {
     return {
       ...event,
-      startDate: event.startDate?.format(DATE_FORMAT) ?? null,
-      endDate: event.endDate?.format(DATE_FORMAT) ?? null,
+      startDate: event.startDate?.toJSON() ?? null,
+      endDate: event.endDate?.toJSON() ?? null,
     };
   }
 
@@ -119,7 +108,9 @@ export class EventService {
       endDate: restEvent.endDate ? dayjs(restEvent.endDate) : undefined,
     };
   }
-
+  artist(): Observable<string[]> {
+    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/artistsString'));
+  }
   protected convertResponseFromServer(res: HttpResponse<RestEvent>): HttpResponse<IEvent> {
     return res.clone({
       body: res.body ? this.convertDateFromServer(res.body) : null,

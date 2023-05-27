@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 import { IEvent } from '../event.model';
 import { DataUtils } from 'app/core/util/data-util.service';
-import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
-import { EventUpdateComponent } from '../update/event-update.component';
-import { DEFAULT_SORT_DATA, ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
-import { PAGE_HEADER } from 'app/config/pagination.constants';
 
 @Component({
   selector: 'jhi-event-detail',
   templateUrl: './event-detail.component.html',
+  styleUrls: ['../event.css'],
 })
 export class EventDetailComponent implements OnInit {
   event: IEvent | null = null;

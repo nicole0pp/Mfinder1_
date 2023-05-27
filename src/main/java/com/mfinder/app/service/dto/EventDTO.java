@@ -1,11 +1,12 @@
 package com.mfinder.app.service.dto;
 
+import com.mfinder.app.domain.Artist;
 import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 
@@ -28,10 +29,10 @@ public class EventDTO implements Serializable {
     private TipoEvento tipoEvento;
 
     @NotNull
-    private Date startDate;
+    private Instant startDate;
 
     @NotNull
-    private Date endDate;
+    private Instant endDate;
 
     private String location;
 
@@ -39,6 +40,8 @@ public class EventDTO implements Serializable {
     private City city;
 
     private String description;
+
+    private Set<String> artists;
 
     @NotNull
     private Integer seatCapacity;
@@ -83,19 +86,19 @@ public class EventDTO implements Serializable {
         this.tipoEvento = tipoEvento;
     }
 
-    public Date getStartDate() {
+    public Instant getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 
@@ -121,6 +124,14 @@ public class EventDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<String> getArtist() {
+        return artists;
+    }
+
+    public void setArtist(Set<String> artists) {
+        this.artists = artists;
     }
 
     public Integer getSeatCapacity() {
@@ -179,6 +190,9 @@ public class EventDTO implements Serializable {
             "'" +
             ", description='" +
             getDescription() +
+            "'" +
+            ", artists='" +
+            getArtist() +
             "'" +
             "}"
         );

@@ -43,6 +43,9 @@
         </createTable>
 
         <createTable tableName="artist_event">
+            <!-- <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column> -->
             <column name="artist_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

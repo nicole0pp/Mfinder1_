@@ -15,6 +15,7 @@
       "endTime": "Hora estimada del final del evento",
       "seatCapacity": "Capacidad de aforo",
       "home": {
+        "refreshListLabel": "Refrescar lista de eventos",
         "notFound": "Ningun evento encontrado",
         "createLabel": "Crear un nuevo evento",
         "createOrEditLabel": "Crear o Editar un Evento",
@@ -32,15 +33,17 @@
         "view": "Detalles"
       },
       "list": {
-        "title": "Detalles del evento",
+        "title": "Detalles del evento: ",
+        "id": "Id del evento: ",
         "image": "Imagen",
-        "tipoEvento": "Tipo de evento",
-        "startDate": "Fecha de comienzo del evento",
-        "endDate": "Fecha de finalizacion del evento",
+        "tipoEvento": "Tipo de evento: ",
+        "startDate": "Fecha de inicio:",
+        "endDate": "Fecha de fin: ",
         "location": "Dirección del evento",
         "city": "Ciudad del evento",
-        "description": "Descripción",
-        "seatingCapacity": "Capacidad de personas"
+        "description": "Descripción del evento",
+        "seatingCapacity": "Capacidad de personas",
+        "artist": "Artistas del evento"
       },
       "delete": {
         "question": "¿Está seguro que desea eliminar este evento??"

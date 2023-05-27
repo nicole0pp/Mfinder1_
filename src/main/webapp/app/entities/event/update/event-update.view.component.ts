@@ -26,15 +26,15 @@ export class EventUpdateViewComponent implements OnInit {
   isSaving = false;
   event: IEvent | null = null;
   userSharedCollecion: IUser[] = [];
+
   tipoEventoValues = Object.keys(TipoEvento);
   cityValues = Object.keys(City);
-  artists: string[] = [];
+  artistsSharedCollection: IArtist[] = [];
 
   editForm: EventFormGroup = this.eventFormService.createEventFormGroup();
 
   constructor(
     protected dataUtils: DataUtils,
-    private route: ActivatedRoute,
     protected eventManager: EventManager,
     protected eventService: EventService,
     protected eventFormService: EventFormService,
@@ -45,19 +45,11 @@ export class EventUpdateViewComponent implements OnInit {
   compareArtist = (o1: IArtist | null, o2: IArtist | null): boolean => this.artistService.compareArtist(o1, o2);
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ event }) => {
-      if (event) {
-        this.editForm.reset(event);
-      } else {
-        this.editForm.reset(event.newEvent);
-      }
-    });
     this.activatedRoute.data.subscribe(({ event }) => {
       this.event = event;
       if (event) {
         this.updateForm(event);
       }
-      this.eventService.query();
       this.loadRelationshipsOptions();
     });
   }
@@ -82,38 +74,11 @@ export class EventUpdateViewComponent implements OnInit {
   }
   save(): void {
     this.isSaving = true;
-    dayjs.locale('es');
-    const startTime = Object(this.editForm.get('startTime')?.value);
-    var stringStartTime = '';
-    if (startTime != null) {
-      for (const clave in startTime) {
-        if (startTime.hasOwnProperty(clave)) {
-          const valor = startTime[clave];
-          stringStartTime += `${valor}: `;
-        }
-      }
-      stringStartTime = stringStartTime.slice(0, -2);
-    }
-    const endTime = Object(this.editForm.get('endTime')?.value);
-    var stringEndTime = '';
-    if (endTime != null) {
-      for (const clave in endTime) {
-        if (endTime.hasOwnProperty(clave)) {
-          const valor = endTime[clave];
-          stringEndTime += `${valor}: `;
-        }
-      }
-      stringEndTime = stringEndTime.slice(0, -2);
-    }
     const event = this.eventFormService.getEvent(this.editForm);
     if (event.id !== null) {
-      this.eventService.update(event).subscribe({
-        next: () => this.onSaveSuccess(),
-        error: () => this.onSaveError(),
-      });
-      // this.subscribeToSaveResponse(this.eventService.update(event));
+      this.subscribeToSaveResponse(this.eventService.update(event));
     } else {
-      this.subscribeToSaveResponse(this.eventService.create(event, stringStartTime, stringEndTime));
+      this.subscribeToSaveResponse(this.eventService.create(event));
     }
   }
 
@@ -125,13 +90,11 @@ export class EventUpdateViewComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.isSaving = false;
     this.previousState();
   }
 
   protected onSaveError(): void {
     // Api for inheritance.
-    this.isSaving = false;
   }
 
   protected onSaveFinalize(): void {
@@ -141,9 +104,20 @@ export class EventUpdateViewComponent implements OnInit {
   protected updateForm(event: IEvent): void {
     this.event = event;
     this.eventFormService.resetForm(this.editForm, event);
+
+    this.artistsSharedCollection = this.artistService.addArtistToCollectionIfMissing<IArtist>(
+      this.artistsSharedCollection,
+      ...(event.artists ?? [])
+    );
   }
 
   protected loadRelationshipsOptions(): void {
-    this.artistService.artists().subscribe(artists => (this.artists = artists));
+    this.artistService
+      .query()
+      .pipe(map((res: HttpResponse<IArtist[]>) => res.body ?? []))
+      .pipe(
+        map((artists: IArtist[]) => this.artistService.addArtistToCollectionIfMissing<IArtist>(artists, ...(this.event?.artists ?? [])))
+      )
+      .subscribe((artists: IArtist[]) => (this.artistsSharedCollection = artists));
   }
 }

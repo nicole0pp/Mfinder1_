@@ -10,6 +10,7 @@
           Modified the entity Event. 20230506124616_modified_entity_Event.xml
      -->
      <changeSet id="20230506124616" author="nicole">
+     <!-- <column name="start_date" type="${datetimeType}"> -->
           <addColumn tableName="event" >
                <column name="end_date" type="timestamp">
                     <constraints nullable="false" />

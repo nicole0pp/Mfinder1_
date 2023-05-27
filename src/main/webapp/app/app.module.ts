@@ -7,7 +7,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import dayjs from 'dayjs/esm';
-import { NgbDateAdapter, NgbDatepickerConfig, NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import './config/dayjs';
@@ -60,16 +60,11 @@ import { EventModule } from './entities/event/event.module';
   bootstrap: [MainComponent],
 })
 export class AppModule {
-  constructor(
-    applicationConfigService: ApplicationConfigService,
-    iconLibrary: FaIconLibrary,
-    dpConfig: NgbDatepickerConfig,
-    dpConfigTime: NgbTimepickerConfig
-  ) {
+  constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);
     dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
-    dpConfigTime.minuteStep = 5;
+    // dpConfigTime.minuteStep = 5;
   }
 }

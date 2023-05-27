@@ -43,13 +43,15 @@ public class Artist implements Serializable {
     @JsonIgnoreProperties(value = { "listDetails", "artist", "client" }, allowSetters = true)
     private Set<FavoriteList> favoriteLists = new HashSet<>();
 
+    @ManyToMany(mappedBy = "artists")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = "artists", allowSetters = true)
+    private Set<Event> events = new HashSet<>();
+
     //Relacion con el User
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
-
-    @ManyToMany(mappedBy = "artists")
-    private Set<Event> events;
 
     public Long getId() {
         return this.id;
@@ -162,6 +164,37 @@ public class Artist implements Serializable {
     public Artist removeFavoriteList(FavoriteList favoriteList) {
         this.favoriteLists.remove(favoriteList);
         favoriteList.setArtist(null);
+        return this;
+    }
+
+    public Set<Event> getEvents() {
+        return this.events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        if (this.events != null) {
+            this.events.forEach(i -> i.removeArtist(this));
+        }
+        if (events != null) {
+            events.forEach(i -> i.addArtist(this));
+        }
+        this.events = events;
+    }
+
+    public Artist events(Set<Event> events) {
+        this.setEvents(events);
+        return this;
+    }
+
+    public Artist addEvent(Event event) {
+        this.events.add(event);
+        event.getArtists().add(this);
+        return this;
+    }
+
+    public Artist removeEvent(Event event) {
+        this.events.remove(event);
+        event.getArtists().remove(this);
         return this;
     }
 

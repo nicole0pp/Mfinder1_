@@ -77,22 +77,11 @@
             <input
               id="field_startDate"
               data-cy="startDate"
-              type="text"
+              type="datetime-local"
               class="form-control"
               name="startDate"
-              ngbDatepicker
-              #startDateDp="ngbDatepicker"
               formControlName="startDate"
-              style="height: fit-content"
             />
-            <button
-              type="button"
-              class="btn btn-secondary fixed-top"
-              style="height: fit-content; margin-top: 0"
-              (click)="startDateDp.toggle()"
-            >
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
           </div>
         </div>
         <div class="col">
@@ -101,49 +90,11 @@
             <input
               id="field_endDate"
               data-cy="endDate"
-              type="text"
+              type="datetime-local"
               class="form-control"
               name="endDate"
-              ngbDatepicker
-              #endDateDp="ngbDatepicker"
               formControlName="endDate"
-              style="height: fit-content"
             />
-            <button
-              type="button"
-              class="btn btn-secondary fixed-top"
-              style="height: fit-content; margin-top: 0"
-              (click)="endDateDp.toggle()"
-            >
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="form-label" for="field_startTime" jhiTranslate="mFinder1App.event.startTime"> Hora de comienzo del evento</label>
-          <div class="input-group" style="align-items: baseline; justify-content: center">
-            <ngb-timepicker
-              id="field_startTime"
-              type="text"
-              style="height: fit-content"
-              minuteStep:5
-              formControlName="startTime"
-            ></ngb-timepicker>
-          </div>
-        </div>
-
-        <div class="col">
-          <label class="form-label" for="field_endTime" jhiTranslate="mFinder1App.event.endTime"> Hora de final del evento</label>
-          <div class="input-group" style="align-items: baseline; justify-content: center">
-            <ngb-timepicker
-              id="field_endTime"
-              type="text"
-              style="height: fit-content"
-              minuteStep:5
-              formControlName="endTime"
-            ></ngb-timepicker>
           </div>
         </div>
       </div>
@@ -180,13 +131,13 @@
           class="form-control select"
           multiple
           size="3"
-          data-mdb-filter="true"
-          name="artist"
+          name="artists"
           formControlName="artists"
           id="field_artists"
-          aria-label="Disabled select example"
+          data-cy="artist"
+          [compareWith]="compareArtist"
         >
-          <option *ngFor="let artist of artists" [value]="artist">{{ artist }}</option>
+          <option [ngValue]="artistOption" *ngFor="let artistOption of artistsSharedCollection">{{ artistOption.artistName }}</option>
         </select>
       </div>
       <div class="row mb-3" style="margin-right: 0px; margin-left: 0px">

@@ -13,6 +13,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 import { EventUpdateComponent } from '../update/event-update.component';
 import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
 import { City } from 'app/entities/enumerations/city.model';
+import { EventFormService } from '../update/event-form.service';
 
 @Component({
   selector: 'jhi-event',
@@ -27,6 +28,7 @@ export class EventComponent implements OnInit {
   cityValues = Object.keys(City);
   predicate = 'id';
   ascending = true;
+  clienteZonaHoraria?: string;
 
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
@@ -34,11 +36,14 @@ export class EventComponent implements OnInit {
   fileUrl = '';
   constructor(
     protected eventService: EventService,
+    protected eventFormService: EventFormService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected dataUtils: DataUtils,
     protected modalService: NgbModal
-  ) {}
+  ) {
+    this.obtenerZonaHorariaCliente();
+  }
 
   trackId = (_index: number, item: IEvent): number => this.eventService.getEventIdentifier(item);
 
@@ -66,6 +71,30 @@ export class EventComponent implements OnInit {
           this.onResponseSuccess(res);
         },
       });
+  }
+  obtenerZonaHorariaCliente() {
+    this.clienteZonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
+  update(event: IEvent): void {
+    // const urlParts = ['/event', event.id.toString(), 'edit'];
+    // const url = urlParts.join('/');
+    // this.router.navigateByUrl(url);
+    // this.router.navigate(['./'], {
+    //   relativeTo: this.activatedRoute,
+    //   queryParams: queryParamsObj,
+    // }
+    // const modalRef = this.modalService.open(EventUpdateComponent, { size: 'lg', backdrop: 'static' });
+    // modalRef.componentInstance.eventItem = event;
+    // modalRef.closed
+    //   .pipe(
+    //     filter(reason => reason === ITEM_SAVED_EVENT),
+    //     switchMap(() => this.loadFromBackendWithRouteInformations())
+    //   )
+    //   .subscribe({
+    //     next: (res: EntityArrayResponseType) => {
+    //       this.onResponseSuccess(res);
+    //     },
+    //   });
   }
   delete(event: IEvent): void {
     const modalRef = this.modalService.open(EventDeleteDialogComponent, { size: 'lg', backdrop: 'static' });

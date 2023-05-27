@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -25,9 +25,10 @@ import dayjs from 'dayjs/esm';
 export class EventUpdateComponent implements OnInit {
   isSaving = false;
   event: IEvent | null = null;
+
   tipoEventoValues = Object.keys(TipoEvento);
   cityValues = Object.keys(City);
-  artists: string[] = [];
+  artistsSharedCollection: IArtist[] = [];
 
   editForm: EventFormGroup = this.eventFormService.createEventFormGroup();
 
@@ -37,8 +38,8 @@ export class EventUpdateComponent implements OnInit {
     protected eventService: EventService,
     protected eventFormService: EventFormService,
     protected artistService: ArtistService,
-    protected activatedRoute: ActivatedRoute,
-    protected activeModal: NgbActiveModal
+    protected activeModal: NgbActiveModal,
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   compareArtist = (o1: IArtist | null, o2: IArtist | null): boolean => this.artistService.compareArtist(o1, o2);
@@ -75,34 +76,11 @@ export class EventUpdateComponent implements OnInit {
   }
   save(): void {
     this.isSaving = true;
-    dayjs.locale('es');
-    const startTime = Object(this.editForm.get('startTime')?.value);
-    var stringStartTime = '';
-    if (startTime != null) {
-      for (const clave in startTime) {
-        if (startTime.hasOwnProperty(clave)) {
-          const valor = startTime[clave];
-          stringStartTime += `${valor}: `;
-        }
-      }
-      stringStartTime = stringStartTime.slice(0, -2);
-    }
-    const endTime = Object(this.editForm.get('endTime')?.value);
-    var stringEndTime = '';
-    if (endTime != null) {
-      for (const clave in endTime) {
-        if (endTime.hasOwnProperty(clave)) {
-          const valor = endTime[clave];
-          stringEndTime += `${valor}: `;
-        }
-      }
-      stringEndTime = stringEndTime.slice(0, -2);
-    }
     const event = this.eventFormService.getEvent(this.editForm);
     if (event.id !== null) {
       this.subscribeToSaveResponse(this.eventService.update(event));
     } else {
-      this.subscribeToSaveResponse(this.eventService.create(event, stringStartTime, stringEndTime));
+      this.subscribeToSaveResponse(this.eventService.create(event));
     }
   }
 
@@ -129,10 +107,21 @@ export class EventUpdateComponent implements OnInit {
   protected updateForm(event: IEvent): void {
     this.event = event;
     this.eventFormService.resetForm(this.editForm, event);
+
+    this.artistsSharedCollection = this.artistService.addArtistToCollectionIfMissing<IArtist>(
+      this.artistsSharedCollection,
+      ...(event.artists ?? [])
+    );
   }
 
   protected loadRelationshipsOptions(): void {
-    this.artistService.artists().subscribe(artists => (this.artists = artists));
+    this.artistService
+      .query()
+      .pipe(map((res: HttpResponse<IArtist[]>) => res.body ?? []))
+      .pipe(
+        map((artists: IArtist[]) => this.artistService.addArtistToCollectionIfMissing<IArtist>(artists, ...(this.event?.artists ?? [])))
+      )
+      .subscribe((artists: IArtist[]) => (this.artistsSharedCollection = artists));
   }
   cancel(): void {
     this.activeModal.dismiss();

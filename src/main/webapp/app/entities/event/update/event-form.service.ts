@@ -3,29 +3,40 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { IEvent, NewEvent } from '../event.model';
 import dayjs from 'dayjs/esm';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>> & { id: T['id'] };
 
 type EventFormGroupInput = IEvent | PartialWithRequiredKeyOf<NewEvent>;
 
-type EventFormDefaults = Pick<NewEvent, 'id'>;
+/**
+ * Type that converts some properties for forms.
+ */
+type FormValueOf<T extends IEvent | NewEvent> = Omit<T, 'startDate' | 'endDate'> & {
+  startDate?: string | null;
+  endDate?: string | null;
+};
+
+type EventFormRawValue = FormValueOf<IEvent>;
+
+type NewEventFormRawValue = FormValueOf<NewEvent>;
+
+type EventFormDefaults = Pick<NewEvent, 'id' | 'startDate' | 'endDate' | 'artists'>;
 
 type EventFormGroupContent = {
-  id: FormControl<IEvent['id'] | NewEvent['id']>;
-  name: FormControl<IEvent['name']>;
-  image: FormControl<IEvent['image']>;
-  imageContentType: FormControl<IEvent['imageContentType']>;
-  tipoEvento: FormControl<IEvent['tipoEvento']>;
-  startDate: FormControl<IEvent['startDate']>;
-  endDate: FormControl<IEvent['endDate']>;
-  startTime: FormControl<string | null>;
-  endTime: FormControl<string | null>;
-  location: FormControl<IEvent['location']>;
-  city: FormControl<IEvent['city']>;
-  description: FormControl<IEvent['description']>;
-  seatCapacity: FormControl<IEvent['seatCapacity']>;
-  artists: FormControl<IEvent['artists']>;
-  ratings: FormControl<IEvent['ratings']>;
+  id: FormControl<EventFormRawValue['id'] | NewEvent['id']>;
+  name: FormControl<EventFormRawValue['name']>;
+  image: FormControl<EventFormRawValue['image']>;
+  imageContentType: FormControl<EventFormRawValue['imageContentType']>;
+  tipoEvento: FormControl<EventFormRawValue['tipoEvento']>;
+  startDate: FormControl<EventFormRawValue['startDate']>;
+  endDate: FormControl<EventFormRawValue['endDate']>;
+  location: FormControl<EventFormRawValue['location']>;
+  city: FormControl<EventFormRawValue['city']>;
+  description: FormControl<EventFormRawValue['description']>;
+  seatCapacity: FormControl<EventFormRawValue['seatCapacity']>;
+  artists: FormControl<EventFormRawValue['artists']>;
+  ratings: FormControl<EventFormRawValue['ratings']>;
 };
 
 export type EventFormGroup = FormGroup<EventFormGroupContent>;
@@ -33,10 +44,10 @@ export type EventFormGroup = FormGroup<EventFormGroupContent>;
 @Injectable({ providedIn: 'root' })
 export class EventFormService {
   createEventFormGroup(event: EventFormGroupInput = { id: null }): EventFormGroup {
-    const eventRawValue = {
+    const eventRawValue = this.convertEventToEventRawValue({
       ...this.getFormDefaults(),
       ...event,
-    };
+    });
     return new FormGroup<EventFormGroupContent>({
       id: new FormControl(
         { value: eventRawValue.id, disabled: true },
@@ -59,12 +70,6 @@ export class EventFormService {
       endDate: new FormControl(eventRawValue.endDate, {
         validators: [Validators.required],
       }),
-      startTime: new FormControl('', {
-        validators: [Validators.required],
-      }),
-      endTime: new FormControl('', {
-        validators: [Validators.required],
-      }),
       location: new FormControl(eventRawValue.location),
       city: new FormControl(eventRawValue.city),
       description: new FormControl(eventRawValue.description, {
@@ -73,17 +78,17 @@ export class EventFormService {
       seatCapacity: new FormControl(eventRawValue.seatCapacity, {
         validators: [Validators.min(2), Validators.required],
       }),
-      artists: new FormControl(eventRawValue.artists),
+      artists: new FormControl(eventRawValue.artists ?? []),
       ratings: new FormControl(eventRawValue.ratings),
     });
   }
 
   getEvent(form: EventFormGroup): IEvent | NewEvent {
-    return form.getRawValue() as IEvent | NewEvent;
+    return this.convertEventRawValueToEvent(form.getRawValue() as EventFormRawValue | NewEventFormRawValue);
   }
 
   resetForm(form: EventFormGroup, event: EventFormGroupInput): void {
-    const eventRawValue = { ...this.getFormDefaults(), ...event };
+    const eventRawValue = this.convertEventToEventRawValue({ ...this.getFormDefaults(), ...event });
     form.reset(
       {
         ...eventRawValue,
@@ -93,8 +98,30 @@ export class EventFormService {
   }
 
   private getFormDefaults(): EventFormDefaults {
+    const currentTime = dayjs();
     return {
       id: null,
+      startDate: currentTime,
+      endDate: currentTime,
+      artists: [],
+    };
+  }
+
+  private convertEventRawValueToEvent(rawEvent: EventFormRawValue | NewEventFormRawValue): IEvent | NewEvent {
+    return {
+      ...rawEvent,
+      startDate: dayjs(rawEvent.startDate, DATE_TIME_FORMAT),
+      endDate: dayjs(rawEvent.endDate, DATE_TIME_FORMAT),
+    };
+  }
+
+  private convertEventToEventRawValue(
+    event: IEvent | (Partial<NewEvent> & EventFormDefaults)
+  ): EventFormRawValue | PartialWithRequiredKeyOf<NewEventFormRawValue> {
+    return {
+      ...event,
+      startDate: event.startDate ? event.startDate.format(DATE_TIME_FORMAT) : undefined,
+      endDate: event.endDate ? event.endDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }
