@@ -71,7 +71,9 @@ export class EventFormService {
         validators: [Validators.required],
       }),
       location: new FormControl(eventRawValue.location),
-      city: new FormControl(eventRawValue.city),
+      city: new FormControl(eventRawValue.city, {
+        validators: [Validators.required],
+      }),
       description: new FormControl(eventRawValue.description, {
         validators: Validators.maxLength(254),
       }),

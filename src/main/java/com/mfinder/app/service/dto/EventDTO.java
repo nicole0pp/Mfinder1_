@@ -1,6 +1,5 @@
 package com.mfinder.app.service.dto;
 
-import com.mfinder.app.domain.Artist;
 import com.mfinder.app.domain.enumeration.City;
 import com.mfinder.app.domain.enumeration.TipoEvento;
 import java.io.Serializable;
@@ -45,6 +44,8 @@ public class EventDTO implements Serializable {
 
     @NotNull
     private Integer seatCapacity;
+
+    private String createdBy;
 
     public Long getId() {
         return id;
@@ -140,6 +141,14 @@ public class EventDTO implements Serializable {
 
     public void setSeatCapacity(Integer seatCapacity) {
         this.seatCapacity = seatCapacity;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

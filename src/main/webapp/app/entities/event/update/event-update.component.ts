@@ -16,7 +16,6 @@ import { ArtistService } from 'app/entities/artist/service/artist.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEM_SAVED_EVENT } from 'app/config/navigation.constants';
 import { City } from 'app/entities/enumerations/city.model';
-import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-event-update',

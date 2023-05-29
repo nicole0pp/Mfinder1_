@@ -17,6 +17,9 @@ export interface IEvent {
   seatCapacity?: number | null;
   artists?: Pick<IArtist, 'id' | 'artistName'>[] | null;
   ratings?: string[] | null;
+  createdBy?: string;
+  lastModifiedBy?: string;
+  lastModifiedDate?: Date;
 }
 
 export type NewEvent = Omit<IEvent, 'id'> & { id: null };

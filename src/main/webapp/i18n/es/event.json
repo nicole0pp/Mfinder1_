@@ -1,6 +1,12 @@
 {
   "mFinder1App": {
     "event": {
+      "nav": {
+        "all": "Todos",
+        "byUbication": "Por ubicación",
+        "pastEvents": "Eventos pasados",
+        "yourEvents": "Tus eventos"
+      },
       "title": "Eventos",
       "name": "Titulo del evento",
       "image": "Inserta imagen de presentación",
@@ -47,6 +53,10 @@
       },
       "delete": {
         "question": "¿Está seguro que desea eliminar este evento??"
+      },
+      "byLocation": {
+        "select": "Choose by location",
+        "presentationText": "Descubre eventos en ciudades seleccionadas según tus preferencias. Encuentra conciertos, festivales y actividades culturales que te interesan. Personaliza tu experiencia filtrando por ubicaciones de tu elección. Explora opciones emocionantes y mantente actualizado con la escena de eventos local. Nuestra plataforma te brinda acceso a una variedad de eventos en las ciudades que amas. Disfruta de una experiencia única y enriquecedora con solo unos clics."
       }
     }
   }

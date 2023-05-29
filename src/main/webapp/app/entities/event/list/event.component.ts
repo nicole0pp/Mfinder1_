@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 import { IEvent } from '../event.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
@@ -14,7 +14,9 @@ import { EventUpdateComponent } from '../update/event-update.component';
 import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
 import { City } from 'app/entities/enumerations/city.model';
 import { EventFormService } from '../update/event-form.service';
-
+import dayjs from 'dayjs/esm';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 @Component({
   selector: 'jhi-event',
   templateUrl: './event.component.html',
@@ -29,13 +31,17 @@ export class EventComponent implements OnInit {
   predicate = 'id';
   ascending = true;
   clienteZonaHoraria?: string;
+  selectedCity?: string;
+  currentAccount: Account | null = null;
 
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
   fileUrl = '';
+
   constructor(
     protected eventService: EventService,
+    protected accountService: AccountService,
     protected eventFormService: EventFormService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
@@ -50,7 +56,15 @@ export class EventComponent implements OnInit {
   ngOnInit(): void {
     this.load();
   }
-
+  onNavChange(changeEvent: NgbNavChangeEvent) {
+    if (changeEvent.nextId === 3) {
+      this.getEventosPasados();
+    } else if (changeEvent.nextId === 4) {
+      this.getEventosPropios();
+    } else {
+      this.load();
+    }
+  }
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
@@ -75,27 +89,6 @@ export class EventComponent implements OnInit {
   obtenerZonaHorariaCliente() {
     this.clienteZonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
-  update(event: IEvent): void {
-    // const urlParts = ['/event', event.id.toString(), 'edit'];
-    // const url = urlParts.join('/');
-    // this.router.navigateByUrl(url);
-    // this.router.navigate(['./'], {
-    //   relativeTo: this.activatedRoute,
-    //   queryParams: queryParamsObj,
-    // }
-    // const modalRef = this.modalService.open(EventUpdateComponent, { size: 'lg', backdrop: 'static' });
-    // modalRef.componentInstance.eventItem = event;
-    // modalRef.closed
-    //   .pipe(
-    //     filter(reason => reason === ITEM_SAVED_EVENT),
-    //     switchMap(() => this.loadFromBackendWithRouteInformations())
-    //   )
-    //   .subscribe({
-    //     next: (res: EntityArrayResponseType) => {
-    //       this.onResponseSuccess(res);
-    //     },
-    //   });
-  }
   delete(event: IEvent): void {
     const modalRef = this.modalService.open(EventDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.event = event;
@@ -118,6 +111,19 @@ export class EventComponent implements OnInit {
         this.onResponseSuccess(res);
       },
     });
+  }
+
+  getEventGroups() {
+    let groups = [];
+    const groupSize = 3;
+    let totalEventsSize = this.events?.length;
+
+    if (totalEventsSize != null || totalEventsSize != undefined) {
+      for (let i = 0; i < totalEventsSize; i += groupSize) {
+        groups.push(this.events?.slice(i, i + groupSize));
+      }
+    }
+    return groups;
   }
 
   navigateToWithComponentValues(): void {
@@ -147,6 +153,7 @@ export class EventComponent implements OnInit {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.events = dataFromBody;
+    this.events?.sort((a, b) => (dayjs(b.startDate).isBefore(a.startDate) ? -1 : 1));
   }
 
   protected fillComponentAttributesFromResponseBody(data: IEvent[] | null): IEvent[] {
@@ -192,5 +199,29 @@ export class EventComponent implements OnInit {
 
   login(): void {
     this.router.navigate(['/login']);
+  }
+
+  filtrarEventosPorCiudad(): void {
+    if (this.selectedCity != '') {
+      this.eventService.getEventsByLocation(this.selectedCity?.toString()).subscribe(response => {
+        this.fillComponentAttributesFromResponseHeader(response.headers);
+        this.events = response.body as IEvent[];
+        this.events?.sort((a, b) => (dayjs(b.startDate).isBefore(a.startDate) ? -1 : 1));
+      });
+    }
+  }
+  getEventosPasados(): void {
+    this.eventService.getPastEvents().subscribe(response => {
+      this.fillComponentAttributesFromResponseHeader(response.headers);
+      this.events = response.body as IEvent[];
+      this.events?.sort((a, b) => (dayjs(b.startDate).isBefore(a.startDate) ? -1 : 1));
+    });
+  }
+  getEventosPropios(): void {
+    this.eventService.getEventsByCurrentUser().subscribe(response => {
+      this.fillComponentAttributesFromResponseHeader(response.headers);
+      this.events = response.body as IEvent[];
+      this.events?.sort((a, b) => (dayjs(b.startDate).isBefore(a.startDate) ? -1 : 1));
+    });
   }
 }

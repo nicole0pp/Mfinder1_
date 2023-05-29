@@ -61,6 +61,24 @@ export class EventService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
+  getEventsByLocation(city?: any): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestEvent[]>(`${this.resourceUrl}/city/${city}`, { params: city, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  getPastEvents(): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestEvent[]>(`${this.resourceUrl}/pastEvents`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  getEventsByCurrentUser(): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestEvent[]>(`${this.resourceUrl}/byCurrentUser`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

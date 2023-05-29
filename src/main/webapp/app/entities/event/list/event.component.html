@@ -25,11 +25,10 @@
       <fa-icon icon="plus"></fa-icon>
       <span jhiTranslate="mFinder1App.event.home.createLabel"> Crear un nuevo Evento </span>
     </button>
-    <!-- El crear un evento, será una modal!-->
   </div>
-  <nav ngbNav #nav="ngbNav" class="nav-tabs">
-    <ng-container ngbNavItem>
-      <a ngbNavLink>Todos</a>
+  <nav ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="active" (navChange)="onNavChange($event)">
+    <ng-container [ngbNavItem]="1">
+      <a ngbNavLink jhiTranslate="mFinder1App.event.nav.all">Todos</a>
       <ng-template ngbNavContent style="width: 500px">
         <jhi-alert-error></jhi-alert-error>
 
@@ -39,8 +38,92 @@
           <span jhiTranslate="mFinder1App.event.home.notFound">Ningún Evento encontrado</span>
         </div>
         <div class="container" *ngIf="events && events.length > 0">
-          <div class="row">
-            <span class="col-sm-4" *ngFor="let event of events; trackBy: trackId" data-cy="entityTable" style="height: 600px">
+          <div class="row" style="margin-top: 12px" *ngFor="let group of getEventGroups()">
+            <span class="col-sm-4" *ngFor="let event of group; trackBy: trackId" data-cy="entityTable" style="height: 600px">
+              <div class="card justify-content-center align-items-center border border-light" style="height: 600px">
+                <img
+                  class="card-img-top"
+                  *ngIf="event.image"
+                  style="width: 400px; margin-top: 2%"
+                  [src]="'data:' + event.imageContentType + ';base64,' + event.image"
+                />
+                <div class="card-body" style="width: 90%">
+                  <h3 class="card-title">
+                    <span style="font-weight: bold"
+                      ><a [routerLink]="['/event', event.id, 'view']">{{ event.name }}</a></span
+                    >
+                  </h3>
+                  <p class="card-text">
+                    <span style="color: rgb(221, 65, 65); font-weight: bold"
+                      >{{ event.startDate | formatMediumDatetime }}, {{ this.clienteZonaHoraria }}</span
+                    >
+                  </p>
+                  <p class="card-text">
+                    <span>
+                      <span>{{ event.location }}</span
+                      >&nbsp;•&nbsp;
+                      <span jhiTranslate="{{ 'mFinder1App.city.' + event.city }}">{{ event.city }}</span>
+                    </span>
+                  </p>
+                  <p class="card-text">
+                    <span jhiTranslate="mFinder1App.event.home.tipoEvento"> Tipo de evento</span>
+                    <a jhiTranslate="{{ 'mFinder1App.TipoEvento.' + event.tipoEvento }}">{{ event.tipoEvento }}</a>
+                  </p>
+                </div>
+                <p class="card-text" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                  <span>
+                    {{ event.createdBy }}
+                  </span>
+                </p>
+                <div class="card-footer btn-group text-center align-items-center justify-self-center" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                  <button
+                    type="submit"
+                    queryParamsHandling="merge"
+                    [routerLink]="['/event', event.id, 'update-view']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </button>
+                  <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngbNavItem]="2">
+      <a ngbNavLink
+        ><span jhiTranslate="mFinder1App.event.nav.byUbication">Por ubicacion</span>&nbsp;<fa-icon icon="map-location-dot"></fa-icon
+      ></a>
+      <ng-template ngbNavContent>
+        <div class="container">
+          <p jhiTranslate="mFinder1App.event.byLocation.presentationText">
+            Descubre eventos en ciudades seleccionadas según tus preferencias. Encuentra conciertos, festivales y actividades culturales que
+            te interesan. Personaliza tu experiencia filtrando por ubicaciones de tu elección. Explora opciones emocionantes y mantente
+            actualizado con la escena de eventos local. Nuestra plataforma te brinda acceso a una variedad de eventos en las ciudades que
+            amas. Disfruta de una experiencia única y enriquecedora con solo unos clics.
+          </p>
+
+          <span style="color: white">Eliga opción de ciudad &nbsp;</span>
+          <select [(ngModel)]="this.selectedCity" (change)="this.filtrarEventosPorCiudad()" class="btn btn-secondary dropdown-toggle">
+            <option [ngValue]="city" *ngFor="let city of cityValues">
+              {{ 'mFinder1App.city.' + city | translate }}
+            </option>
+          </select>
+
+          <div style="margin-top: 10px" class="alert alert-warning" id="no-result" *ngIf="events?.length === 0">
+            <span jhiTranslate="mFinder1App.event.home.notFound">Ningún Evento encontrado</span>
+          </div>
+        </div>
+        <div class="container" *ngIf="events && events.length > 0">
+          <div class="row" *ngFor="let group of getEventGroups()" style="margin-top: 12px">
+            <span class="col-sm-4" *ngFor="let event of group; trackBy: trackId" data-cy="entityTable" style="height: 600px">
               <div class="card justify-content-center align-items-center border border-light" style="height: 600px">
                 <img
                   class="card-img-top"
@@ -72,15 +155,6 @@
                   </p>
                 </div>
                 <div class="card-footer btn-group text-center align-items-center justify-self-center" *jhiHasAnyAuthority="'ROLE_ADMIN'">
-                  <!-- <button
-                      type="submit"
-                      [routerLink]="['/event', event.id, 'view']"
-                      class="btn btn-info btn-sm"
-                      data-cy="entityDetailsButton"
-                    >
-                      <fa-icon icon="eye"></fa-icon>
-                      <span class="d-none d-md-inline" jhiTranslate="mFinder1App.event.action.view">Detalles</span>
-                    </button> -->
                   <button
                     type="submit"
                     queryParamsHandling="merge"
@@ -91,16 +165,6 @@
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                   </button>
-                  <!-- <buttons
-                      type="submit"
-                      queryParamsHandling="merge"
-                      (click) ="update(event)"
-                      class="btn btn-primary btn-sm"
-                      data-cy="entityDetailsButton"
-                    >
-                      <fa-icon icon="eye"></fa-icon>
-                      <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                    </button> -->
 
                   <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
@@ -113,25 +177,75 @@
         </div>
       </ng-template>
     </ng-container>
-    <ng-container ngbNavItem>
-      <a ngbNavLink>Por ubicacion&nbsp;<fa-icon icon="map-location-dot"></fa-icon></a>
+    <ng-container [ngbNavItem]="3">
+      <a ngbNavLink
+        ><span jhiTranslate="mFinder1App.event.nav.pastEvents">Evento Pasados</span>&nbsp;<fa-icon icon="hourglass-empty"></fa-icon
+      ></a>
       <ng-template ngbNavContent>
-        <select class="form-control form-select" name="city" formControlName="city" id="field_city" data-cy="city">
-          <option *ngFor="let city of cityValues" [value]="city">
-            {{ 'mFinder1App.city.' + city | translate }}
-          </option>
-        </select>
-        <p>
-          Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
-          Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic,
-          assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown.
-          Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel.
-          Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
-        </p>
+        <div class="container">
+          <div style="margin-top: 10px" class="alert alert-warning" id="no-result" *ngIf="events?.length === 0">
+            <span jhiTranslate="mFinder1App.event.home.notFound">Ningún Evento encontrado</span>
+          </div>
+        </div>
+
+        <div class="container" *ngIf="events && events.length > 0">
+          <div class="row" *ngFor="let group of getEventGroups()" style="margin-top: 12px">
+            <span class="col-sm-4" *ngFor="let event of group; trackBy: trackId" data-cy="entityTable" style="height: 600px">
+              <div class="card justify-content-center align-items-center border border-light" style="height: 600px">
+                <img
+                  class="card-img-top"
+                  *ngIf="event.image"
+                  style="width: 400px; margin-top: 2%; filter: grayscale(100%)"
+                  [src]="'data:' + event.imageContentType + ';base64,' + event.image"
+                />
+                <div class="card-body" style="width: 90%">
+                  <h3 class="card-title">
+                    <span style="font-weight: bold"
+                      ><a [routerLink]="['/event', event.id, 'view']">{{ event.name }}</a></span
+                    >
+                  </h3>
+                  <p class="card-text">
+                    <span style="color: rgb(221, 65, 65); font-weight: bold">
+                      {{ event.startDate | formatMediumDatetime }}, {{ this.clienteZonaHoraria }}
+                    </span>
+                  </p>
+                  <p class="card-text">
+                    <span>
+                      <span>{{ event.location }}</span
+                      >&nbsp;•&nbsp;
+                      <span jhiTranslate="{{ 'mFinder1App.city.' + event.city }}">{{ event.city }}</span>
+                    </span>
+                  </p>
+                  <p class="card-text">
+                    <span jhiTranslate="mFinder1App.event.home.tipoEvento"> Tipo de evento</span>
+                    <a jhiTranslate="{{ 'mFinder1App.TipoEvento.' + event.tipoEvento }}">{{ event.tipoEvento }}</a>
+                  </p>
+                </div>
+                <div class="card-footer btn-group text-center align-items-center justify-self-center" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                  <button
+                    type="submit"
+                    queryParamsHandling="merge"
+                    [routerLink]="['/event', event.id, 'update-view']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </button>
+
+                  <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
       </ng-template>
     </ng-container>
-    <ng-container ngbNavItem>
-      <a ngbNavLink>Eventos pasados &nbsp;<fa-icon icon="hourglass-empty"></fa-icon></a>
+    <ng-container [ngbNavItem]="4" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+      <a ngbNavLink><span jhiTranslate="mFinder1App.event.nav.yourEvents">Tus eventos</span> &nbsp;<fa-icon icon="star"></fa-icon></a>
       <ng-template ngbNavContent>
         <p>
           Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi. Donec egestas
@@ -141,19 +255,66 @@
           eu tincidunt odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac
           lorem aliquet ultricies in eget neque. Phasellus nec tortor vel tellus pulvinar feugiat.
         </p>
-      </ng-template>
-    </ng-container>
-    <ng-container ngbNavItem>
-      <a ngbNavLink>Tus eventos &nbsp;<fa-icon icon="star"></fa-icon></a>
-      <ng-template ngbNavContent>
-        <p>
-          Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi. Donec egestas
-          ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio. Duis pharetra et nisl at
-          faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna, egestas ut ipsum vel, volutpat volutpat
-          neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec tristique ipsum euismod facilisis. Morbi ut bibendum est,
-          eu tincidunt odio. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac
-          lorem aliquet ultricies in eget neque. Phasellus nec tortor vel tellus pulvinar feugiat.
-        </p>
+        <div class="container">
+          <div style="margin-top: 10px" class="alert alert-warning" id="no-result" *ngIf="events?.length === 0">
+            <span jhiTranslate="mFinder1App.event.home.notFound">Ningún Evento encontrado</span>
+          </div>
+        </div>
+
+        <div class="container" *ngIf="events && events.length > 0">
+          <div class="row" *ngFor="let group of getEventGroups()" style="margin-top: 12px">
+            <span class="col-sm-4" *ngFor="let event of group; trackBy: trackId" data-cy="entityTable" style="height: 600px">
+              <div class="card justify-content-center align-items-center border border-light" style="height: 600px">
+                <img
+                  class="card-img-top"
+                  *ngIf="event.image"
+                  style="width: 400px; margin-top: 2%"
+                  [src]="'data:' + event.imageContentType + ';base64,' + event.image"
+                />
+                <div class="card-body" style="width: 90%">
+                  <h3 class="card-title">
+                    <span style="font-weight: bold"
+                      ><a [routerLink]="['/event', event.id, 'view']">{{ event.name }}</a></span
+                    >
+                  </h3>
+                  <p class="card-text">
+                    <span style="color: rgb(221, 65, 65); font-weight: bold">
+                      {{ event.startDate | formatMediumDatetime }}, {{ this.clienteZonaHoraria }}
+                    </span>
+                  </p>
+                  <p class="card-text">
+                    <span>
+                      <span>{{ event.location }}</span
+                      >&nbsp;•&nbsp;
+                      <span jhiTranslate="{{ 'mFinder1App.city.' + event.city }}">{{ event.city }}</span>
+                    </span>
+                  </p>
+                  <p class="card-text">
+                    <span jhiTranslate="mFinder1App.event.home.tipoEvento"> Tipo de evento</span>
+                    <a jhiTranslate="{{ 'mFinder1App.TipoEvento.' + event.tipoEvento }}">{{ event.tipoEvento }}</a>
+                  </p>
+                </div>
+                <div class="card-footer btn-group text-center align-items-center justify-self-center" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                  <button
+                    type="submit"
+                    queryParamsHandling="merge"
+                    [routerLink]="['/event', event.id, 'update-view']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </button>
+
+                  <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
       </ng-template>
     </ng-container>
   </nav>

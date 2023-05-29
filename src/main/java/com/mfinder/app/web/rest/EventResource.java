@@ -2,24 +2,24 @@ package com.mfinder.app.web.rest;
 
 import com.mfinder.app.domain.Event;
 import com.mfinder.app.repository.EventRepository;
+import com.mfinder.app.service.dto.AdminUserDTO;
 // import com.mfinder.app.service.EventService;
-import com.mfinder.app.service.dto.EventDTO;
 import com.mfinder.app.service.mapper.EventMapper;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +35,8 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class EventResource {
 
+    private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(Arrays.asList("id", "createdBy"));
+
     private final Logger log = LoggerFactory.getLogger(EventResource.class);
 
     private static final String ENTITY_NAME = "event";
@@ -46,13 +48,17 @@ public class EventResource {
 
     private final EventRepository eventRepository;
 
+    private final AccountResource accountResource;
+
     public EventResource(
         // EventService eventService,
         EventRepository eventRepository,
-        EventMapper eventMapper
+        EventMapper eventMapper,
+        AccountResource accountResource
     ) {
         // this.eventService = eventService;
         this.eventRepository = eventRepository;
+        this.accountResource = accountResource;
     }
 
     /**
@@ -189,6 +195,9 @@ public class EventResource {
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerloa
     ) {
+        if (!onlyContainsAllowedProperties(pageable)) {
+            return ResponseEntity.badRequest().build();
+        }
         log.debug("REST request to get a page of Events");
         Page<Event> page;
         if (eagerloa) {
@@ -198,6 +207,10 @@ public class EventResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    private boolean onlyContainsAllowedProperties(Pageable pageable) {
+        return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
     }
 
     /**
@@ -214,14 +227,48 @@ public class EventResource {
         return ResponseUtil.wrapOrNotFound(event);
     }
 
-    // /**
-    //  * Gets a list of all the events.
-    //  * @return a long list of all the events.
-    //  */
-    // @GetMapping("/getEvents")
-    // public List<Long> getevents() {
-    //     return eventService.getEvents();
-    // }
+    /**
+     * {@code GET  /events/byLocation/:city } : get the "city" event.
+     *
+     *  @param city the city of the event to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the event, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/events/city/{city}")
+    public ResponseEntity<List<Event>> getEventByLocation(@PathVariable("city") String city) {
+        log.debug("REST request to get a page of Events");
+        List<Event> events = eventRepository.getAllEventByCity(city);
+        return ResponseEntity.ok(events);
+    }
+
+    /**
+     * {@code GET  /events/byCurrentUser/:city } : get the "city" event.
+     *
+     *  @param login the city of the event to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the event, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/events/byCurrentUser")
+    public ResponseEntity<List<Event>> getEventByCurrentUser() {
+        AdminUserDTO user = accountResource.getAccount();
+
+        log.debug("REST request to get a page of Events");
+        List<Event> events = eventRepository.getAllEventsByUser(user.getLogin());
+        return ResponseEntity.ok(events);
+    }
+
+    /**
+     * {@code GET  /events/currentTime/:currentTime } : get the "currentTime" event.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the event, or with status {@code 404 (Not Found)}.
+     */
+
+    @GetMapping("/events/pastEvents")
+    public ResponseEntity<List<Event>> getPastEvents() {
+        Instant now = Instant.now();
+
+        log.debug("REST request to get a page of Events");
+        List<Event> events = eventRepository.getAllPastEvents(now);
+        return ResponseEntity.ok(events);
+    }
 
     /**
      * {@code DELETE  /events/:id} : delete the "id" event.
