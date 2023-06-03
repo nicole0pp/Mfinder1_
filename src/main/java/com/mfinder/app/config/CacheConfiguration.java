@@ -65,7 +65,10 @@ public class CacheConfiguration {
             createCache(cm, com.mfinder.app.domain.ListDetails.class.getName());
             createCache(cm, com.mfinder.app.domain.ListDetails.class.getName() + ".lists");
             createCache(cm, com.mfinder.app.domain.ListDetails.class.getName() + ".songs");
-            createCache(cm, com.mfinder.app.domain.Rating.class.getName());
+            createCache(cm, com.mfinder.app.domain.RatingEvent.class.getName());
+            createCache(cm, com.mfinder.app.domain.RatingEvent.class.getName() + ".event");
+            createCache(cm, com.mfinder.app.domain.RatingSong.class.getName());
+            createCache(cm, com.mfinder.app.domain.RatingSong.class.getName() + ".song");
             // jhipster-needle-ehcache-add-entry
         };
     }

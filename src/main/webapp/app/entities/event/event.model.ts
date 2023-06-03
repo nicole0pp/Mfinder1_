@@ -18,6 +18,7 @@ export interface IEvent {
   artists?: Pick<IArtist, 'id' | 'artistName'>[] | null;
   ratings?: string[] | null;
   createdBy?: string;
+  createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
 }

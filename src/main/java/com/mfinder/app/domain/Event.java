@@ -74,15 +74,15 @@ public class Event extends AbstractAuditingEntity<Long> implements Serializable 
     @JsonIgnoreProperties(value = { "events" }, allowSetters = true)
     private Set<Artist> artists = new HashSet<>();
 
-    @ManyToMany
-    @JsonIgnore
-    @JoinTable(
-        name = "rating_event",
-        joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
-        inverseJoinColumns = { @JoinColumn(name = "rating_id", referencedColumnName = "id") }
-    )
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Rating> ratings = new HashSet<>();
+    // @ManyToMany
+    // @JsonIgnore
+    // @JoinTable(
+    //     name = "rating_event",
+    //     joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
+    //     inverseJoinColumns = { @JoinColumn(name = "rating_id", referencedColumnName = "id") }
+    // )
+    // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    // private Set<Rating> ratings = new HashSet<>();
 
     public Long getId() {
         return this.id;
@@ -250,14 +250,6 @@ public class Event extends AbstractAuditingEntity<Long> implements Serializable 
         this.artists.remove(artist);
         artist.getEvents().remove(this);
         return this;
-    }
-
-    public Set<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(Set<Rating> ratings) {
-        this.ratings = ratings;
     }
 
     @Override

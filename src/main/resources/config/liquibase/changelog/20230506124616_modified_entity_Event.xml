@@ -26,7 +26,7 @@
                <column name="last_modified_date" type="timestamp"/>
           </addColumn>
 
-          <createTable tableName="rating_event">
+          <!-- <createTable tableName="rating_event">
 
                <column name="event_id" type="bigint">
                     <constraints nullable="false"/>
@@ -36,21 +36,21 @@
                     <constraints nullable="false"/>
                </column>
 
-          </createTable>
+          </createTable> La dueña de esto es Rating-->
 
-          <addPrimaryKey columnNames="event_id, rating_event" tableName="rating_event"/>
-               <addForeignKeyConstraint baseColumnNames="event_id"
-                                        baseTableName="rating_event"
-                                        constraintName="fk_event_id"
-                                        referencedColumnNames="id"
-                                        referencedTableName="event"
-                                        />
+          <!-- <addPrimaryKey columnNames="event_id, rating_event" tableName="rating_event"/>
+                    <addForeignKeyConstraint baseColumnNames="event_id"
+                                             baseTableName="rating_event"
+                                             constraintName="fk_event_id"
+                                             referencedColumnNames="id"
+                                             referencedTableName="event"
+                                             />
 
-               <addForeignKeyConstraint baseColumnNames="rating_id"
-                                        baseTableName="rating_event"
-                                        constraintName="fk_rating_id"
-                                        referencedColumnNames="id"
-                                        referencedTableName="rating"/>
+                    <addForeignKeyConstraint baseColumnNames="rating_id"
+                                             baseTableName="rating_event"
+                                             constraintName="fk_rating_id"
+                                             referencedColumnNames="id"
+                                             referencedTableName="rating"/> La dueña de esto es Rating-->
 
      </changeSet>
 </databaseChangeLog>

@@ -42,7 +42,7 @@ import { RouterModule } from '@angular/router';
       {
         path: 'rating',
         data: { pageTitle: 'mFinder1App.rating.home.title' },
-        loadChildren: () => import('./rating/rating.module').then(m => m.RatingModule),
+        loadChildren: () => import('./rating/rating-event.module').then(m => m.RatingEventModule),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),

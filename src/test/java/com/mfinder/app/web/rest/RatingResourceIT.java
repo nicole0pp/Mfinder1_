@@ -6,8 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mfinder.app.IntegrationTest;
-import com.mfinder.app.domain.Rating;
-import com.mfinder.app.repository.RatingRepository;
+import com.mfinder.app.domain.RatingEvent;
+import com.mfinder.app.repository.RatingEventRepository;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -22,35 +22,35 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Integration tests for the {@link RatingResource} REST controller.
+ * Integration tests for the {@link RatingEventEventResource} REST controller.
  */
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-class RatingResourceIT {
+class RatingEventResourceIT {
 
     private static final String DEFAULT_COMMENT = "AAAAAAAAAA";
     private static final String UPDATED_COMMENT = "BBBBBBBBBB";
 
-    private static final Double DEFAULT_RATING = 0D;
-    private static final Double UPDATED_RATING = 1D;
+    private static final Double DEFAULT_RATINGEVENT = 0D;
+    private static final Double UPDATED_RATINGEVENT = 1D;
 
-    private static final String ENTITY_API_URL = "/api/ratings";
+    private static final String ENTITY_API_URL = "/api/ratingEvents";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static Random random = new Random();
     private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
-    private RatingRepository ratingRepository;
+    private RatingEventRepository ratingEventRepository;
 
     @Autowired
     private EntityManager em;
 
     @Autowired
-    private MockMvc restRatingMockMvc;
+    private MockMvc restRatingEventMockMvc;
 
-    private Rating rating;
+    private RatingEvent ratingEvent;
 
     /**
      * Create an entity for this test.
@@ -58,9 +58,9 @@ class RatingResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Rating createEntity(EntityManager em) {
-        Rating rating = new Rating().comment(DEFAULT_COMMENT).rating(DEFAULT_RATING);
-        return rating;
+    public static RatingEvent createEntity(EntityManager em) {
+        RatingEvent ratingEvent = new RatingEvent().comment(DEFAULT_COMMENT).rating(DEFAULT_RATINGEVENT);
+        return ratingEvent;
     }
 
     /**
@@ -69,324 +69,326 @@ class RatingResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Rating createUpdatedEntity(EntityManager em) {
-        Rating rating = new Rating().comment(UPDATED_COMMENT).rating(UPDATED_RATING);
-        return rating;
+    public static RatingEvent createUpdatedEntity(EntityManager em) {
+        RatingEvent ratingEvent = new RatingEvent().comment(UPDATED_COMMENT).rating(UPDATED_RATINGEVENT);
+        return ratingEvent;
     }
 
     @BeforeEach
     public void initTest() {
-        rating = createEntity(em);
+        ratingEvent = createEntity(em);
     }
 
     @Test
     @Transactional
-    void createRating() throws Exception {
-        int databaseSizeBeforeCreate = ratingRepository.findAll().size();
-        // Create the Rating
-        restRatingMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(rating)))
+    void createRatingEvent() throws Exception {
+        int databaseSizeBeforeCreate = ratingEventRepository.findAll().size();
+        // Create the RatingEvent
+        restRatingEventMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ratingEvent)))
             .andExpect(status().isCreated());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeCreate + 1);
-        Rating testRating = ratingList.get(ratingList.size() - 1);
-        assertThat(testRating.getComment()).isEqualTo(DEFAULT_COMMENT);
-        assertThat(testRating.getRating()).isEqualTo(DEFAULT_RATING);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeCreate + 1);
+        RatingEvent testRatingEvent = ratingEventList.get(ratingEventList.size() - 1);
+        assertThat(testRatingEvent.getComment()).isEqualTo(DEFAULT_COMMENT);
+        assertThat(testRatingEvent.getRating()).isEqualTo(DEFAULT_RATINGEVENT);
     }
 
     @Test
     @Transactional
-    void createRatingWithExistingId() throws Exception {
-        // Create the Rating with an existing ID
-        rating.setId(1L);
+    void createRatingEventWithExistingId() throws Exception {
+        // Create the RatingEvent with an existing ID
+        ratingEvent.setId(1L);
 
-        int databaseSizeBeforeCreate = ratingRepository.findAll().size();
+        int databaseSizeBeforeCreate = ratingEventRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restRatingMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(rating)))
+        restRatingEventMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ratingEvent)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeCreate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
-    void checkRatingIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ratingRepository.findAll().size();
+    void checkRatingEventIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ratingEventRepository.findAll().size();
         // set the field null
-        rating.setRating(null);
+        ratingEvent.setRating(null);
 
-        // Create the Rating, which fails.
+        // Create the RatingEvent, which fails.
 
-        restRatingMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(rating)))
+        restRatingEventMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ratingEvent)))
             .andExpect(status().isBadRequest());
 
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeTest);
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
     @Transactional
-    void getAllRatings() throws Exception {
+    void getAllRatingEvents() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingEventRepository.saveAndFlush(ratingEvent);
 
-        // Get all the ratingList
-        restRatingMockMvc
+        // Get all the ratingEventList
+        restRatingEventMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(rating.getId().intValue())))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ratingEvent.getId().intValue())))
             .andExpect(jsonPath("$.[*].comment").value(hasItem(DEFAULT_COMMENT)))
-            .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATING.doubleValue())));
+            .andExpect(jsonPath("$.[*].rating").value(hasItem(DEFAULT_RATINGEVENT.doubleValue())));
     }
 
     @Test
     @Transactional
-    void getRating() throws Exception {
+    void getRatingEvent() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingEventRepository.saveAndFlush(ratingEvent);
 
-        // Get the rating
-        restRatingMockMvc
-            .perform(get(ENTITY_API_URL_ID, rating.getId()))
+        // Get the ratingEvent
+        restRatingEventMockMvc
+            .perform(get(ENTITY_API_URL_ID, ratingEvent.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(rating.getId().intValue()))
+            .andExpect(jsonPath("$.id").value(ratingEvent.getId().intValue()))
             .andExpect(jsonPath("$.comment").value(DEFAULT_COMMENT))
-            .andExpect(jsonPath("$.rating").value(DEFAULT_RATING.doubleValue()));
+            .andExpect(jsonPath("$.rating").value(DEFAULT_RATINGEVENT.doubleValue()));
     }
 
     @Test
     @Transactional
-    void getNonExistingRating() throws Exception {
-        // Get the rating
-        restRatingMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
+    void getNonExistingRatingEvent() throws Exception {
+        // Get the ratingEvent
+        restRatingEventMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void putExistingRating() throws Exception {
+    void putExistingRatingEvent() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingEventRepository.saveAndFlush(ratingEvent);
 
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
 
-        // Update the rating
-        Rating updatedRating = ratingRepository.findById(rating.getId()).get();
-        // Disconnect from session so that the updates on updatedRating are not directly saved in db
-        em.detach(updatedRating);
-        updatedRating.comment(UPDATED_COMMENT).rating(UPDATED_RATING);
+        // Update the ratingEvent
+        RatingEvent updatedRatingEvent = ratingEventRepository.findById(ratingEvent.getId()).get();
+        // Disconnect from session so that the updates on updatedRatingEvent are not directly saved in db
+        em.detach(updatedRatingEvent);
+        updatedRatingEvent.comment(UPDATED_COMMENT).rating(UPDATED_RATINGEVENT);
 
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedRating.getId())
+                put(ENTITY_API_URL_ID, updatedRatingEvent.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedRating))
+                    .content(TestUtil.convertObjectToJsonBytes(updatedRatingEvent))
             )
             .andExpect(status().isOk());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
-        Rating testRating = ratingList.get(ratingList.size() - 1);
-        assertThat(testRating.getComment()).isEqualTo(UPDATED_COMMENT);
-        assertThat(testRating.getRating()).isEqualTo(UPDATED_RATING);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
+        RatingEvent testRatingEvent = ratingEventList.get(ratingEventList.size() - 1);
+        assertThat(testRatingEvent.getComment()).isEqualTo(UPDATED_COMMENT);
+        assertThat(testRatingEvent.getRating()).isEqualTo(UPDATED_RATINGEVENT);
     }
 
     @Test
     @Transactional
-    void putNonExistingRating() throws Exception {
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-        rating.setId(count.incrementAndGet());
+    void putNonExistingRatingEvent() throws Exception {
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
+        ratingEvent.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, rating.getId())
+                put(ENTITY_API_URL_ID, ratingEvent.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(rating))
+                    .content(TestUtil.convertObjectToJsonBytes(ratingEvent))
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
-    void putWithIdMismatchRating() throws Exception {
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-        rating.setId(count.incrementAndGet());
+    void putWithIdMismatchRatingEvent() throws Exception {
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
+        ratingEvent.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(rating))
+                    .content(TestUtil.convertObjectToJsonBytes(ratingEvent))
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
-    void putWithMissingIdPathParamRating() throws Exception {
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-        rating.setId(count.incrementAndGet());
+    void putWithMissingIdPathParamRatingEvent() throws Exception {
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
+        ratingEvent.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restRatingMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(rating)))
+        restRatingEventMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ratingEvent)))
             .andExpect(status().isMethodNotAllowed());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
-    void partialUpdateRatingWithPatch() throws Exception {
+    void partialUpdateRatingEventWithPatch() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingEventRepository.saveAndFlush(ratingEvent);
 
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
 
-        // Update the rating using partial update
-        Rating partialUpdatedRating = new Rating();
-        partialUpdatedRating.setId(rating.getId());
+        // Update the ratingEvent using partial update
+        RatingEvent partialUpdatedRatingEvent = new RatingEvent();
+        partialUpdatedRatingEvent.setId(ratingEvent.getId());
 
-        partialUpdatedRating.comment(UPDATED_COMMENT).rating(UPDATED_RATING);
+        partialUpdatedRatingEvent.comment(UPDATED_COMMENT).rating(UPDATED_RATINGEVENT);
 
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedRating.getId())
+                patch(ENTITY_API_URL_ID, partialUpdatedRatingEvent.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedRating))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedRatingEvent))
             )
             .andExpect(status().isOk());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
-        Rating testRating = ratingList.get(ratingList.size() - 1);
-        assertThat(testRating.getComment()).isEqualTo(UPDATED_COMMENT);
-        assertThat(testRating.getRating()).isEqualTo(UPDATED_RATING);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
+        RatingEvent testRatingEvent = ratingEventList.get(ratingEventList.size() - 1);
+        assertThat(testRatingEvent.getComment()).isEqualTo(UPDATED_COMMENT);
+        assertThat(testRatingEvent.getRating()).isEqualTo(UPDATED_RATINGEVENT);
     }
 
     @Test
     @Transactional
-    void fullUpdateRatingWithPatch() throws Exception {
+    void fullUpdateRatingEventWithPatch() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingEventRepository.saveAndFlush(ratingEvent);
 
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
 
-        // Update the rating using partial update
-        Rating partialUpdatedRating = new Rating();
-        partialUpdatedRating.setId(rating.getId());
+        // Update the ratingEvent using partial update
+        RatingEvent partialUpdatedRatingEvent = new RatingEvent();
+        partialUpdatedRatingEvent.setId(ratingEvent.getId());
 
-        partialUpdatedRating.comment(UPDATED_COMMENT).rating(UPDATED_RATING);
+        partialUpdatedRatingEvent.comment(UPDATED_COMMENT).rating(UPDATED_RATINGEVENT);
 
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedRating.getId())
+                patch(ENTITY_API_URL_ID, partialUpdatedRatingEvent.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedRating))
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedRatingEvent))
             )
             .andExpect(status().isOk());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
-        Rating testRating = ratingList.get(ratingList.size() - 1);
-        assertThat(testRating.getComment()).isEqualTo(UPDATED_COMMENT);
-        assertThat(testRating.getRating()).isEqualTo(UPDATED_RATING);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
+        RatingEvent testRatingEvent = ratingEventList.get(ratingEventList.size() - 1);
+        assertThat(testRatingEvent.getComment()).isEqualTo(UPDATED_COMMENT);
+        assertThat(testRatingEvent.getRating()).isEqualTo(UPDATED_RATINGEVENT);
     }
 
     @Test
     @Transactional
-    void patchNonExistingRating() throws Exception {
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-        rating.setId(count.incrementAndGet());
+    void patchNonExistingRatingEvent() throws Exception {
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
+        ratingEvent.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, rating.getId())
+                patch(ENTITY_API_URL_ID, ratingEvent.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(rating))
+                    .content(TestUtil.convertObjectToJsonBytes(ratingEvent))
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
-    void patchWithIdMismatchRating() throws Exception {
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-        rating.setId(count.incrementAndGet());
+    void patchWithIdMismatchRatingEvent() throws Exception {
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
+        ratingEvent.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restRatingMockMvc
+        restRatingEventMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(rating))
+                    .content(TestUtil.convertObjectToJsonBytes(ratingEvent))
             )
             .andExpect(status().isBadRequest());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
-    void patchWithMissingIdPathParamRating() throws Exception {
-        int databaseSizeBeforeUpdate = ratingRepository.findAll().size();
-        rating.setId(count.incrementAndGet());
+    void patchWithMissingIdPathParamRatingEvent() throws Exception {
+        int databaseSizeBeforeUpdate = ratingEventRepository.findAll().size();
+        ratingEvent.setId(count.incrementAndGet());
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
-        restRatingMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(rating)))
+        restRatingEventMockMvc
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(ratingEvent))
+            )
             .andExpect(status().isMethodNotAllowed());
 
-        // Validate the Rating in the database
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeUpdate);
+        // Validate the RatingEvent in the database
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
     @Transactional
-    void deleteRating() throws Exception {
+    void deleteRatingEvent() throws Exception {
         // Initialize the database
-        ratingRepository.saveAndFlush(rating);
+        ratingEventRepository.saveAndFlush(ratingEvent);
 
-        int databaseSizeBeforeDelete = ratingRepository.findAll().size();
+        int databaseSizeBeforeDelete = ratingEventRepository.findAll().size();
 
-        // Delete the rating
-        restRatingMockMvc
-            .perform(delete(ENTITY_API_URL_ID, rating.getId()).accept(MediaType.APPLICATION_JSON))
+        // Delete the ratingEvent
+        restRatingEventMockMvc
+            .perform(delete(ENTITY_API_URL_ID, ratingEvent.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        List<Rating> ratingList = ratingRepository.findAll();
-        assertThat(ratingList).hasSize(databaseSizeBeforeDelete - 1);
+        List<RatingEvent> ratingEventList = ratingEventRepository.findAll();
+        assertThat(ratingEventList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }

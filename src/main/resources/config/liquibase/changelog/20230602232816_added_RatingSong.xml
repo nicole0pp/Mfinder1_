@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+     <!--
+          Added the entity Rating Event.
+     -->
+     <changeSet id="20230602232816-1" author="nicole">
+          <createTable tableName="rating_song">
+               <column name="id" type="bigint" autoIncrement="true">
+                    <constraints primaryKey="true" nullable="false"/>
+               </column>
+               <column name="comment" type="varchar(255)">
+                    <constraints nullable="true" />
+               </column>
+               <column name="rating" type="double">
+                    <constraints nullable="false" />
+               </column>
+               <column name="song_id" type="bigint">
+                    <constraints nullable="true" unique="false" />
+               </column>
+               <column name="created_date" type="timestamp"/>
+               <column name="last_modified_by" type="varchar(50)"/>
+               <column name="last_modified_date" type="timestamp"/>
+          </createTable>
+
+          <addForeignKeyConstraint baseColumnNames="song_id"
+                                   baseTableName="rating_song"
+                                   constraintName="fk_song_id"
+                                   referencedColumnNames="id"
+                                   referencedTableName="song"
+                                   />     
+
+     </changeSet>
+</databaseChangeLog>
