@@ -12,7 +12,7 @@ import dayjs from 'dayjs/esm';
 
 export type PartialUpdateEvent = Partial<IEvent> & Pick<IEvent, 'id'>;
 
-type RestOf<T extends IEvent | NewEvent> = Omit<T, 'eventDate'> & {
+type RestOf<T extends IEvent | NewEvent> = Omit<T, 'startDate' | 'endDate'> & {
   startDate?: string | null;
   endDate?: string | null;
 };
@@ -44,8 +44,10 @@ export class EventService {
 
   partialUpdate(event: PartialUpdateEvent): Observable<EntityResponseType> {
     // const copy = this.convertDateFromClient(event);
-    return this.http.patch<RestEvent>(`${this.resourceUrl}/${this.getEventIdentifier(event)}`, event, { observe: 'response' });
-    // .pipe(map(res => this.convertResponseFromServer(res)));
+    const copy = this.convertDateFromClient(event);
+    return this.http
+      .patch<RestEvent>(`${this.resourceUrl}/${this.getEventIdentifier(event)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {

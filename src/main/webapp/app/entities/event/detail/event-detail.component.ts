@@ -12,7 +12,7 @@ import { City } from 'app/entities/enumerations/city.model';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { Account } from 'app/core/auth/account.model';
 import { HttpHeaders } from '@angular/common/http';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { TipoEvento } from 'app/entities/enumerations/tipo-evento.model';
 
 @Component({
@@ -118,6 +118,15 @@ export class EventDetailComponent implements OnInit {
       return [];
     } else {
       return [predicate + ',' + ascendingQueryParam];
+    }
+  }
+
+  esFechaPosterior(fechaEndDate?: Dayjs | null): boolean {
+    const fechaActual = new Date();
+    if (fechaEndDate) {
+      return fechaEndDate.toDate() < fechaActual;
+    } else {
+      return false;
     }
   }
 }

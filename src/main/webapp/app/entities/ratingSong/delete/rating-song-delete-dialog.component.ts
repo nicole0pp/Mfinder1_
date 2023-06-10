@@ -6,7 +6,7 @@ import { RatingSongService } from '../service/rating-song.service';
 import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 
 @Component({
-  templateUrl: './rating-event-delete-dialog.component.html',
+  templateUrl: './rating-song-delete-dialog.component.html',
 })
 export class RatingSongDeleteDialogComponent {
   ratingSong?: IRatingSong;

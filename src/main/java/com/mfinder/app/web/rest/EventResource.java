@@ -4,7 +4,7 @@ import com.mfinder.app.domain.Event;
 import com.mfinder.app.repository.EventRepository;
 import com.mfinder.app.service.dto.AdminUserDTO;
 // import com.mfinder.app.service.EventService;
-import com.mfinder.app.service.mapper.EventMapper;
+// import com.mfinder.app.service.mapper.EventMapper;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,7 +53,6 @@ public class EventResource {
     public EventResource(
         // EventService eventService,
         EventRepository eventRepository,
-        EventMapper eventMapper,
         AccountResource accountResource
     ) {
         // this.eventService = eventService;

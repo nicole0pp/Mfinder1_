@@ -1,12 +1,12 @@
 {
   "mFinder1App": {
-    "rating": {
+    "rating-event": {
       "home": {
-        "title": "Ratings",
+        "title": "Comments and rating of the event:",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Rating",
         "createOrEditLabel": "Create or edit a Rating",
-        "notFound": "No Ratings found"
+        "notFound": "No comments found, be the first to comment!"
       },
       "created": "A new Rating is created with identifier {{ param }}",
       "updated": "A Rating is updated with identifier {{ param }}",
@@ -20,7 +20,8 @@
       "id": "ID",
       "comment": "Comment",
       "rating": "Rating",
-      "user": "User"
+      "event": "Event",
+      "createdBy": "Created by"
     }
   }
 }

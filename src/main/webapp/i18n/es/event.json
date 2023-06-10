@@ -32,7 +32,8 @@
         "location": "Dirección: ",
         "city": "Ciudad: ",
         "description": "Descripción del evento: ",
-        "artist": "Artista/s invitado/s"
+        "artist": "Artista/s invitado/s",
+        "createdBy": "Creado por: "
       },
 
       "action": {
@@ -57,6 +58,9 @@
       "byLocation": {
         "select": "Choose by location",
         "presentationText": "Descubre eventos en ciudades seleccionadas según tus preferencias. Encuentra conciertos, festivales y actividades culturales que te interesan. Personaliza tu experiencia filtrando por ubicaciones de tu elección. Explora opciones emocionantes y mantente actualizado con la escena de eventos local. Nuestra plataforma te brinda acceso a una variedad de eventos en las ciudades que amas. Disfruta de una experiencia única y enriquecedora con solo unos clics."
+      },
+      "pastEvents": {
+        "description": "Aquí podrás explorar una selección de eventos previos y descubrir todos los detalles fascinantes de cada uno de ellos. Desde 'meets and greets' y conciertos hasta exhibiciones y festivales, encontrarás una amplia variedad de experiencias pasadas para explorar. Además de ofrecerte información detallada sobre cada evento, queremos brindarte la oportunidad de compartir tus pensamientos y opiniones. Hemos creado un apartado operativo dedicado exclusivamente a los comentarios de los usuarios que asistieron a los eventos. Si fuiste parte de alguna de estas experiencias y deseas compartir tus impresiones, ¡nos encantaría escucharte! Comparte cómo fue tu experiencia, qué te pareció el evento y cualquier otro detalle que desees mencionar."
       }
     }
   }

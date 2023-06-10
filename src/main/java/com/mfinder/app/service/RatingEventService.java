@@ -1,6 +1,7 @@
 package com.mfinder.app.service;
 
-import com.mfinder.app.service.dto.RatingEventDTO;
+import com.mfinder.app.domain.RatingEvent;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,26 +13,26 @@ public interface RatingEventService {
     /**
      * Save a rating.
      *
-     * @param ratingEventDTO the entity to save.
+     * @param ratingEvent the entity to save.
      * @return the persisted entity.
      */
-    RatingEventDTO save(RatingEventDTO ratingEventDTO);
+    RatingEvent save(RatingEvent ratingEvent);
 
     /**
      * Updates a rating.
      *
-     * @param ratingEventDTO the entity to update.
+     * @param ratingEvent the entity to update.
      * @return the persisted entity.
      */
-    RatingEventDTO update(RatingEventDTO ratingEventDTO);
+    RatingEvent update(RatingEvent ratingEvent);
 
     /**
      * Partially updates a rating.
      *
-     * @param ratingEventDTO the entity to update partially.
+     * @param ratingEvent the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<RatingEventDTO> partialUpdate(RatingEventDTO ratingEventDTO);
+    Optional<RatingEvent> partialUpdate(RatingEvent ratingEvent);
 
     /**
      * Get all the ratings.
@@ -39,7 +40,7 @@ public interface RatingEventService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<RatingEventDTO> findAll(Pageable pageable);
+    Page<RatingEvent> findAll(Pageable pageable);
 
     /**
      * Get the "id" rating.
@@ -47,7 +48,7 @@ public interface RatingEventService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<RatingEventDTO> findOne(Long id);
+    Optional<RatingEvent> findOne(Long id);
 
     /**
      * Delete the "id" rating.
@@ -55,4 +56,12 @@ public interface RatingEventService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get All ratings by the Event Id
+     *
+     * @param eventId
+     * @return the list of entities
+     */
+    List<RatingEvent> getRatingsByEventId(Long eventId);
 }

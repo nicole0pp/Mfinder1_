@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -8,6 +8,10 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { IRatingEvent, NewRatingEvent } from '../rating-event.model';
 
 export type PartialUpdateRating = Partial<IRatingEvent> & Pick<IRatingEvent, 'id'>;
+
+// type RestOf<T extends IRatingEvent | NewRatingEvent> = Omit<T, 'eventDate'>
+
+export type PartialUpdateRatings = Partial<IRatingEvent> & Pick<IRatingEvent, 'id'>;
 
 export type EntityResponseType = HttpResponse<IRatingEvent>;
 export type EntityArrayResponseType = HttpResponse<IRatingEvent[]>;
@@ -41,6 +45,10 @@ export class RatingEventService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IRatingEvent[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  getRatingsByEvent(eventId: number): Observable<HttpResponse<IRatingEvent[]>> {
+    return this.http.get<IRatingEvent[]>(`${this.resourceUrl}/eventId/${eventId}`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

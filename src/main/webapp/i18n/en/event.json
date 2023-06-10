@@ -32,7 +32,8 @@
         "location": "Location: ",
         "city": "City: ",
         "description": "Event description: ",
-        "artist": "Guest artist/s"
+        "artist": "Guest artist/s",
+        "createdBy": "Created by: "
       },
 
       "action": {
@@ -57,6 +58,9 @@
       "byLocation": {
         "select": "Choose by location",
         "presentationText": "Discover events in selected cities based on your preferences. Find concerts, festivals, and cultural activities that interest you. Personalize your experience by filtering locations of your choice. Explore exciting options and stay updated with the local event scene. Our platform gives you access to a variety of events in the cities you love. Enjoy a unique and enriching experience with just a few clicks."
+      },
+      "pastEvents": {
+        "description": "Here, you can browse through a collection of previous events and discover all the fascinating details of each one. From 'meets and greets' and concerts to exhibitions and festivals, you'll find a wide variety of past experiences to explore. In addition to providing detailed information about each event, we want to give you the opportunity to share your thoughts and opinions. We have created a dedicated comment section specifically for users who attended the events. If you were part of any of these experiences and would like to share your impressions, we would love to hear from you! Share how the event was for you, what you thought about it, and any other details you would like to mention."
       }
     }
   }

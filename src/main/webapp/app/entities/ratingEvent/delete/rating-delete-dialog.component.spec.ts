@@ -6,27 +6,27 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { RatingService } from '../service/rating-event.service';
+import { RatingEventService } from '../service/rating-event.service';
 
-import { RatingDeleteDialogComponent } from './rating-event-delete-dialog.component';
+import { RatingEventDeleteDialogComponent } from './rating-event-delete-dialog.component';
 
 describe('Rating Management Delete Component', () => {
-  let comp: RatingDeleteDialogComponent;
-  let fixture: ComponentFixture<RatingDeleteDialogComponent>;
-  let service: RatingService;
+  let comp: RatingEventDeleteDialogComponent;
+  let fixture: ComponentFixture<RatingEventDeleteDialogComponent>;
+  let service: RatingEventService;
   let mockActiveModal: NgbActiveModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [RatingDeleteDialogComponent],
+      declarations: [RatingEventDeleteDialogComponent],
       providers: [NgbActiveModal],
     })
-      .overrideTemplate(RatingDeleteDialogComponent, '')
+      .overrideTemplate(RatingEventDeleteDialogComponent, '')
       .compileComponents();
-    fixture = TestBed.createComponent(RatingDeleteDialogComponent);
+    fixture = TestBed.createComponent(RatingEventDeleteDialogComponent);
     comp = fixture.componentInstance;
-    service = TestBed.inject(RatingService);
+    service = TestBed.inject(RatingEventService);
     mockActiveModal = TestBed.inject(NgbActiveModal);
   });
 

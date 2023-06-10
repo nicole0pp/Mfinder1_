@@ -10,7 +10,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A RatingEvent.
  */
 @Entity
-@Table(name = "rating_events")
+@Table(name = "rating_event")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class RatingEvent extends AbstractAuditingEntity<Long> implements Serializable {
@@ -22,10 +22,10 @@ public class RatingEvent extends AbstractAuditingEntity<Long> implements Seriali
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "comment")
     private String comment;
 
-    @NotNull
     @DecimalMin(value = "0")
     @DecimalMax(value = "10")
     @Column(name = "rating", nullable = false)
@@ -34,6 +34,13 @@ public class RatingEvent extends AbstractAuditingEntity<Long> implements Seriali
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
+
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "image_content_type")
+    private String imageContentType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -84,6 +91,40 @@ public class RatingEvent extends AbstractAuditingEntity<Long> implements Seriali
         this.event = event;
     }
 
+    public byte[] getImage() {
+        return this.image;
+    }
+
+    public RatingEvent image(byte[] image) {
+        this.setImage(image);
+        return this;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageContentType() {
+        return this.imageContentType;
+    }
+
+    public RatingEvent imageContentType(String imageContentType) {
+        this.setImageContentType(imageContentType);
+        return this;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+    }
+
+    // public User getAuthor() {
+    //     return author;
+    // }
+
+    // public void setAuthor(User author) {
+    //     this.author = author;
+    // }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -110,7 +151,8 @@ public class RatingEvent extends AbstractAuditingEntity<Long> implements Seriali
             "id=" + getId() +
             ", comment='" + getComment() + "'" +
             ", rating=" + getRating() + "'" +
-            ", event=" + getEvent() +
+            ", event=" + getEvent() + "'" +
+            ", image='" + getImage() +
             "}";
     }
 }

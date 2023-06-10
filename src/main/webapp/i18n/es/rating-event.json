@@ -1,12 +1,12 @@
 {
   "mFinder1App": {
-    "rating": {
+    "rating-event": {
       "home": {
-        "title": "Ratings",
+        "title": "Comentarios y Valoraciones del evento:",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Rating",
         "createOrEditLabel": "Crear o editar Rating",
-        "notFound": "Ningún Ratings encontrado"
+        "notFound": "Ningún Ratings encontrado, sé el primero en comentar!"
       },
       "created": "Un nuevo Rating ha sido creado con el identificador {{ param }}",
       "updated": "Un Rating ha sido actualizado con el identificador {{ param }}",
@@ -15,12 +15,13 @@
         "question": "¿Seguro que quiere eliminar Rating {{ id }}?"
       },
       "detail": {
-        "title": "Rating"
+        "title": "Valoraciones"
       },
       "id": "ID",
-      "comment": "Comment",
-      "rating": "Rating",
-      "user": "Usuario"
+      "comment": "Comentario",
+      "rating": "Valoracion",
+      "event": "Evento",
+      "createdBy": "Creado por"
     }
   }
 }

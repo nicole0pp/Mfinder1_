@@ -40,9 +40,11 @@ export class RatingEventFormService {
           validators: [Validators.required],
         }
       ),
-      comment: new FormControl(ratingEventRawValue.comment),
+      comment: new FormControl(ratingEventRawValue.comment, {
+        validators: [Validators.required],
+      }),
       rating: new FormControl(ratingEventRawValue.rating, {
-        validators: [Validators.required, Validators.min(0), Validators.max(10)],
+        validators: [Validators.min(0), Validators.max(10)],
       }),
       event: new FormControl(ratingEventRawValue.event),
     });

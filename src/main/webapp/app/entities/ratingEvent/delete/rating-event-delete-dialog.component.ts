@@ -9,7 +9,7 @@ import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
   templateUrl: './rating-event-delete-dialog.component.html',
 })
 export class RatingEventDeleteDialogComponent {
-  rating?: IRatingEvent;
+  ratingEvent?: IRatingEvent;
 
   constructor(protected ratingEventService: RatingEventService, protected activeModal: NgbActiveModal) {}
 

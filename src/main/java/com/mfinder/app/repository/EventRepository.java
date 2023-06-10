@@ -33,7 +33,7 @@ public interface EventRepository extends EventRepositoryWithBagRelationships, Jp
     @Query(value = "SELECT * FROM event e WHERE e.city = :city", nativeQuery = true)
     List<Event> getAllEventByCity(@Param("city") String city);
 
-    @Query(value = "SELECT * FROM event e WHERE e.start_date < :date ORDER BY start_date DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM event e WHERE e.end_date < :date ORDER BY end_date DESC", nativeQuery = true)
     List<Event> getAllPastEvents(@Param("date") Instant date);
 
     @Query(value = "SELECT * FROM event e WHERE e.created_By = :user", nativeQuery = true)

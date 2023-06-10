@@ -9,6 +9,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -39,6 +40,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
     Page<User> findAllByIdNotNullAndActivatedIsTrue(Pageable pageable);
+
     // @Query(value = "SELECT * FROM jhi_user u WHERE u.id = :id", nativeQuery = true)
     // Optional<User> findOneWithAuthoritiesById(@Param("id") Long id);
+
+    @Query("SELECT u.picture FROM User u WHERE u.login = :login")
+    byte[] getImageProfile(@Param("login") String login);
+
+    @Query("SELECT u.pictureContentType FROM User u WHERE u.login = :login")
+    String getImageProfileContentType(@Param("login") String login);
 }

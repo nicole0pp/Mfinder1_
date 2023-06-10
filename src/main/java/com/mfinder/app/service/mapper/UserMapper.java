@@ -52,6 +52,8 @@ public class UserMapper {
             user.setEmail(userDTO.getEmail());
             user.setActivated(userDTO.isActivated());
             user.setLangKey(userDTO.getLangKey());
+            user.setPicture(userDTO.getPicture());
+            user.setPictureContentType(userDTO.getPictureContentType());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
             return user;

@@ -7,7 +7,7 @@
           Modified the constraints for entity Artist
           20230128112616_modified_constraints_Artist.xml
      -->
-     <changeSet id="20230602212416-2" author="nicole">
+     <!-- <changeSet id="20230602212416-2" author="nicole">
           <addColumn tableName="rating_event" >
                <column name="event_id" type="bigint">
                     <constraints nullable="true" unique="false" />
@@ -26,5 +26,27 @@
                                    referencedColumnNames="id"
                                    referencedTableName="event"
                                    />
+     </changeSet> -->
+
+     <changeSet id="20230602212416-5" author="nicole">
+          <addColumn tableName="rating_event">
+               <column name="image" type="${blobType}">
+                    <constraints nullable="true" />
+               </column>
+               <column name="image_content_type" type="varchar(255)">
+                    <constraints nullable="true" />
+               </column>
+          </addColumn>
+          <!-- <addColumn tableName="rating_event" >
+               <column name="user_id" type="bigint">
+                    <constraints nullable="false"/>
+               </column>
+          </addColumn> -->
+
+          <!-- <addForeignKeyConstraint baseColumnNames="user_id"
+                                   baseTableName="rating_event"
+                                   constraintName="fk_user_event_id"
+                                   referencedColumnNames="id"
+                                   referencedTableName="jhi_user"/> -->
      </changeSet>
 </databaseChangeLog>

@@ -49,6 +49,7 @@ import {
   faLocationDot,
   faLocationPin,
   faHourglassEmpty,
+  faComments,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -103,5 +104,6 @@ export const fontAwesomeIcons = [
   faLocationDot,
   faLocationPin,
   faHourglassEmpty,
+  faComments,
   // jhipster-needle-add-icon-import
 ];

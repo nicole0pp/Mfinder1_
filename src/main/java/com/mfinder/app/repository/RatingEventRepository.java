@@ -2,14 +2,15 @@ package com.mfinder.app.repository;
 
 import com.mfinder.app.domain.RatingEvent;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * Spring Data JPA repository for the RatingEvent entity.
- */
 @Repository
-public interface RatingEventRepository extends JpaRepository<RatingEvent, Long> {}
+public interface RatingEventRepository extends JpaRepository<RatingEvent, Long> {
+    @Query(value = "SELECT * FROM rating_event r WHERE r.user_id = :id", nativeQuery = true)
+    List<RatingEvent> findRatingByUserId(@Param("id") Long id);
+
+    @Query("SELECT r FROM RatingEvent r WHERE r.event.id = :eventId")
+    List<RatingEvent> findRatingsByEventId(@Param("eventId") Long eventId);
+}

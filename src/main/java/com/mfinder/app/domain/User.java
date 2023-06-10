@@ -5,6 +5,7 @@ import com.mfinder.app.config.Constants;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javax.persistence.*;
@@ -94,6 +95,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    // @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    // private List<RatingEvent> rating;
 
     public Long getId() {
         return id;
@@ -207,6 +211,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
+
+    // public List<RatingEvent> getRatingEvent() {
+    //     return rating;
+    // }
+    // public void setRatingEvent(List<RatingEvent> rating){
+    //     this.rating = rating;
+    // }
 
     @Override
     public boolean equals(Object o) {

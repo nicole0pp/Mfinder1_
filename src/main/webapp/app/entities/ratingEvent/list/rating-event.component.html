@@ -1,114 +1,124 @@
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet" />
 <div>
-  <h2 id="page-heading" data-cy="RatingHeading">
-    <span jhiTranslate="mFinder1App.rating.home.title">Ratings</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="mFinder1App.rating.home.refreshListLabel">Refrescar lista</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-rating"
-        [routerLink]="['/rating/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="mFinder1App.rating.home.createLabel"> Crear nuevo Rating </span>
+  <div class="row">
+    <div class="col-8">
+      <h2 id="page-heading" data-cy="RatingHeading">
+        <span jhiTranslate="mFinder1App.rating-event.home.title">Ratings</span>
+      </h2>
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
       </button>
     </div>
-  </h2>
-
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="ratings?.length === 0">
-    <span jhiTranslate="mFinder1App.rating.home.notFound">Ningún Ratings encontrado</span>
-  </div>
-
-  <div class="table-responsive table-entities" id="entities" *ngIf="ratings && ratings.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+    <div class="col-3">
+      <div class="card mb-5" style="max-width: 20rem" *ngIf="event">
+        <div class="row g-0">
+          <div class="col-md-6">
+            <img
+              class="img-fluid rounded-start"
+              alt="..."
+              *ngIf="event.image"
+              [src]="'data:' + event.imageContentType + ';base64,' + event.image"
+            />
+          </div>
+          <div class="col-md-5">
+            <div class="card-body">
+              <span style="font-weight: bold"
+                ><a class="card-title" [routerLink]="['/event', event.id, 'view']" *ngIf="event.name && event.name.length <= 20">
+                  {{ event.name }}</a
+                ></span
+              >
+              <span style="font-weight: bold"
+                ><a class="card-title" [routerLink]="['/event', event.id, 'view']" *ngIf="event.name && event.name.length > 20">
+                  {{ truncateEventTitle(event.name) }}</a
+                ></span
+              >
+              <p class="card-text" *ngIf="event.description && event.description.length <= 30">{{ event.description }}</p>
+              <p class="card-text" *ngIf="event.description && event.description.length > 30">
+                {{ truncateEventDescription(event.description) }}
+              </p>
             </div>
-          </th>
-          <th scope="col" jhiSortBy="comment">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.rating.comment">Comment</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="rating">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.rating.rating">Rating</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="userId">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.rating.user">User</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let rating of ratings; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/rating', rating.id, 'view']">{{ rating.id }}</a>
-          </td>
-          <td>{{ rating.comment }}</td>
-          <td>{{ rating.rating }}</td>
-          <td>
-            <div *ngIf="rating.user">
-              <a [routerLink]="['/rating/user', rating.user.id, 'view']">{{ rating.user.id }}</a>
-            </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/rating', rating.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
-              </button>
-
-              <button type="submit" [routerLink]="['/rating', rating.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
-              </button>
-
-              <button type="submit" (click)="delete(rating)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="ratings && ratings.length > 0">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [page]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="navigateToPage($event)"
-      ></ngb-pagination>
+  <div class="alert alert-warning" id="no-result" *ngIf="ratingEvents?.length === 0">
+    <span jhiTranslate="mFinder1App.rating-event.home.notFound">Ningún Ratings encontrado</span>
+  </div>
+  <div class="container border-dark" style="margin-top: 30px">
+    <div
+      class="container tab-scroll"
+      #commentsContainer
+      [ngStyle]="{ 'height.px': commentsContainer.scrollHeight }"
+      *ngIf="ratingEvents && ratingEvents.length > 0"
+    >
+      <div class="row" *ngFor="let ratingEvent of ratingEvents" data-cy="entityTable">
+        <div class="col-sm-1" style="width: 70px; padding-right: 0">
+          <img
+            class="profle-image-message rounded-circle"
+            *ngIf="ratingEvent?.image"
+            [src]="'data:' + ratingEvent!.imageContentType + ';base64,' + ratingEvent!.image"
+          />
+        </div>
+
+        <div class="col-md-6" style="padding-left: 0">
+          <div style="display: flex">
+            <h6 style="margin-right: 10px; font-family: 'Roboto Condensed', sans-serif; font-size: larger">{{ ratingEvent.createdBy }}</h6>
+            &nbsp;
+            <p>{{ ratingEvent.createdDate | date: 'dd/MM/yy HH:mm' }}</p>
+          </div>
+          <p style="color: white; font-family: 'Roboto Condensed', sans-serif">{{ ratingEvent.comment }}</p>
+        </div>
+
+        <div class="col-sm-2" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <button type="submit" (click)="delete(ratingEvent)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+            <fa-icon icon="times"></fa-icon>
+            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+          </button>
+        </div>
+
+        <hr />
+      </div>
+    </div>
+    <!-- Formulario de comentarios -->
+    <div class="mt-4">
+      <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+        <div class="row justify-content-center">
+          <div class="col-md-1 justofy-content-center align-self-center" *ngIf="account?.picture">
+            <img
+              style="border-style: solid"
+              [src]="'data:' + account!.pictureContentType + ';base64,' + account!.picture"
+              class="profile-image rounded-circle border-dark mb-3"
+              alt="Avatar"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="contentInput" class="form-label">Comment</label>
+            <textarea
+              (keydown.Enter)="this.save()"
+              type="text"
+              class="form-control"
+              name="comment"
+              id="field_comment"
+              style="resize: none"
+              data-cy="comment"
+              formControlName="comment"
+              equired
+            >
+            </textarea>
+            <div *ngIf="editForm.get('comment')!.invalid && (editForm.get('comment')!.dirty || editForm.get('comment')!.touched)">
+              <small class="form-text text-danger" *ngIf="editForm.get('comment')?.errors?.required"> Este campo es obligatorio. </small>
+            </div>
+          </div>
+
+          <div class="col-md-4 justify-content-center align-self-center">
+            <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid || isSaving">Enviar Comentario</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

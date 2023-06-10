@@ -4,15 +4,15 @@ import com.mfinder.app.config.Constants;
 import com.mfinder.app.domain.Artist;
 import com.mfinder.app.domain.Authority;
 import com.mfinder.app.domain.Client;
+import com.mfinder.app.domain.RatingEvent;
 import com.mfinder.app.domain.User;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.repository.AuthorityRepository;
 import com.mfinder.app.repository.ClientRepository;
+import com.mfinder.app.repository.RatingEventRepository;
 import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
 import com.mfinder.app.security.SecurityUtils;
-import com.mfinder.app.service.ArtistService;
-import com.mfinder.app.service.ClientService;
 import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.service.dto.ArtistDTO;
 import com.mfinder.app.service.dto.UserDTO;
@@ -56,6 +56,8 @@ public class UserService {
 
     private final ClientService clientService;
 
+    private final RatingEventRepository ratingEventRepository;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
@@ -64,7 +66,8 @@ public class UserService {
         ArtistRepository artistRepository,
         ArtistService artistService,
         ClientRepository clientRepository,
-        ClientService clientService
+        ClientService clientService,
+        RatingEventRepository ratingEventRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -74,6 +77,7 @@ public class UserService {
         this.artistService = artistService;
         this.clientRepository = clientRepository;
         this.clientService = clientService;
+        this.ratingEventRepository = ratingEventRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -320,7 +324,10 @@ public class UserService {
         } else if (client != null) {
             clientRepository.delete(client);
         }
-
+        List<RatingEvent> ratingEvents = ratingEventRepository.findRatingByUserId(userA.getId());
+        if (ratingEvents != null) {
+            ratingEventRepository.deleteAll(ratingEvents);
+        }
         userRepository
             .findOneByLogin(login)
             .ifPresent(user -> {

@@ -275,7 +275,7 @@ public class Event extends AbstractAuditingEntity<Long> implements Serializable 
         return "Event{" +
         "id=" + getId() +
         ", name='" + getName() + "'" +
-        ", picture='" + getImage() + "'" +
+        ", image='" + getImage() + "'" +
         ", tipoEvento='" + getTipoEvento() + "'" +
         ", startDate='" + getStartDate() + "'" +
         ", endDate='" + getEndDate() + "'" +

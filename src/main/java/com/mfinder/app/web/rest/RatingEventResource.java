@@ -2,6 +2,8 @@ package com.mfinder.app.web.rest;
 
 import com.mfinder.app.domain.RatingEvent;
 import com.mfinder.app.repository.RatingEventRepository;
+import com.mfinder.app.repository.UserRepository;
+import com.mfinder.app.service.RatingEventService;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,8 +49,22 @@ public class RatingEventResource {
 
     private final RatingEventRepository ratingEventRepository;
 
-    public RatingEventResource(RatingEventRepository ratingEventRepository) {
+    private final RatingEventService ratingEventService;
+
+    private final AccountResource accountResource;
+
+    private UserRepository userRepository;
+
+    public RatingEventResource(
+        RatingEventRepository ratingEventRepository,
+        AccountResource accountResource,
+        RatingEventService ratingEventService,
+        UserRepository userRepository
+    ) {
         this.ratingEventRepository = ratingEventRepository;
+        this.accountResource = accountResource;
+        this.ratingEventService = ratingEventService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -65,6 +81,12 @@ public class RatingEventResource {
             throw new BadRequestAlertException("A new ratingEvent cannot already have an ID", ENTITY_NAME, "idexists");
         }
         RatingEvent result = ratingEventRepository.save(ratingEvent);
+        byte[] imageProfile = userRepository.getImageProfile(result.getCreatedBy());
+        ratingEvent.setImage(imageProfile);
+        String imageProfileContentType = userRepository.getImageProfileContentType(result.getCreatedBy());
+        ratingEvent.setImageContentType(imageProfileContentType);
+
+        updateRating(ratingEvent.getId(), ratingEvent);
         return ResponseEntity
             .created(new URI("/api/ratingsEvent/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -152,25 +174,37 @@ public class RatingEventResource {
         );
     }
 
-    /**
-     * {@code GET  /ratingsEvent} : get all the ratingsEvent.
-     *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ratingsEvent in body.
-     */
-    @GetMapping("/ratingsEvent")
-    public ResponseEntity<List<RatingEvent>> getAllRatings(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        if (!onlyContainsAllowedProperties(pageable)) {
-            return ResponseEntity.badRequest().build();
-        }
-        log.debug("REST request to get a page of RatingsEvent");
-        Page<RatingEvent> page = ratingEventRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+    // /**
+    //  * {@code GET  /ratingsEvent} : get all the ratingsEvent.
+    //  *
+    //  * @param pageable the pagination information.
+    //  * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ratingsEvent in body.
+    //  */
+    // @GetMapping("/ratingsEvent")
+    // public ResponseEntity<List<RatingEvent>> getAllRatings(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    //     if (!onlyContainsAllowedProperties(pageable)) {
+    //         return ResponseEntity.badRequest().build();
+    //     }
+    //     log.debug("REST request to get a page of RatingsEvent");
+    //     Page<RatingEvent> page = ratingEventService.findAll(pageable);
+    //     HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //     return ResponseEntity.ok().headers(headers).body(page.getContent());
+    // }
 
     private boolean onlyContainsAllowedProperties(Pageable pageable) {
         return pageable.getSort().stream().map(Sort.Order::getProperty).allMatch(ALLOWED_ORDERED_PROPERTIES::contains);
+    }
+
+    /**
+     * Get all the rating by the eventId
+     * @param eventId
+     * @return
+     */
+    @GetMapping("/ratingsEvent/eventId/{eventId}")
+    public ResponseEntity<List<RatingEvent>> getAllRatingByEventId(@PathVariable("eventId") Long eventId) {
+        log.debug("REST request to get a page of RatingsEvent");
+        // Long id =  Long.parseLong(eventId);
+        return ResponseEntity.ok().body(ratingEventService.getRatingsByEventId(eventId));
     }
 
     /**

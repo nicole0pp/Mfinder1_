@@ -23,18 +23,32 @@
 </div>
 <div class="d-flex">
   <div *ngIf="event">
-    <div class="row jh-entity-details">
-      <div class="col-8" style="position: initial; padding-left: 6%">
+    <div class="row jh-entity-details justify-content-around">
+      <div class="col-8" style="position: initial; padding-left: 1%">
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
         </button>
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
         &nbsp;
-        <h2>
-          <span jhiTranslate="mFinder1App.event.list.title">Event</span>
-          <span>{{ event.name }}</span>
-        </h2>
+        <div class="row justify-content-between" style="padding-left: 0">
+          <div class="col-sm-6 col-md-8">
+            <h2 style="position: initial">
+              <span jhiTranslate="mFinder1App.event.list.title">Event</span> <br />
+              <span style="color: #2a9fd6">{{ event.name }}</span>
+            </h2>
+          </div>
+          <div
+            class="col-2 justify-content-md-center"
+            style="display: flex; align-items: center"
+            *ngIf="this.esFechaPosterior(event.endDate)"
+          >
+            <h4>
+              <span class="badge bg-danger text-ligth justify-self-center align-self-center">Evento Pasado</span>
+            </h4>
+          </div>
+        </div>
+
         <p *jhiHasAnyAuthority="'ROLE_ADMIN'">
           <span jhiTranslate="mFinder1App.event.list.id" style="font-weight: bold; color: rgb(59, 127, 244)">ID</span
           ><span>{{ event.id }}</span>
@@ -114,10 +128,10 @@
           </div>
         </div>
       </div>
-      <div class="col-2" style="position: initial; padding-left: 6%">
+      <div class="col-2" style="display: flex; justify-self: center; align-items: self-start">
         <button
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
-          style="margin-top: 4%"
+          style="margin-top: 4%; justify-content: center"
           type="button"
           [routerLink]="['/event', event.id, 'update-view']"
           class="btn btn-primary"
