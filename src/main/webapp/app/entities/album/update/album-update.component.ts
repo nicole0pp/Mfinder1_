@@ -21,7 +21,7 @@ export class AlbumUpdateComponent implements OnInit {
   isSaving = false;
   album: IAlbum | null = null;
 
-  artistsSharedCollection: IArtist[] = [];
+  // artistsSharedCollection: IArtist[] = [];
 
   editForm: AlbumFormGroup = this.albumFormService.createAlbumFormGroup();
 
@@ -42,8 +42,6 @@ export class AlbumUpdateComponent implements OnInit {
       if (album) {
         this.updateForm(album);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -70,10 +68,21 @@ export class AlbumUpdateComponent implements OnInit {
     this.isSaving = true;
     const album = this.albumFormService.getAlbum(this.editForm);
     if (album.id !== null) {
-      this.subscribeToSaveResponse(this.albumService.update(album));
+      this.albumService.update(album).subscribe({
+        next: () => this.onSaveSuccess(),
+        error: () => this.onSaveError(),
+      });
     } else {
-      this.subscribeToSaveResponse(this.albumService.create(album));
+      this.albumService.create(album).subscribe({
+        next: () => this.onSaveSuccess(),
+        error: () => this.onSaveError(),
+      });
     }
+    // if (album.id !== null) {
+    //   this.subscribeToSaveResponse(this.albumService.update(album));
+    // } else {
+    //   this.subscribeToSaveResponse(this.albumService.create(album));
+    // }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAlbum>>): void {
@@ -99,14 +108,14 @@ export class AlbumUpdateComponent implements OnInit {
     this.album = album;
     this.albumFormService.resetForm(this.editForm, album);
 
-    this.artistsSharedCollection = this.artistService.addArtistToCollectionIfMissing<IArtist>(this.artistsSharedCollection, album.atist);
+    // this.artistsSharedCollection = this.artistService.addArtistToCollectionIfMissing<IArtist>(this.artistsSharedCollection, album.artist);
   }
 
-  protected loadRelationshipsOptions(): void {
-    this.artistService
-      .query()
-      .pipe(map((res: HttpResponse<IArtist[]>) => res.body ?? []))
-      .pipe(map((artists: IArtist[]) => this.artistService.addArtistToCollectionIfMissing<IArtist>(artists, this.album?.atist)))
-      .subscribe((artists: IArtist[]) => (this.artistsSharedCollection = artists));
-  }
+  // protected loadRelationshipsOptions(): void {
+  //   this.artistService
+  //     .query()
+  //     .pipe(map((res: HttpResponse<IArtist[]>) => res.body ?? []))
+  //     .pipe(map((artists: IArtist[]) => this.artistService.addArtistToCollectionIfMissing<IArtist>(artists, this.album?.artist)))
+  //     .subscribe((artists: IArtist[]) => (this.artistsSharedCollection = artists));
+  // }
 }

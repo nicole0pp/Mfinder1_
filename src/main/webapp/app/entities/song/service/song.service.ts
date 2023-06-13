@@ -34,6 +34,10 @@ export class SongService {
     return this.http.get<ISong>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  getAllSongsByAlbum(albumId?: any): Observable<EntityArrayResponseType> {
+    return this.http.get<ISong[]>(`${this.resourceUrl}/getSongsByAlbumId/${albumId}`, { params: albumId, observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ISong[]>(this.resourceUrl, { params: options, observe: 'response' });

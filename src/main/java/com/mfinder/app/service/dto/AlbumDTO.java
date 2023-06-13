@@ -23,7 +23,7 @@ public class AlbumDTO implements Serializable {
     private String pictureContentType;
     private LocalDate publicationDate;
 
-    private ArtistDTO atist;
+    private ArtistDTO artist;
 
     public Long getId() {
         return id;
@@ -66,11 +66,11 @@ public class AlbumDTO implements Serializable {
     }
 
     public ArtistDTO getAtist() {
-        return atist;
+        return artist;
     }
 
-    public void setAtist(ArtistDTO atist) {
-        this.atist = atist;
+    public void setAtist(ArtistDTO artist) {
+        this.artist = artist;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class AlbumDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", picture='" + getPicture() + "'" +
             ", publicationDate='" + getPublicationDate() + "'" +
-            ", atist=" + getAtist() +
+            ", artist=" + getAtist() +
             "}";
     }
 }

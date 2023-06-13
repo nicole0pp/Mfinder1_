@@ -14,7 +14,6 @@ import com.mfinder.app.repository.UserRepository;
 import com.mfinder.app.security.AuthoritiesConstants;
 import com.mfinder.app.security.SecurityUtils;
 import com.mfinder.app.service.dto.AdminUserDTO;
-import com.mfinder.app.service.dto.ArtistDTO;
 import com.mfinder.app.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -214,6 +213,8 @@ public class UserService {
 
         newArtist.setUser(newUser);
         newArtist.setArtistName(artistName);
+        newArtist.setImageProfile(newUser.getPicture());
+        newArtist.setImageProfileContentType(newUser.getPictureContentType());
         artistRepository.save(newArtist);
         return newUser;
     }
@@ -309,6 +310,14 @@ public class UserService {
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
                 this.clearUserCaches(user);
+                if (userDTO.getAuthorities().contains(AuthoritiesConstants.ARTIST)) {
+                    Artist newArtist = artistRepository.findArtistByUserId(user.getId());
+                    newArtist.setUser(user);
+                    newArtist.setArtistName(user.getFirstName() + " " + user.getLastName());
+                    newArtist.setImageProfile(user.getPicture());
+                    newArtist.setImageProfileContentType(user.getPictureContentType());
+                    artistRepository.save(newArtist);
+                }
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })

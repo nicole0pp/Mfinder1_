@@ -23,7 +23,7 @@ describe('Album Form Service', () => {
             name: expect.any(Object),
             picture: expect.any(Object),
             publicationDate: expect.any(Object),
-            atist: expect.any(Object),
+            artist: expect.any(Object),
           })
         );
       });
@@ -37,7 +37,7 @@ describe('Album Form Service', () => {
             name: expect.any(Object),
             picture: expect.any(Object),
             publicationDate: expect.any(Object),
-            atist: expect.any(Object),
+            artist: expect.any(Object),
           })
         );
       });

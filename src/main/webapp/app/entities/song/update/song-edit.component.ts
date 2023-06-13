@@ -16,14 +16,13 @@ import { IAlbum } from 'app/entities/album/album.model';
 import { AlbumService } from 'app/entities/album/service/album.service';
 import { MusicGenre } from 'app/entities/enumerations/music-genre.model';
 import { Duration } from 'dayjs/esm/plugin/duration';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEM_SAVED_ALBUM, ITEM_SAVED_SONG } from 'app/config/navigation.constants';
 
 @Component({
-  selector: 'jhi-song-update',
+  selector: 'jhi-song-updateSong',
   templateUrl: './song-update.component.html',
 })
-export class SongUpdateComponent implements OnInit {
+export class SongEditComponent implements OnInit {
   album?: IAlbum;
   isSaving = false;
   song: ISong | null = null;
@@ -40,8 +39,7 @@ export class SongUpdateComponent implements OnInit {
     protected listDetailsService: ListDetailsService,
     protected albumService: AlbumService,
     protected router: Router,
-    protected activatedRoute: ActivatedRoute,
-    protected activeModal: NgbActiveModal
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   compareListDetails = (o1: IListDetails | null, o2: IListDetails | null): boolean => this.listDetailsService.compareListDetails(o1, o2);
@@ -57,6 +55,10 @@ export class SongUpdateComponent implements OnInit {
     });
     this.albumId = this.activatedRoute.snapshot.paramMap.get('id');
     console.log(this.albumId);
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
   byteSize(base64String: string): string {
@@ -82,12 +84,8 @@ export class SongUpdateComponent implements OnInit {
     }
   }
 
-  previousState(): void {
-    this.activeModal.dismiss();
-  }
   save(): void {
     this.isSaving = true;
-
     const song = this.songFormService.getSong(this.editForm);
     if (song.id !== null) {
       this.subscribeToSaveResponse(this.songService.update(song));
@@ -107,7 +105,7 @@ export class SongUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.activeModal.dismiss();
+    this.previousState();
   }
 
   protected onSaveError(): void {
@@ -121,27 +119,5 @@ export class SongUpdateComponent implements OnInit {
   protected updateForm(song: ISong): void {
     this.song = song;
     this.songFormService.resetForm(this.editForm, song);
-
-    // this.listDetailsSharedCollection = this.listDetailsService.addListDetailsToCollectionIfMissing<IListDetails>(
-    //   this.listDetailsSharedCollection,
-    //   song.listDetails
-    // );
-    // this.albumsSharedCollection = this.albumService.addAlbumToCollectionIfMissing<IAlbum>(this.albumsSharedCollection, song.album);
   }
-
-  // this.listDetailsService
-  //   .query()
-  //   .pipe(map((res: HttpResponse<IListDetails[]>) => res.body ?? []))
-  //   .pipe(
-  //     map((listDetails: IListDetails[]) =>
-  //       this.listDetailsService.addListDetailsToCollectionIfMissing<IListDetails>(listDetails, this.song?.listDetails)
-  //     )
-  //   )
-  //   .subscribe((listDetails: IListDetails[]) => (this.listDetailsSharedCollection = listDetails));
-
-  // this.albumService
-  //   .query()
-  //   .pipe(map((res: HttpResponse<IAlbum[]>) => res.body ?? []))
-  //   .pipe(map((albums: IAlbum[]) => this.albumService.addAlbumToCollectionIfMissing<IAlbum>(albums, this.song?.album)))
-  // .subscribe((albums: IAlbum[]) => (this.albumsSharedCollection = albums));
 }

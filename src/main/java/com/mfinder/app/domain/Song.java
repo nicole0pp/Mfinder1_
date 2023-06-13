@@ -1,5 +1,6 @@
 package com.mfinder.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mfinder.app.domain.enumeration.MusicGenre;
 import java.io.Serializable;
@@ -46,19 +47,21 @@ public class Song implements Serializable {
     @Column(name = "audio_content_type")
     private String audioContentType;
 
-    @Column(name = "artists")
-    private String artists;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "music_genre")
     private MusicGenre musicGenre;
 
     @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
+
+    @ManyToOne
     @JsonIgnoreProperties(value = { "lists", "songs" }, allowSetters = true)
     private ListDetails listDetails;
 
+    @JsonIgnore
     @ManyToOne
-    @JsonIgnoreProperties(value = { "sngs", "atist" }, allowSetters = true)
+    @JoinColumn(name = "album_id")
     private Album album;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -154,17 +157,17 @@ public class Song implements Serializable {
         this.audioContentType = audioContentType;
     }
 
-    public String getArtists() {
-        return this.artists;
+    public Artist getArtist() {
+        return this.artist;
     }
 
-    public Song artists(String artists) {
-        this.setArtists(artists);
+    public Song artists(Artist artist) {
+        this.setArtists(artist);
         return this;
     }
 
-    public void setArtists(String artists) {
-        this.artists = artists;
+    public void setArtists(Artist artist) {
+        this.artist = artist;
     }
 
     public MusicGenre getMusicGenre() {
@@ -236,7 +239,7 @@ public class Song implements Serializable {
             ", duration='" + getDuration() + "'" +
             ", audio='" + getAudio() + "'" +
             ", audioContentType='" + getAudioContentType() + "'" +
-            ", artists='" + getArtists() + "'" +
+            ", artists='" + getArtist() + "'" +
             ", musicGenre='" + getMusicGenre() + "'" +
             "}";
     }

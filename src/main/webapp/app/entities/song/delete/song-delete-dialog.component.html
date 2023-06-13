@@ -7,8 +7,8 @@
 
   <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
-    <p id="jhi-delete-song-heading" jhiTranslate="mFinder1App.song.delete.question" [translateValues]="{ id: song.id }">
-      ¿Seguro que quiere eliminar Song {{ song.id }}?
+    <p id="jhi-delete-song-heading" jhiTranslate="mFinder1App.song.delete.question" [translateValues]="{ name: song.name }">
+      ¿Seguro que quiere eliminar Song "{{ song.name }}"?
     </p>
   </div>
 

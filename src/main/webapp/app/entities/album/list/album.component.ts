@@ -15,6 +15,7 @@ import { DataUtils } from 'app/core/util/data-util.service';
 @Component({
   selector: 'jhi-album',
   templateUrl: './album.component.html',
+  styleUrls: ['../album.scss'],
 })
 export class AlbumComponent implements OnInit {
   albums?: IAlbum[];
@@ -30,7 +31,7 @@ export class AlbumComponent implements OnInit {
   constructor(
     protected albumService: AlbumService,
     protected activatedRoute: ActivatedRoute,
-    public router: Router,
+    protected router: Router,
     protected dataUtils: DataUtils,
     protected modalService: NgbModal
   ) {}

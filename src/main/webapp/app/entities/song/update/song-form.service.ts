@@ -19,15 +19,10 @@ type SongFormDefaults = Pick<NewSong, 'id'>;
 type SongFormGroupContent = {
   id: FormControl<ISong['id'] | NewSong['id']>;
   name: FormControl<ISong['name']>;
-  picture: FormControl<ISong['picture']>;
-  pictureContentType: FormControl<ISong['pictureContentType']>;
-  duration: FormControl<ISong['duration']>;
   audio: FormControl<ISong['audio']>;
   audioContentType: FormControl<ISong['audioContentType']>;
-  artists: FormControl<ISong['artists']>;
+  duration: FormControl<ISong['duration']>;
   musicGenre: FormControl<ISong['musicGenre']>;
-  listDetails: FormControl<ISong['listDetails']>;
-  album: FormControl<ISong['album']>;
 };
 
 export type SongFormGroup = FormGroup<SongFormGroupContent>;
@@ -50,15 +45,12 @@ export class SongFormService {
       name: new FormControl(songRawValue.name, {
         validators: [Validators.required],
       }),
-      picture: new FormControl(songRawValue.picture),
-      pictureContentType: new FormControl(songRawValue.pictureContentType),
-      duration: new FormControl(songRawValue.duration),
-      audio: new FormControl(songRawValue.audio),
+      audio: new FormControl(songRawValue.audio, {
+        validators: [Validators.required],
+      }),
       audioContentType: new FormControl(songRawValue.audioContentType),
-      artists: new FormControl(songRawValue.artists),
+      duration: new FormControl(songRawValue.duration),
       musicGenre: new FormControl(songRawValue.musicGenre),
-      listDetails: new FormControl(songRawValue.listDetails),
-      album: new FormControl(songRawValue.album),
     });
   }
 

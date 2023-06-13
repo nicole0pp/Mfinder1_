@@ -12,7 +12,7 @@
       "updated": "Un Song ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Song ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Song {{ id }}?"
+        "question": "¿Seguro que quiere eliminar Song '{{ name }}'?"
       },
       "detail": {
         "title": "Song"

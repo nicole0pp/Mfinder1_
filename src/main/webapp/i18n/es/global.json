@@ -151,7 +151,8 @@
     "idnotfound": "ID no encontrado",
     "file": {
       "could.not.extract": "No se pudo extraer el fichero",
-      "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
+      "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\"",
+      "not.audio": "Se esperaba que el fichero fuera un audio pero se encontró \"{{ fileType }}\""
     }
   },
   "footer": {

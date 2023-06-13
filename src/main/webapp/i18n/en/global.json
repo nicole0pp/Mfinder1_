@@ -152,7 +152,8 @@
     "idnotfound": "ID cannot be found",
     "file": {
       "could.not.extract": "Could not extract file",
-      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\"",
+      "not.audio": "File was expected to be an audio but was found to be \"{{ fileType }}\""
     }
   },
   "footer": {

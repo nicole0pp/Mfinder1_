@@ -29,6 +29,7 @@
     <include file="config/liquibase/changelog/20230128112616_modified_entity_Artist.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230128120416_modified_entity_Client.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230501154016_modified_entity_jhiUser.xml" relativeToChangelogFile="false"/>
+    <include file= "config/liquibase/changelog/20230611205716_modified_entity_Song.xml" relativeToChangelogFile="false"/>
     <!-- <include file="config/liquibase/changelog/20230506124616_modified_entity_Event.xml" relativeToChangelogFile="false"/> -->
     <!-- Modified Contraints entities -->
     <!-- <include file="config/liquibase/changelog/20230430173816_modified_entity_constrainsts_Album.xml" relativeToChangelogFile="false"/> -->
@@ -38,6 +39,7 @@
     <include file="config/liquibase/changelog/20230403141733_constrainsts_Rating.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230602212416_modified_entity_RatingEvent.xml" relativeToChangelogFile="false"/>
     <!-- My Entities (hechas por mi)-->
+
     <include file="config/liquibase/changelog/20230428211916_added_entity_Event.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230602232816_added_RatingSong.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

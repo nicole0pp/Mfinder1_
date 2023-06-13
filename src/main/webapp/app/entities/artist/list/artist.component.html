@@ -32,6 +32,11 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col">
+            <div class="d-flex">
+              <span>Imagen</span>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="id">
             <div class="d-flex">
               <span jhiTranslate="global.field.id">ID</span>
@@ -68,11 +73,20 @@
       <tbody>
         <tr *ngFor="let artist of artists; trackBy: trackId" data-cy="entityTable">
           <td>
+            <img
+              *ngIf="artist.image"
+              class="profile-image rounded-circle"
+              style="width: 100px; height: 100px"
+              [src]="'data:' + artist!.imageProfileContentType + ';base64,' + artist!.image"
+              alt="Avatar"
+            />
+          </td>
+          <td>
             <a [routerLink]="['/artist', artist.id, 'view']">{{ artist.id }}</a>
           </td>
           <td>
             <div *ngIf="artist.user">
-              <a [routerLink]="['/artist/user', artist.user.id, 'view']">{{ artist.user.id }}</a>
+              <a [routerLink]="['/artist/user', artist.user.id, 'view']">{{ artist.user.login }}</a>
             </div>
           </td>
           <td>{{ artist.artistName }}</td>

@@ -21,8 +21,6 @@ type AlbumFormGroupContent = {
   name: FormControl<IAlbum['name']>;
   picture: FormControl<IAlbum['picture']>;
   pictureContentType: FormControl<IAlbum['pictureContentType']>;
-  publicationDate: FormControl<IAlbum['publicationDate']>;
-  atist: FormControl<IAlbum['atist']>;
 };
 
 export type AlbumFormGroup = FormGroup<AlbumFormGroupContent>;
@@ -47,8 +45,6 @@ export class AlbumFormService {
       }),
       picture: new FormControl(albumRawValue.picture),
       pictureContentType: new FormControl(albumRawValue.pictureContentType),
-      publicationDate: new FormControl(albumRawValue.publicationDate),
-      atist: new FormControl(albumRawValue.atist),
     });
   }
 

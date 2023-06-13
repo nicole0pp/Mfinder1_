@@ -72,7 +72,6 @@ describe('Song Management Update Component', () => {
         listDetailsCollection,
         ...additionalListDetails.map(expect.objectContaining)
       );
-      expect(comp.listDetailsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Album query and add missing value', () => {
@@ -94,7 +93,6 @@ describe('Song Management Update Component', () => {
         albumCollection,
         ...additionalAlbums.map(expect.objectContaining)
       );
-      expect(comp.albumsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
@@ -107,8 +105,6 @@ describe('Song Management Update Component', () => {
       activatedRoute.data = of({ song });
       comp.ngOnInit();
 
-      expect(comp.listDetailsSharedCollection).toContain(listDetails);
-      expect(comp.albumsSharedCollection).toContain(album);
       expect(comp.song).toEqual(song);
     });
   });

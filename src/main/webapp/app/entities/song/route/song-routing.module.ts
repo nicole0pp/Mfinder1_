@@ -7,6 +7,7 @@ import { SongDetailComponent } from '../detail/song-detail.component';
 import { SongUpdateComponent } from '../update/song-update.component';
 import { SongRoutingResolveService } from './song-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
+import { SongEditComponent } from '../update/song-edit.component';
 
 const songRoute: Routes = [
   {
@@ -26,7 +27,7 @@ const songRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: 'new',
+    path: 'new/:idAlbum',
     component: SongUpdateComponent,
     resolve: {
       song: SongRoutingResolveService,
@@ -40,6 +41,15 @@ const songRoute: Routes = [
       song: SongRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/editSong',
+    component: SongEditComponent,
+    resolve: {
+      song: SongRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+    // SongEditComponent
   },
 ];
 

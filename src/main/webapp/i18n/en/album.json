@@ -6,7 +6,8 @@
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Album",
         "createOrEditLabel": "Create or edit a Album",
-        "notFound": "No Albums found"
+        "notFound": "No Albums found",
+        "editAlbum": "Edit album"
       },
       "created": "A new Album is created with identifier {{ param }}",
       "updated": "A Album is updated with identifier {{ param }}",
@@ -18,11 +19,13 @@
         "title": "Album"
       },
       "id": "ID",
-      "name": "Name",
-      "picture": "Picture",
+      "name": "Album title",
+      "picture": "Image",
       "publicationDate": "Publication Date",
-      "sng": "Sng",
-      "atist": "Atist"
+      "song": {
+        "create": "Create a new song"
+      },
+      "artist": "Artist"
     }
   }
 }

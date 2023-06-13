@@ -1,6 +1,7 @@
 package com.mfinder.app.service;
 
-import com.mfinder.app.service.dto.SongDTO;
+import com.mfinder.app.domain.Song;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,34 +13,33 @@ public interface SongService {
     /**
      * Save a song.
      *
-     * @param songDTO the entity to save.
+     * @param song the entity to save.
      * @return the persisted entity.
      */
-    SongDTO save(SongDTO songDTO);
+    Song save(Song song);
 
     /**
      * Updates a song.
      *
-     * @param songDTO the entity to update.
+     * @param song the entity to update.
      * @return the persisted entity.
      */
-    SongDTO update(SongDTO songDTO);
+    Song update(Song song);
 
     /**
      * Partially updates a song.
      *
-     * @param songDTO the entity to update partially.
+     * @param song the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<SongDTO> partialUpdate(SongDTO songDTO);
+    Optional<Song> partialUpdate(Song song);
 
     /**
      * Get all the songs.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<SongDTO> findAll(Pageable pageable);
+    List<Song> findAll();
 
     /**
      * Get the "id" song.
@@ -47,7 +47,7 @@ public interface SongService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<SongDTO> findOne(Long id);
+    Optional<Song> findOne(Long id);
 
     /**
      * Delete the "id" song.

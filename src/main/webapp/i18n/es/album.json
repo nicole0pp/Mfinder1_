@@ -6,7 +6,8 @@
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Album",
         "createOrEditLabel": "Crear o editar Album",
-        "notFound": "Ningún Albums encontrado"
+        "notFound": "Ningún Albums encontrado",
+        "editAlbum": "Editar album"
       },
       "created": "Un nuevo Album ha sido creado con el identificador {{ param }}",
       "updated": "Un Album ha sido actualizado con el identificador {{ param }}",
@@ -18,11 +19,13 @@
         "title": "Album"
       },
       "id": "ID",
-      "name": "Name",
-      "picture": "Picture",
-      "publicationDate": "Publication Date",
-      "sng": "Sng",
-      "atist": "Atist"
+      "name": "Titulo del album",
+      "picture": "Imagen",
+      "publicationDate": "Fecha de publicación",
+      "song": {
+        "create": "Crear nueva canción"
+      },
+      "artist": "Artista"
     }
   }
 }

@@ -24,6 +24,19 @@
         </addColumn>
     </changeSet>
 
+
+    <changeSet id="20230611214416-2" author="nicole">
+
+        <addColumn tableName="artist">
+            <column name="image_profile" type="${blobType}">
+                    <constraints nullable="true" />
+            </column>
+            <column name="image_profile_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    
+    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--

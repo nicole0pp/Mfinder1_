@@ -29,7 +29,7 @@ enum MusicGenre{
     
 }
 relationship OneToMany{
-	Artist{album} to Album{atist}
+	Artist{album} to Album{artist}
     ListDetails{list} to FavoriteList
     ListDetails{song} to Song
     Album{sng} to Song{album}

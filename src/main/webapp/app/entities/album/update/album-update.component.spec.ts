@@ -51,12 +51,12 @@ describe('Album Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Artist query and add missing value', () => {
       const album: IAlbum = { id: 456 };
-      const atist: IArtist = { id: 13630 };
-      album.atist = atist;
+      const artist: IArtist = { id: 13630 };
+      album.artist = artist;
 
       const artistCollection: IArtist[] = [{ id: 20501 }];
       jest.spyOn(artistService, 'query').mockReturnValue(of(new HttpResponse({ body: artistCollection })));
-      const additionalArtists = [atist];
+      const additionalArtists = [artist];
       const expectedCollection: IArtist[] = [...additionalArtists, ...artistCollection];
       jest.spyOn(artistService, 'addArtistToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -73,13 +73,13 @@ describe('Album Management Update Component', () => {
 
     it('Should update editForm', () => {
       const album: IAlbum = { id: 456 };
-      const atist: IArtist = { id: 95993 };
-      album.atist = atist;
+      const artist: IArtist = { id: 95993 };
+      album.artist = artist;
 
       activatedRoute.data = of({ album });
       comp.ngOnInit();
 
-      expect(comp.artistsSharedCollection).toContain(atist);
+      expect(comp.artistsSharedCollection).toContain(artist);
       expect(comp.album).toEqual(album);
     });
   });

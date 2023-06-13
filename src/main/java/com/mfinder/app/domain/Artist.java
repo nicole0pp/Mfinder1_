@@ -3,6 +3,7 @@ package com.mfinder.app.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -33,9 +34,14 @@ public class Artist implements Serializable {
     @Column(name = "spoti_link")
     private String spoti_link;
 
-    @OneToMany(mappedBy = "atist")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "sngs", "atist" }, allowSetters = true)
+    @Lob
+    @Column(name = "image_profile")
+    private byte[] image;
+
+    @Column(name = "image_profile_content_type")
+    private String imageProfileContentType;
+
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private Set<Album> albums = new HashSet<>();
 
     @OneToMany(mappedBy = "artist")
@@ -47,6 +53,9 @@ public class Artist implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = "artists", allowSetters = true)
     private Set<Event> events = new HashSet<>();
+
+    @OneToMany(mappedBy = "artist")
+    private Set<Song> songs = new HashSet<>();
 
     //Relacion con el User
     @OneToOne
@@ -105,16 +114,42 @@ public class Artist implements Serializable {
         this.spoti_link = spoti_link;
     }
 
+    public byte[] getImage() {
+        return this.image;
+    }
+
+    public Artist image(byte[] image) {
+        this.setImageProfile(image);
+        return this;
+    }
+
+    public void setImageProfile(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageProfileContentType() {
+        return this.imageProfileContentType;
+    }
+
+    public Artist imageProfileProfileContentType(String imageProfileContentType) {
+        this.setImageProfileContentType(imageProfileContentType);
+        return this;
+    }
+
+    public void setImageProfileContentType(String imageProfileContentType) {
+        this.imageProfileContentType = imageProfileContentType;
+    }
+
     public Set<Album> getAlbums() {
         return this.albums;
     }
 
     public void setAlbums(Set<Album> albums) {
         if (this.albums != null) {
-            this.albums.forEach(i -> i.setAtist(null));
+            this.albums.forEach(i -> i.setArtist(null));
         }
         if (albums != null) {
-            albums.forEach(i -> i.setAtist(this));
+            albums.forEach(i -> i.setArtist(this));
         }
         this.albums = albums;
     }
@@ -126,13 +161,13 @@ public class Artist implements Serializable {
 
     public Artist addAlbum(Album album) {
         this.albums.add(album);
-        album.setAtist(this);
+        album.setArtist(this);
         return this;
     }
 
     public Artist removeAlbum(Album album) {
         this.albums.remove(album);
-        album.setAtist(null);
+        album.setArtist(null);
         return this;
     }
 
@@ -241,6 +276,8 @@ public class Artist implements Serializable {
             ", artistName='" + getArtistName() + "'" +
             ", insta_link='" + getInsta_link() + "'" +
             ", spoti_link='" + getSpoti_link() + "'" +
+            ", image'" +getImage() + "'" +
+            ", imageProfileContentType='" +getImageProfileContentType()+ "'" +
             "}";
     }
 }

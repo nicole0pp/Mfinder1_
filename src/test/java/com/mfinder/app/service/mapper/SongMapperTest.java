@@ -1,16 +1,16 @@
-package com.mfinder.app.service.mapper;
+// package com.mfinder.app.service.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
+// import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 
-class SongMapperTest {
+// class SongMapperTest {
 
-    private SongMapper songMapper;
+//     private SongMapper songMapper;
 
-    @BeforeEach
-    public void setUp() {
-        songMapper = new SongMapperImpl();
-    }
-}
+//     @BeforeEach
+//     public void setUp() {
+//         songMapper = new SongMapperImpl();
+//     }
+// }

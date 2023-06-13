@@ -11,6 +11,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, ArtistService } from '../service/artist.service';
 import { ArtistDeleteDialogComponent } from '../delete/artist-delete-dialog.component';
 import { UserService } from 'app/entities/user/user.service';
+import { DataUtils } from 'app/core/util/data-util.service';
 
 @Component({
   selector: 'jhi-artist',
@@ -30,6 +31,7 @@ export class ArtistComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
+    protected dataUtils: DataUtils,
     userService: UserService
   ) {}
 
@@ -53,6 +55,13 @@ export class ArtistComponent implements OnInit {
           this.onResponseSuccess(res);
         },
       });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
   }
 
   load(): void {
@@ -89,6 +98,9 @@ export class ArtistComponent implements OnInit {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.artists = dataFromBody;
+    this.artists.forEach(artist => {
+      console.log(artist.image);
+    });
   }
 
   protected fillComponentAttributesFromResponseBody(data: IArtist[] | null): IArtist[] {

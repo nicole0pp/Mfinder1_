@@ -1,14 +1,14 @@
 package com.mfinder.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.annotation.CreatedDate;
 
 /**
  * A Album.
@@ -37,19 +37,17 @@ public class Album implements Serializable {
     @Column(name = "picture_content_type")
     private String pictureContentType;
 
-    @Column(name = "publication_date")
-    private LocalDate publicationDate;
+    @CreatedDate
+    @Column(name = "publication_date", updatable = false)
+    private Instant publicationDate = Instant.now();
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "listDetails", "album" }, allowSetters = true)
-    private Set<Song> sngs = new HashSet<>();
+    private Set<Song> songs = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = { "albums", "favoriteLists" }, allowSetters = true)
-    private Artist atist;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 
     public Long getId() {
         return this.id;
@@ -103,60 +101,60 @@ public class Album implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public LocalDate getPublicationDate() {
+    public Instant getPublicationDate() {
         return this.publicationDate;
     }
 
-    public Album publicationDate(LocalDate publicationDate) {
+    public Album publicationDate(Instant publicationDate) {
         this.setPublicationDate(publicationDate);
         return this;
     }
 
-    public void setPublicationDate(LocalDate publicationDate) {
+    public void setPublicationDate(Instant publicationDate) {
         this.publicationDate = publicationDate;
     }
 
-    public Set<Song> getSngs() {
-        return this.sngs;
+    public Set<Song> getsongs() {
+        return this.songs;
     }
 
-    public void setSngs(Set<Song> songs) {
-        if (this.sngs != null) {
-            this.sngs.forEach(i -> i.setAlbum(null));
+    public void setSongs(Set<Song> songs) {
+        if (this.songs != null) {
+            this.songs.forEach(i -> i.setAlbum(null));
         }
         if (songs != null) {
             songs.forEach(i -> i.setAlbum(this));
         }
-        this.sngs = songs;
+        this.songs = songs;
     }
 
-    public Album sngs(Set<Song> songs) {
-        this.setSngs(songs);
+    public Album songs(Set<Song> songs) {
+        this.setSongs(songs);
         return this;
     }
 
-    public Album addSng(Song song) {
-        this.sngs.add(song);
+    public Album addSong(Song song) {
+        this.songs.add(song);
         song.setAlbum(this);
         return this;
     }
 
-    public Album removeSng(Song song) {
-        this.sngs.remove(song);
+    public Album removeSong(Song song) {
+        this.songs.remove(song);
         song.setAlbum(null);
         return this;
     }
 
-    public Artist getAtist() {
-        return this.atist;
+    public Artist getArtist() {
+        return this.artist;
     }
 
-    public void setAtist(Artist artist) {
-        this.atist = artist;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
-    public Album atist(Artist artist) {
-        this.setAtist(artist);
+    public Album artist(Artist artist) {
+        this.setArtist(artist);
         return this;
     }
 

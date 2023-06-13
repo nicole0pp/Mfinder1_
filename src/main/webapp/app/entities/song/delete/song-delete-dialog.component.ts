@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ISong } from '../song.model';
 import { SongService } from '../service/song.service';
-import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
+import { ITEM_DELETED_SONG } from 'app/config/navigation.constants';
 
 @Component({
   templateUrl: './song-delete-dialog.component.html',
@@ -19,7 +19,7 @@ export class SongDeleteDialogComponent {
 
   confirmDelete(id: number): void {
     this.songService.delete(id).subscribe(() => {
-      this.activeModal.close(ITEM_DELETED_EVENT);
+      this.activeModal.close(ITEM_DELETED_SONG);
     });
   }
 }

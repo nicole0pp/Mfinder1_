@@ -1,49 +1,148 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="album">
-      <h2 data-cy="albumDetailsHeading"><span jhiTranslate="mFinder1App.album.detail.title">Album</span></h2>
+<div class="container">
+  <div class="row" *ngIf="album && album.picture!">
+    <div
+      class="bg-image text-center"
+      style="
+        background-image: url('./../../../../content/images/header-album.jpeg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      "
+    >
+      <img
+        width="700"
+        height="400"
+        style="align-self: center; justify-self: center"
+        *ngIf="album.picture"
+        [src]="'data:' + album.pictureContentType + ';base64,' + album.picture"
+      />
+    </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+    </button>
+    <button
+      type="submit"
+      *ngIf="album"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-event justify-self-end"
+      (click)="createSong(album)"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span jhiTranslate="mFinder1App.album.song.create"> Añadir cancion </span>
+    </button>
+  </div>
+  <div *ngIf="album">
+    <div class="row jh-entity-details justify-content-around">
+      <div class="col-8">
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
 
-      <hr />
-
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ album.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.album.name">Name</span></dt>
-        <dd>
-          <span>{{ album.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.album.picture">Picture</span></dt>
-        <dd>
-          <div *ngIf="album.picture">
-            <a (click)="openFile(album.picture, album.pictureContentType)" jhiTranslate="entity.action.open">Abrir</a>
-            {{ album.pictureContentType }}, {{ byteSize(album.picture) }}
+        <div class="row justify-content-between" style="padding-left: 0">
+          <div class="col">
+            <h2 style="position: initial">
+              <span class="mr-2" jhiTranslate="mFinder1App.album.name">Album</span>
+              <span style="color: #2a9fd6">{{ album.name }}</span>
+            </h2>
           </div>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.album.publicationDate">Publication Date</span></dt>
-        <dd>
-          <span>{{ album.publicationDate | formatMediumDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.album.atist">Atist</span></dt>
-        <dd>
-          <div *ngIf="album.atist">
-            <a [routerLink]="['/artist', album.atist.id, 'view']">{{ album.atist.id }}</a>
+          <p *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <span jhiTranslate="mFinder1App.album.id" style="font-weight: bold; color: rgb(59, 127, 244)">ID</span>
+            <span
+              >{{ album.id }} <br />
+              <div *ngIf="album.artist">
+                <img
+                  class="profile-image rounded-circle"
+                  style="width: 150px; height: 150px"
+                  alt="..."
+                  *ngIf="album.artist.image"
+                  [src]="'data:' + album.artist.imageProfileContentType + ';base64,' + album.artist.image"
+                />
+                <a [routerLink]="['/artist', album.artist.id, 'view']" style="font-weight: bold">{{ album.artist.artistName }}</a>
+              </div>
+            </span>
+          </p>
+        </div>
+        <div class="row">
+          <div class="table-responsive table-entities" id="entities" *ngIf="songs && songs.length > 0">
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr jhiSort class="table-active">
+                  <!-- (sortChange)="navigateToWithComponentValues()"-->
+                  <th scope="col" jhiSortBy="id">
+                    <div class="d-flex" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                      <span>ID</span>
+                      <fa-icon class="p-1" icon="sort"></fa-icon>
+                    </div>
+                  </th>
+                  <th scope="col" jhiSortBy="title">
+                    <div class="d-flex">
+                      <span>Name</span>
+                      <fa-icon class="p-1" icon="sort"></fa-icon>
+                    </div>
+                  </th>
+                  <th scope="col" jhiSortBy="audio">
+                    <div class="d-flex">
+                      <span>Audio</span>
+                      <fa-icon class="p-1" icon="sort"></fa-icon>
+                    </div>
+                  </th>
+                  <th scope="col" jhiSortBy="musicGenre">
+                    <div class="d-flex">
+                      <span>Music Genre</span>
+                      <fa-icon class="p-1" icon="sort"></fa-icon>
+                    </div>
+                  </th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let song of songs" data-cy="entityTable">
+                  <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <a [routerLink]="['/song', song.id, 'view']">{{ song.id }}</a>
+                  </td>
+                  <td>{{ song.name }}</td>
+                  <td>
+                    <audio
+                      *ngIf="song.audio"
+                      [src]="'data:' + song.audioContentType + ';base64,' + song.audio"
+                      controls="controls"
+                      preload="none"
+                    ></audio>
+                  </td>
+                  <td>{{ song.musicGenre }}</td>
+                  <td class="text-end">
+                    <div class="btn-group">
+                      <!-- <button type="submit" [routerLink]="['/task', task.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                        <fa-icon icon="eye"></fa-icon>
+                        <span class="d-none d-md-inline">Vista</span>
+                      </button> -->
+
+                      <button
+                        type="submit"
+                        [routerLink]="['/song', song.id, 'editSong']"
+                        class="btn btn-primary btn-sm"
+                        data-cy="entityEditButton"
+                      >
+                        <fa-icon icon="pencil-alt"></fa-icon>
+                        <span class="d-none d-md-inline">Editar</span>
+                      </button>
+
+                      <button type="submit" (click)="delete(song)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                        <fa-icon icon="times"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </dd>
-      </dl>
-
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
-      </button>
-
-      <button type="button" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
-      </button>
+        </div>
+        <button type="button" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="mFinder1App.album.home.editAlbum">Editar Album</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

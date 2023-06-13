@@ -3,6 +3,7 @@ package com.mfinder.app.web.rest;
 import com.mfinder.app.domain.Artist;
 import com.mfinder.app.repository.ArtistRepository;
 import com.mfinder.app.service.ArtistService;
+import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.service.dto.ArtistDTO;
 import com.mfinder.app.service.impl.ArtistServiceImpl;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
@@ -59,12 +60,12 @@ public class ArtistResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/artists")
-    public ResponseEntity<ArtistDTO> createArtist(@RequestBody ArtistDTO artistDTO) throws URISyntaxException {
-        log.debug("REST request to save Artist : {}", artistDTO);
-        if (artistDTO.getId() != null) {
+    public ResponseEntity<Artist> createArtist(@RequestBody Artist artist) throws URISyntaxException {
+        log.debug("REST request to save Artist : {}", artist);
+        if (artist.getId() != null) {
             throw new BadRequestAlertException("A new artist cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ArtistDTO result = artistService.save(artistDTO);
+        Artist result = artistRepository.save(artist);
         return ResponseEntity
             .created(new URI("/api/artists/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -148,9 +149,9 @@ public class ArtistResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of artists in body.
      */
     @GetMapping("/artists")
-    public ResponseEntity<List<ArtistDTO>> getAllArtists(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<Artist>> getAllArtists(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Artists");
-        Page<ArtistDTO> page = artistService.findAll(pageable);
+        Page<Artist> page = artistRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

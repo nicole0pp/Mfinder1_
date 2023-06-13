@@ -1,5 +1,6 @@
 package com.mfinder.app.service;
 
+import com.mfinder.app.domain.Album;
 import com.mfinder.app.service.dto.AlbumDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -55,4 +56,10 @@ public interface AlbumService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get the album by id.
+     * @param id the id of the album.
+     */
+    Album findOneById(Long id);
 }

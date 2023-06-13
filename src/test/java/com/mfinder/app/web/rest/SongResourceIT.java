@@ -10,7 +10,6 @@ import com.mfinder.app.domain.Song;
 import com.mfinder.app.domain.enumeration.MusicGenre;
 import com.mfinder.app.repository.SongRepository;
 import com.mfinder.app.service.dto.SongDTO;
-import com.mfinder.app.service.mapper.SongMapper;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
@@ -50,9 +49,6 @@ class SongResourceIT {
     private static final String DEFAULT_AUDIO_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_AUDIO_CONTENT_TYPE = "image/png";
 
-    private static final String DEFAULT_ARTISTS = "AAAAAAAAAA";
-    private static final String UPDATED_ARTISTS = "BBBBBBBBBB";
-
     private static final MusicGenre DEFAULT_MUSIC_GENRE = MusicGenre.JAZZ;
     private static final MusicGenre UPDATED_MUSIC_GENRE = MusicGenre.BLUES;
 
@@ -64,9 +60,6 @@ class SongResourceIT {
 
     @Autowired
     private SongRepository songRepository;
-
-    @Autowired
-    private SongMapper songMapper;
 
     @Autowired
     private EntityManager em;
@@ -90,7 +83,6 @@ class SongResourceIT {
             .duration(DEFAULT_DURATION)
             .audio(DEFAULT_AUDIO)
             .audioContentType(DEFAULT_AUDIO_CONTENT_TYPE)
-            .artists(DEFAULT_ARTISTS)
             .musicGenre(DEFAULT_MUSIC_GENRE);
         return song;
     }
@@ -109,7 +101,6 @@ class SongResourceIT {
             .duration(UPDATED_DURATION)
             .audio(UPDATED_AUDIO)
             .audioContentType(UPDATED_AUDIO_CONTENT_TYPE)
-            .artists(UPDATED_ARTISTS)
             .musicGenre(UPDATED_MUSIC_GENRE);
         return song;
     }
@@ -124,9 +115,8 @@ class SongResourceIT {
     void createSong() throws Exception {
         int databaseSizeBeforeCreate = songRepository.findAll().size();
         // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
         restSongMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(songDTO)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isCreated());
 
         // Validate the Song in the database
@@ -139,7 +129,6 @@ class SongResourceIT {
         assertThat(testSong.getDuration()).isEqualTo(DEFAULT_DURATION);
         assertThat(testSong.getAudio()).isEqualTo(DEFAULT_AUDIO);
         assertThat(testSong.getAudioContentType()).isEqualTo(DEFAULT_AUDIO_CONTENT_TYPE);
-        assertThat(testSong.getArtists()).isEqualTo(DEFAULT_ARTISTS);
         assertThat(testSong.getMusicGenre()).isEqualTo(DEFAULT_MUSIC_GENRE);
     }
 
@@ -148,13 +137,12 @@ class SongResourceIT {
     void createSongWithExistingId() throws Exception {
         // Create the Song with an existing ID
         song.setId(1L);
-        SongDTO songDTO = songMapper.toDto(song);
 
         int databaseSizeBeforeCreate = songRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSongMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(songDTO)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isBadRequest());
 
         // Validate the Song in the database
@@ -169,11 +157,8 @@ class SongResourceIT {
         // set the field null
         song.setName(null);
 
-        // Create the Song, which fails.
-        SongDTO songDTO = songMapper.toDto(song);
-
         restSongMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(songDTO)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isBadRequest());
 
         List<Song> songList = songRepository.findAll();
@@ -198,7 +183,6 @@ class SongResourceIT {
             .andExpect(jsonPath("$.[*].duration").value(hasItem(DEFAULT_DURATION.toString())))
             .andExpect(jsonPath("$.[*].audioContentType").value(hasItem(DEFAULT_AUDIO_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].audio").value(hasItem(Base64Utils.encodeToString(DEFAULT_AUDIO))))
-            .andExpect(jsonPath("$.[*].artists").value(hasItem(DEFAULT_ARTISTS)))
             .andExpect(jsonPath("$.[*].musicGenre").value(hasItem(DEFAULT_MUSIC_GENRE.toString())));
     }
 
@@ -220,7 +204,6 @@ class SongResourceIT {
             .andExpect(jsonPath("$.duration").value(DEFAULT_DURATION.toString()))
             .andExpect(jsonPath("$.audioContentType").value(DEFAULT_AUDIO_CONTENT_TYPE))
             .andExpect(jsonPath("$.audio").value(Base64Utils.encodeToString(DEFAULT_AUDIO)))
-            .andExpect(jsonPath("$.artists").value(DEFAULT_ARTISTS))
             .andExpect(jsonPath("$.musicGenre").value(DEFAULT_MUSIC_GENRE.toString()));
     }
 
@@ -250,15 +233,13 @@ class SongResourceIT {
             .duration(UPDATED_DURATION)
             .audio(UPDATED_AUDIO)
             .audioContentType(UPDATED_AUDIO_CONTENT_TYPE)
-            .artists(UPDATED_ARTISTS)
             .musicGenre(UPDATED_MUSIC_GENRE);
-        SongDTO songDTO = songMapper.toDto(updatedSong);
 
         restSongMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, songDTO.getId())
+                put(ENTITY_API_URL_ID, song.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(songDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(song))
             )
             .andExpect(status().isOk());
 
@@ -272,7 +253,6 @@ class SongResourceIT {
         assertThat(testSong.getDuration()).isEqualTo(UPDATED_DURATION);
         assertThat(testSong.getAudio()).isEqualTo(UPDATED_AUDIO);
         assertThat(testSong.getAudioContentType()).isEqualTo(UPDATED_AUDIO_CONTENT_TYPE);
-        assertThat(testSong.getArtists()).isEqualTo(UPDATED_ARTISTS);
         assertThat(testSong.getMusicGenre()).isEqualTo(UPDATED_MUSIC_GENRE);
     }
 
@@ -282,15 +262,12 @@ class SongResourceIT {
         int databaseSizeBeforeUpdate = songRepository.findAll().size();
         song.setId(count.incrementAndGet());
 
-        // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
-
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSongMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, songDTO.getId())
+                put(ENTITY_API_URL_ID, song.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(songDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(song))
             )
             .andExpect(status().isBadRequest());
 
@@ -305,15 +282,12 @@ class SongResourceIT {
         int databaseSizeBeforeUpdate = songRepository.findAll().size();
         song.setId(count.incrementAndGet());
 
-        // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSongMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(songDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(song))
             )
             .andExpect(status().isBadRequest());
 
@@ -328,12 +302,9 @@ class SongResourceIT {
         int databaseSizeBeforeUpdate = songRepository.findAll().size();
         song.setId(count.incrementAndGet());
 
-        // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSongMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(songDTO)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Song in the database
@@ -380,7 +351,6 @@ class SongResourceIT {
         assertThat(testSong.getDuration()).isEqualTo(UPDATED_DURATION);
         assertThat(testSong.getAudio()).isEqualTo(UPDATED_AUDIO);
         assertThat(testSong.getAudioContentType()).isEqualTo(UPDATED_AUDIO_CONTENT_TYPE);
-        assertThat(testSong.getArtists()).isEqualTo(DEFAULT_ARTISTS);
         assertThat(testSong.getMusicGenre()).isEqualTo(UPDATED_MUSIC_GENRE);
     }
 
@@ -403,7 +373,6 @@ class SongResourceIT {
             .duration(UPDATED_DURATION)
             .audio(UPDATED_AUDIO)
             .audioContentType(UPDATED_AUDIO_CONTENT_TYPE)
-            .artists(UPDATED_ARTISTS)
             .musicGenre(UPDATED_MUSIC_GENRE);
 
         restSongMockMvc
@@ -424,7 +393,6 @@ class SongResourceIT {
         assertThat(testSong.getDuration()).isEqualTo(UPDATED_DURATION);
         assertThat(testSong.getAudio()).isEqualTo(UPDATED_AUDIO);
         assertThat(testSong.getAudioContentType()).isEqualTo(UPDATED_AUDIO_CONTENT_TYPE);
-        assertThat(testSong.getArtists()).isEqualTo(UPDATED_ARTISTS);
         assertThat(testSong.getMusicGenre()).isEqualTo(UPDATED_MUSIC_GENRE);
     }
 
@@ -434,15 +402,12 @@ class SongResourceIT {
         int databaseSizeBeforeUpdate = songRepository.findAll().size();
         song.setId(count.incrementAndGet());
 
-        // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
-
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSongMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, songDTO.getId())
+                patch(ENTITY_API_URL_ID, song.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(songDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(song))
             )
             .andExpect(status().isBadRequest());
 
@@ -457,15 +422,12 @@ class SongResourceIT {
         int databaseSizeBeforeUpdate = songRepository.findAll().size();
         song.setId(count.incrementAndGet());
 
-        // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSongMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(songDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(song))
             )
             .andExpect(status().isBadRequest());
 
@@ -480,12 +442,9 @@ class SongResourceIT {
         int databaseSizeBeforeUpdate = songRepository.findAll().size();
         song.setId(count.incrementAndGet());
 
-        // Create the Song
-        SongDTO songDTO = songMapper.toDto(song);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restSongMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(songDTO)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(song)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Song in the database

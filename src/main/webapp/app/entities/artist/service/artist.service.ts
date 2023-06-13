@@ -34,7 +34,7 @@ export class ArtistService {
     return this.http.get<IArtist>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<HttpResponse<IArtist[]>> {
     const options = createRequestOption(req);
     return this.http.get<IArtist[]>(this.resourceUrl, { params: options, observe: 'response' });
   }

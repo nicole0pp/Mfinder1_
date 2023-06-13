@@ -1,33 +1,134 @@
-<h2 id="page-heading" data-cy="AlbumHeading">
-  <span jhiTranslate="mFinder1App.album.home.title">Albums</span>
+<div>
+  <h2 id="page-heading" data-cy="AlbumHeading">
+    <span jhiTranslate="mFinder1App.album.home.title">Albums</span>
 
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-      <span jhiTranslate="mFinder1App.album.home.refreshListLabel">Refrescar lista</span>
-    </button>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="mFinder1App.album.home.refreshListLabel">Refrescar lista</span>
+      </button>
 
-    <button
-      id="jh-create-entity"
-      data-cy="entityCreateButton"
-      class="btn btn-primary jh-create-entity create-album"
-      [routerLink]="['/album/new']"
-    >
-      <fa-icon icon="plus"></fa-icon>
-      <span jhiTranslate="mFinder1App.album.home.createLabel"> Crear nuevo Album </span>
-    </button>
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-album"
+        [routerLink]="['/album/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="mFinder1App.album.home.createLabel"> Crear nuevo Album </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="albums?.length === 0">
+    <span jhiTranslate="mFinder1App.album.home.notFound">Ningún Albums encontrado</span>
   </div>
-</h2>
 
-<jhi-alert-error></jhi-alert-error>
+  <div class="table-responsive table-entities" id="entities" *ngIf="albums && albums.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="album.picture">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.album.picture">Imagen</span>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="album.picture">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.album.name">Name of album</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="album.picture">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.album.publicationDate">Publication Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="album.picture">
+            <div class="d-flex">
+              <span jhiTranslate="mFinder1App.album.artist">Artista</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
 
-<jhi-alert></jhi-alert>
+      <tbody *ngIf="albums">
+        <tr *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <img
+              class="profile-image"
+              *ngIf="album.picture"
+              style="width: 6rem"
+              [src]="'data:' + album.pictureContentType + ';base64,' + album.picture"
+            />
+          </td>
+          <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
+            <a [routerLink]="['./', album.id, 'view']">{{ album.id }}</a>
+          </td>
+          <td>
+            <a [routerLink]="['./', album.id, 'view']">{{ album.name }}</a>
+          </td>
+          <td>
+            {{ album.publicationDate | date: 'dd/MM/yy' }}
+          </td>
+          <td *ngIf="album.artist">
+            <a [routerLink]="['/artist', album.artist.id, 'view']">{{ album.artist.artistName }}</a>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/album', album.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+              </button>
 
-<div class="alert alert-warning" id="no-result" *ngIf="albums?.length === 0">
-  <span jhiTranslate="mFinder1App.album.home.notFound">Ningún Albums encontrado</span>
+              <button type="submit" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+              </button>
+
+              <button type="submit" (click)="delete(album)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="albums && albums.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
 </div>
-<div class="container" *ngIf="albums && albums.length > 0">
-  <div class="row row-cols-md-3 g-3">
+
+<!-- <div class="row row-cols-md-3 g-3">
     <span *ngFor="let album of albums; trackBy: trackId" data-cy="entityTable">
       <div class="col" style="border-style: solid; color: white">
         <div class="card justify-content-center align-items-center">
@@ -47,9 +148,9 @@
               <span jhiTranslate="mFinder1App.album.publicationDate">Publication Date</span>
               <a> {{ album.publicationDate | formatMediumDate }} </a>
             </p>
-            <div *ngIf="album.atist">
-              <span jhiTranslate="mFinder1App.album.atist">Artist</span>
-              <a [routerLink]="['/artist', album.atist.id, 'view']">{{ album.atist.id }}</a>
+            <div *ngIf="album.artist">
+              <span jhiTranslate="mFinder1App.album.artist">Artist</span>
+              <a [routerLink]="['/artist', album.artist.id, 'view']">{{ album.artist.id }}</a>
             </div>
 
             <div class="btn-group text-center">
@@ -72,23 +173,4 @@
         </div>
       </div>
     </span>
-  </div>
-
-  <div *ngIf="albums && albums.length > 0">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [page]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="navigateToPage($event)"
-      ></ngb-pagination>
-    </div>
-  </div>
-</div>
+  </div> -->

@@ -9,6 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IAlbum, NewAlbum } from '../album.model';
+import { ISong } from 'app/entities/song/song.model';
 
 export type PartialUpdateAlbum = Partial<IAlbum> & Pick<IAlbum, 'id'>;
 
@@ -31,36 +32,32 @@ export class AlbumService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(album: NewAlbum): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(album);
-    return this.http.post<RestAlbum>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
+  create(album: NewAlbum): Observable<IAlbum> {
+    // const copy = this.convertDateFromClient(album);
+    return this.http.post<IAlbum>(this.resourceUrl, album);
+    // .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(album: IAlbum): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(album);
-    return this.http
-      .put<RestAlbum>(`${this.resourceUrl}/${this.getAlbumIdentifier(album)}`, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+  update(album: IAlbum): Observable<IAlbum> {
+    // const copy = this.convertDateFromClient(album);
+    return this.http.put<IAlbum>(`${this.resourceUrl}/${this.getAlbumIdentifier(album)}`, album);
+    // .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(album: PartialUpdateAlbum): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(album);
-    return this.http
-      .patch<RestAlbum>(`${this.resourceUrl}/${this.getAlbumIdentifier(album)}`, copy, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+  partialUpdate(album: PartialUpdateAlbum): Observable<IAlbum> {
+    return this.http.patch<IAlbum>(`${this.resourceUrl}/${this.getAlbumIdentifier(album)}`, album);
+    // .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<RestAlbum>(`${this.resourceUrl}/${id}`, { observe: 'response' })
-      .pipe(map(res => this.convertResponseFromServer(res)));
+  find(id: number): Observable<IAlbum> {
+    return this.http.get<IAlbum>(`${this.resourceUrl}/${id}`);
+    // .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<HttpResponse<IAlbum[]>> {
     const options = createRequestOption(req);
-    return this.http
-      .get<RestAlbum[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+    return this.http.get<IAlbum[]>(this.resourceUrl, { params: options, observe: 'response' });
+    // .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -95,29 +92,29 @@ export class AlbumService {
     return albumCollection;
   }
 
-  protected convertDateFromClient<T extends IAlbum | NewAlbum | PartialUpdateAlbum>(album: T): RestOf<T> {
-    return {
-      ...album,
-      publicationDate: album.publicationDate?.format(DATE_FORMAT) ?? null,
-    };
-  }
+  // protected convertDateFromClient<T extends IAlbum | NewAlbum | PartialUpdateAlbum>(album: T): RestOf<T> {
+  //   return {
+  //     ...album,
+  //     publicationDate: album.publicationDate?.format(DATE_FORMAT) ?? null,
+  //   };
+  // }
 
-  protected convertDateFromServer(restAlbum: RestAlbum): IAlbum {
-    return {
-      ...restAlbum,
-      publicationDate: restAlbum.publicationDate ? dayjs(restAlbum.publicationDate) : undefined,
-    };
-  }
+  // protected convertDateFromServer(restAlbum: RestAlbum): IAlbum {
+  //   return {
+  //     ...restAlbum,
+  //     publicationDate: restAlbum.publicationDate ? dayjs(restAlbum.publicationDate) : undefined,
+  //   };
+  // }
 
-  protected convertResponseFromServer(res: HttpResponse<RestAlbum>): HttpResponse<IAlbum> {
-    return res.clone({
-      body: res.body ? this.convertDateFromServer(res.body) : null,
-    });
-  }
+  // protected convertResponseFromServer(res: HttpResponse<RestAlbum>): HttpResponse<IAlbum> {
+  //   return res.clone({
+  //     body: res.body ? this.convertDateFromServer(res.body) : null,
+  //   });
+  // }
 
-  protected convertResponseArrayFromServer(res: HttpResponse<RestAlbum[]>): HttpResponse<IAlbum[]> {
-    return res.clone({
-      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
-    });
-  }
+  // protected convertResponseArrayFromServer(res: HttpResponse<RestAlbum[]>): HttpResponse<IAlbum[]> {
+  //   return res.clone({
+  //     body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+  //   });
+  // }
 }

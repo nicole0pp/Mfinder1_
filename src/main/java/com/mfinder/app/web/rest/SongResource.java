@@ -1,28 +1,26 @@
 package com.mfinder.app.web.rest;
 
+import com.mfinder.app.domain.Album;
+import com.mfinder.app.domain.Song;
+import com.mfinder.app.repository.AlbumRepository;
 import com.mfinder.app.repository.SongRepository;
 import com.mfinder.app.service.SongService;
-import com.mfinder.app.service.dto.SongDTO;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,6 +28,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class SongResource {
 
     private final Logger log = LoggerFactory.getLogger(SongResource.class);
@@ -43,25 +42,32 @@ public class SongResource {
 
     private final SongRepository songRepository;
 
-    public SongResource(SongService songService, SongRepository songRepository) {
+    private final AlbumRepository albumRepository;
+
+    public SongResource(SongService songService, SongRepository songRepository, AlbumRepository albumRepository) {
         this.songService = songService;
         this.songRepository = songRepository;
+        this.albumRepository = albumRepository;
     }
 
     /**
      * {@code POST  /songs} : Create a new song.
      *
-     * @param songDTO the songDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new songDTO, or with status {@code 400 (Bad Request)} if the song has already an ID.
+     * @param song the song to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new song, or with status {@code 400 (Bad Request)} if the song has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/songs")
-    public ResponseEntity<SongDTO> createSong(@Valid @RequestBody SongDTO songDTO) throws URISyntaxException {
-        log.debug("REST request to save Song : {}", songDTO);
-        if (songDTO.getId() != null) {
+    public ResponseEntity<Song> createSong(@Valid @RequestBody Song song) throws URISyntaxException {
+        log.debug("REST request to save Song : {}", song);
+        if (song.getId() != null) {
             throw new BadRequestAlertException("A new song cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SongDTO result = songService.save(songDTO);
+        Album album = albumRepository.getReferenceById(song.getAlbum().getId());
+        song.setArtists(album.getArtist());
+        song.setPicture(album.getPicture());
+        song.setPictureContentType(album.getPictureContentType());
+        Song result = songService.save(song);
         return ResponseEntity
             .created(new URI("/api/songs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -71,23 +77,21 @@ public class SongResource {
     /**
      * {@code PUT  /songs/:id} : Updates an existing song.
      *
-     * @param id the id of the songDTO to save.
-     * @param songDTO the songDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated songDTO,
-     * or with status {@code 400 (Bad Request)} if the songDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the songDTO couldn't be updated.
+     * @param id the id of the song to save.
+     * @param song the song to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated song,
+     * or with status {@code 400 (Bad Request)} if the song is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the song couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/songs/{id}")
-    public ResponseEntity<SongDTO> updateSong(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody SongDTO songDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Song : {}, {}", id, songDTO);
-        if (songDTO.getId() == null) {
+    public ResponseEntity<Song> updateSong(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Song song)
+        throws URISyntaxException {
+        log.debug("REST request to update Song : {}, {}", id, song);
+        if (song.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, songDTO.getId())) {
+        if (!Objects.equals(id, song.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -95,34 +99,34 @@ public class SongResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        SongDTO result = songService.update(songDTO);
+        Song result = songService.update(song);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, songDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, song.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /songs/:id} : Partial updates given fields of an existing song, field will ignore if it is null
      *
-     * @param id the id of the songDTO to save.
-     * @param songDTO the songDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated songDTO,
-     * or with status {@code 400 (Bad Request)} if the songDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the songDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the songDTO couldn't be updated.
+     * @param id the id of the song to save.
+     * @param song the song to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated song,
+     * or with status {@code 400 (Bad Request)} if the song is not valid,
+     * or with status {@code 404 (Not Found)} if the song is not found,
+     * or with status {@code 500 (Internal Server Error)} if the song couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/songs/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<SongDTO> partialUpdateSong(
+    public ResponseEntity<Song> partialUpdateSong(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody SongDTO songDTO
+        @NotNull @RequestBody Song song
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Song partially : {}, {}", id, songDTO);
-        if (songDTO.getId() == null) {
+        log.debug("REST request to partial update Song partially : {}, {}", id, song);
+        if (song.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, songDTO.getId())) {
+        if (!Objects.equals(id, song.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -130,45 +134,55 @@ public class SongResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<SongDTO> result = songService.partialUpdate(songDTO);
+        Optional<Song> result = songService.partialUpdate(song);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, songDTO.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, song.getId().toString())
         );
     }
 
     /**
      * {@code GET  /songs} : get all the songs.
      *
-     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of songs in body.
      */
     @GetMapping("/songs")
-    public ResponseEntity<List<SongDTO>> getAllSongs(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public List<Song> getAllSongs() {
         log.debug("REST request to get a page of Songs");
-        Page<SongDTO> page = songService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return songService.findAll();
+    }
+
+    /**
+     * {@code GET  /songs/getSongsByAlbumId/:id} : get the "id" album.
+     *
+     * @param id the id of the album to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the songs of the album, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/songs/getSongsByAlbumId/{id}")
+    public ResponseEntity<Set<Song>> getAllSongsByAlbumId(@PathVariable("id") Long id) {
+        log.debug("REST request to get Songs : {}", id);
+        Set<Song> songs = songRepository.getAllSongsByEvent(id);
+        return ResponseEntity.ok(songs);
     }
 
     /**
      * {@code GET  /songs/:id} : get the "id" song.
      *
-     * @param id the id of the songDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the songDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the song to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the song, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/songs/{id}")
-    public ResponseEntity<SongDTO> getSong(@PathVariable Long id) {
+    public ResponseEntity<Song> getSong(@PathVariable Long id) {
         log.debug("REST request to get Song : {}", id);
-        Optional<SongDTO> songDTO = songService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(songDTO);
+        Optional<Song> song = songService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(song);
     }
 
     /**
      * {@code DELETE  /songs/:id} : delete the "id" song.
      *
-     * @param id the id of the songDTO to delete.
+     * @param id the id of the song to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/songs/{id}")

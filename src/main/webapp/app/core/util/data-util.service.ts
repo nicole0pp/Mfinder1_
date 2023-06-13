@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
 
-export type FileLoadErrorType = 'not.image' | 'could.not.extract';
+export type FileLoadErrorType = 'not.image' | 'could.not.extract' | 'not.audio';
 
 export interface FileLoadError {
   message: string;
@@ -66,6 +66,13 @@ export class DataUtils {
           const error: FileLoadError = {
             message: `File was expected to be an image but was found to be '${file.type}'`,
             key: 'not.image',
+            params: { fileType: file.type },
+          };
+          observer.error(error);
+        } else if (!isImage && !file.type.startsWith('audio/')) {
+          const error: FileLoadError = {
+            message: `File was expected to be an audio but was found to be '${file.type}'`,
+            key: 'not.audio',
             params: { fileType: file.type },
           };
           observer.error(error);
