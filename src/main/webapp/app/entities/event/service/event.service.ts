@@ -20,8 +20,6 @@ export type RestEvent = RestOf<IEvent>;
 
 export type NewRestEvent = RestOf<NewEvent>;
 
-export type PartialUpdateRestEvent = RestOf<PartialUpdateEvent>;
-
 export type EntityResponseType = HttpResponse<IEvent>;
 export type EntityArrayResponseType = HttpResponse<IEvent[]>;
 

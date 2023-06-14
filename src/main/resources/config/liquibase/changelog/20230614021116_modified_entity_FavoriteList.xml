@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+     <!--
+          Added the entity ListDetails. 20230614021116_modified_entity_FavoriteList.xml
+     -->
+     <changeSet id="20230614021116-2" author="nicole">
+          <addColumn tableName="list_details" >
+              <column name="created_by" type="varchar(50)">
+                    <constraints nullable="false"/>
+               </column>
+               <column name="created_date" type="timestamp"/>
+               <column name="last_modified_by" type="varchar(50)"/>
+               <column name="last_modified_date" type="timestamp"/>
+          </addColumn>
+     </changeSet>
+
+     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

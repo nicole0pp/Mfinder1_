@@ -21,9 +21,6 @@ type FavoriteListFormGroupContent = {
   name: FormControl<IFavoriteList['name']>;
   picture: FormControl<IFavoriteList['picture']>;
   pictureContentType: FormControl<IFavoriteList['pictureContentType']>;
-  listDetails: FormControl<IFavoriteList['listDetails']>;
-  artist: FormControl<IFavoriteList['artist']>;
-  client: FormControl<IFavoriteList['client']>;
 };
 
 export type FavoriteListFormGroup = FormGroup<FavoriteListFormGroupContent>;
@@ -48,9 +45,6 @@ export class FavoriteListFormService {
       }),
       picture: new FormControl(favoriteListRawValue.picture),
       pictureContentType: new FormControl(favoriteListRawValue.pictureContentType),
-      listDetails: new FormControl(favoriteListRawValue.listDetails),
-      artist: new FormControl(favoriteListRawValue.artist),
-      client: new FormControl(favoriteListRawValue.client),
     });
   }
 

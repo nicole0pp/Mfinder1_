@@ -9,6 +9,7 @@
       </button>
 
       <button
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-album"
@@ -37,8 +38,8 @@
               <span jhiTranslate="mFinder1App.album.picture">Imagen</span>
             </div>
           </th>
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="id">
+            <div class="d-flex">
               <span jhiTranslate="global.field.id">ID</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
@@ -94,12 +95,24 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
               </button>
 
-              <button type="submit" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                *ngIf="album.puedeEditar"
+                type="submit"
+                [routerLink]="['/album', album.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
               </button>
 
-              <button type="submit" (click)="delete(album)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *ngIf="album.puedeEditar"
+                type="submit"
+                (click)="delete(album)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
               </button>

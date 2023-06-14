@@ -3,8 +3,6 @@ package com.mfinder.app.service.impl;
 import com.mfinder.app.domain.FavoriteList;
 import com.mfinder.app.repository.FavoriteListRepository;
 import com.mfinder.app.service.FavoriteListService;
-import com.mfinder.app.service.dto.FavoriteListDTO;
-import com.mfinder.app.service.mapper.FavoriteListMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,56 +22,57 @@ public class FavoriteListServiceImpl implements FavoriteListService {
 
     private final FavoriteListRepository favoriteListRepository;
 
-    private final FavoriteListMapper favoriteListMapper;
-
-    public FavoriteListServiceImpl(FavoriteListRepository favoriteListRepository, FavoriteListMapper favoriteListMapper) {
+    public FavoriteListServiceImpl(FavoriteListRepository favoriteListRepository) {
         this.favoriteListRepository = favoriteListRepository;
-        this.favoriteListMapper = favoriteListMapper;
     }
 
     @Override
-    public FavoriteListDTO save(FavoriteListDTO favoriteListDTO) {
-        log.debug("Request to save FavoriteList : {}", favoriteListDTO);
-        FavoriteList favoriteList = favoriteListMapper.toEntity(favoriteListDTO);
+    public FavoriteList save(FavoriteList favoriteList) {
+        log.debug("Request to save FavoriteList : {}", favoriteList);
         favoriteList = favoriteListRepository.save(favoriteList);
-        return favoriteListMapper.toDto(favoriteList);
+        return favoriteList;
     }
 
     @Override
-    public FavoriteListDTO update(FavoriteListDTO favoriteListDTO) {
-        log.debug("Request to update FavoriteList : {}", favoriteListDTO);
-        FavoriteList favoriteList = favoriteListMapper.toEntity(favoriteListDTO);
+    public FavoriteList update(FavoriteList favoriteList) {
+        log.debug("Request to update FavoriteList : {}", favoriteList);
         favoriteList = favoriteListRepository.save(favoriteList);
-        return favoriteListMapper.toDto(favoriteList);
+        return favoriteList;
     }
 
     @Override
-    public Optional<FavoriteListDTO> partialUpdate(FavoriteListDTO favoriteListDTO) {
-        log.debug("Request to partially update FavoriteList : {}", favoriteListDTO);
+    public Optional<FavoriteList> partialUpdate(FavoriteList list) {
+        log.debug("Request to partially update FavoriteList : {}", list);
 
         return favoriteListRepository
-            .findById(favoriteListDTO.getId())
-            .map(existingFavoriteList -> {
-                favoriteListMapper.partialUpdate(existingFavoriteList, favoriteListDTO);
-
-                return existingFavoriteList;
+            .findById(list.getId())
+            .map(existingList -> {
+                if (list.getName() != null) {
+                    existingList.setName(list.getName());
+                }
+                if (list.getPicture() != null) {
+                    existingList.setPicture(list.getPicture());
+                }
+                if (list.getPictureContentType() != null) {
+                    existingList.setPictureContentType(list.getPictureContentType());
+                }
+                return existingList;
             })
-            .map(favoriteListRepository::save)
-            .map(favoriteListMapper::toDto);
+            .map(favoriteListRepository::save);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<FavoriteListDTO> findAll(Pageable pageable) {
+    public Page<FavoriteList> findAll(Pageable pageable) {
         log.debug("Request to get all FavoriteLists");
-        return favoriteListRepository.findAll(pageable).map(favoriteListMapper::toDto);
+        return favoriteListRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<FavoriteListDTO> findOne(Long id) {
+    public Optional<FavoriteList> findOne(Long id) {
         log.debug("Request to get FavoriteList : {}", id);
-        return favoriteListRepository.findById(id).map(favoriteListMapper::toDto);
+        return favoriteListRepository.findById(id);
     }
 
     @Override

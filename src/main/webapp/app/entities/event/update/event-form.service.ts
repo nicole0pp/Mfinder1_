@@ -59,7 +59,9 @@ export class EventFormService {
       name: new FormControl(eventRawValue.name, {
         validators: [Validators.required],
       }),
-      image: new FormControl(eventRawValue.image),
+      image: new FormControl(eventRawValue.image, {
+        validators: [Validators.required],
+      }),
       imageContentType: new FormControl(eventRawValue.imageContentType),
       tipoEvento: new FormControl(eventRawValue.tipoEvento, {
         validators: [Validators.required],

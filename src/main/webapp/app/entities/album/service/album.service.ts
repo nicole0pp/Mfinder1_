@@ -21,7 +21,7 @@ export type RestAlbum = RestOf<IAlbum>;
 
 export type NewRestAlbum = RestOf<NewAlbum>;
 
-export type PartialUpdateRestAlbum = RestOf<PartialUpdateAlbum>;
+// export type PartialUpdateRestAlbum = RestOf<PartialUpdateAlbum>;
 
 export type EntityResponseType = HttpResponse<IAlbum>;
 export type EntityArrayResponseType = HttpResponse<IAlbum[]>;

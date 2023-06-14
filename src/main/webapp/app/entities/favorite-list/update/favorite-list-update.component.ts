@@ -115,14 +115,6 @@ export class FavoriteListUpdateComponent implements OnInit {
       this.listDetailsSharedCollection,
       favoriteList.listDetails
     );
-    this.artistsSharedCollection = this.artistService.addArtistToCollectionIfMissing<IArtist>(
-      this.artistsSharedCollection,
-      favoriteList.artist
-    );
-    this.clientsSharedCollection = this.clientService.addClientToCollectionIfMissing<IClient>(
-      this.clientsSharedCollection,
-      favoriteList.client
-    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -136,16 +128,16 @@ export class FavoriteListUpdateComponent implements OnInit {
       )
       .subscribe((listDetails: IListDetails[]) => (this.listDetailsSharedCollection = listDetails));
 
-    this.artistService
-      .query()
-      .pipe(map((res: HttpResponse<IArtist[]>) => res.body ?? []))
-      .pipe(map((artists: IArtist[]) => this.artistService.addArtistToCollectionIfMissing<IArtist>(artists, this.favoriteList?.artist)))
-      .subscribe((artists: IArtist[]) => (this.artistsSharedCollection = artists));
+    // this.artistService
+    //   .query()
+    //   .pipe(map((res: HttpResponse<IArtist[]>) => res.body ?? []))
+    //   .pipe(map((artists: IArtist[]) => this.artistService.addArtistToCollectionIfMissing<IArtist>(artists, this.favoriteList?.artist)))
+    //   .subscribe((artists: IArtist[]) => (this.artistsSharedCollection = artists));
 
-    this.clientService
-      .query()
-      .pipe(map((res: HttpResponse<IClient[]>) => res.body ?? []))
-      .pipe(map((clients: IClient[]) => this.clientService.addClientToCollectionIfMissing<IClient>(clients, this.favoriteList?.client)))
-      .subscribe((clients: IClient[]) => (this.clientsSharedCollection = clients));
+    // this.clientService
+    //   .query()
+    //   .pipe(map((res: HttpResponse<IClient[]>) => res.body ?? []))
+    //   .pipe(map((clients: IClient[]) => this.clientService.addClientToCollectionIfMissing<IClient>(clients, this.favoriteList?.client)))
+    //   .subscribe((clients: IClient[]) => (this.clientsSharedCollection = clients));
   }
 }

@@ -26,6 +26,9 @@ public class Album implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "puede_editar")
+    private boolean puedeEditar;
+
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
@@ -60,6 +63,14 @@ public class Album implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isPuedeEditar() {
+        return puedeEditar;
+    }
+
+    public void setPuedeEditar(boolean puedeEditar) {
+        this.puedeEditar = puedeEditar;
     }
 
     public String getName() {

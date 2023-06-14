@@ -56,16 +56,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="artist.id">
+          <th scope="col">
             <div class="d-flex">
-              <span jhiTranslate="mFinder1App.favoriteList.artist">Artist</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="client.id">
-            <div class="d-flex">
-              <span jhiTranslate="mFinder1App.favoriteList.client">Client</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
+              <span>Created By</span>
             </div>
           </th>
           <th scope="col"></th>
@@ -89,16 +82,6 @@
           <td>
             <div *ngIf="favoriteList.listDetails">
               <a [routerLink]="['/list-details', favoriteList.listDetails.id, 'view']">{{ favoriteList.listDetails.id }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="favoriteList.artist">
-              <a [routerLink]="['/artist', favoriteList.artist.id, 'view']">{{ favoriteList.artist.id }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="favoriteList.client">
-              <a [routerLink]="['/client', favoriteList.client.id, 'view']">{{ favoriteList.client.id }}</a>
             </div>
           </td>
           <td class="text-end">

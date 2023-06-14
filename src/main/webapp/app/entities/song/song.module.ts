@@ -6,9 +6,10 @@ import { SongUpdateComponent } from './update/song-update.component';
 import { SongDeleteDialogComponent } from './delete/song-delete-dialog.component';
 import { SongRoutingModule } from './route/song-routing.module';
 import { SongEditComponent } from './update/song-edit.component';
+import { SongGenreComponent } from './list/songGenre.component';
 
 @NgModule({
   imports: [SharedModule, SongRoutingModule],
-  declarations: [SongComponent, SongDetailComponent, SongUpdateComponent, SongDeleteDialogComponent, SongEditComponent],
+  declarations: [SongComponent, SongGenreComponent, SongDetailComponent, SongUpdateComponent, SongDeleteDialogComponent, SongEditComponent],
 })
 export class SongModule {}

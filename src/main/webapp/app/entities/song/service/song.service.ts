@@ -55,6 +55,10 @@ export class SongService {
     return o1 && o2 ? this.getSongIdentifier(o1) === this.getSongIdentifier(o2) : o1 === o2;
   }
 
+  getGenreSongs(genre?: any): Observable<EntityArrayResponseType> {
+    return this.http.get<ISong[]>(`${this.resourceUrl}/getGenreSongs/${genre}`, { observe: 'response' });
+  }
+
   addSongToCollectionIfMissing<Type extends Pick<ISong, 'id'>>(
     songCollection: Type[],
     ...songsToCheck: (Type | null | undefined)[]

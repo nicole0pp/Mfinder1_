@@ -2,10 +2,15 @@ package com.mfinder.app.web.rest;
 
 import com.mfinder.app.domain.Album;
 import com.mfinder.app.domain.Artist;
+import com.mfinder.app.domain.Authority;
+import com.mfinder.app.domain.Event;
 import com.mfinder.app.domain.Song;
 import com.mfinder.app.domain.User;
 import com.mfinder.app.repository.AlbumRepository;
 import com.mfinder.app.repository.ArtistRepository;
+import com.mfinder.app.security.AuthoritiesConstants;
+import com.mfinder.app.security.SecurityUtils;
+import com.mfinder.app.service.UserService;
 import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -48,10 +53,18 @@ public class AlbumResource {
 
     private final ArtistRepository artistRepository;
 
-    public AlbumResource(AlbumRepository albumRepository, AccountResource accountResource, ArtistRepository artistRepository) {
+    private final UserService userService;
+
+    public AlbumResource(
+        AlbumRepository albumRepository,
+        AccountResource accountResource,
+        ArtistRepository artistRepository,
+        UserService userService
+    ) {
         this.albumRepository = albumRepository;
         this.accountResource = accountResource;
         this.artistRepository = artistRepository;
+        this.userService = userService;
     }
 
     /**
@@ -166,7 +179,21 @@ public class AlbumResource {
     @GetMapping("/albums")
     public ResponseEntity<List<Album>> getAllAlbums(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Albums");
+
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(login);
+
         Page<Album> page = albumRepository.findAll(pageable);
+
+        page.forEach(album -> {
+            if (album.getArtist().getUser().getLogin().equals(login) || user.get().getAuthorities().contains(authority)) {
+                album.setPuedeEditar(true);
+            } else {
+                album.setPuedeEditar(false);
+            }
+        });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -182,6 +209,18 @@ public class AlbumResource {
     public ResponseEntity<Album> getAlbum(@PathVariable Long id) {
         log.debug("REST request to get Album : {}", id);
         Optional<Album> album = albumRepository.findById(id);
+
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(login);
+
+        if (album.get().getArtist().getUser().getLogin().equals(login) || user.get().getAuthorities().contains(authority)) {
+            album.get().setPuedeEditar(true);
+        } else {
+            album.get().setPuedeEditar(false);
+        }
         return album.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 

@@ -21,6 +21,7 @@ export interface IEvent {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
+  puedeEditar?: boolean | null;
 }
 
 export type NewEvent = Omit<IEvent, 'id'> & { id: null };

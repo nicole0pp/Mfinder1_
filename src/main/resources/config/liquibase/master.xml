@@ -42,4 +42,6 @@
 
     <include file="config/liquibase/changelog/20230428211916_added_entity_Event.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230602232816_added_RatingSong.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230614010216_modified_entity_ListDetails.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230614021116_modified_entity_FavoriteList.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

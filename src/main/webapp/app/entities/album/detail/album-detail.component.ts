@@ -41,8 +41,6 @@ export class AlbumDetailComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ album }) => {
       this.album = album;
-      this.songs = this.album?.songs || [];
-      console.log(this.songs);
     });
     this.songService.getAllSongsByAlbum(this.album?.id).subscribe(response => {
       this.fillComponentAttributesFromResponseHeader(response.headers);

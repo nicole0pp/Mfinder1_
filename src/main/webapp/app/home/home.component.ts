@@ -33,4 +33,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  cancionesRap(): void {
+    const genre = 'RAP';
+    this.router.navigate(['/song', genre]);
+  }
+  cancionesPop(): void {
+    const genre = 'POP';
+    this.router.navigate(['/song', genre]);
+  }
+  cancionesElectro(): void {
+    const genre = 'TECHNO';
+    this.router.navigate(['/song', genre]);
+  }
+
+  cancionesLofi(): void {
+    const genre = 'LOFI';
+    this.router.navigate(['/song', genre]);
+  }
 }

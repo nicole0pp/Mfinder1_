@@ -13,6 +13,7 @@
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-song"
         [routerLink]="['/song/new']"
+        *jhiHasAnyAuthority="'ROLE_ARTIST'"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="mFinder1App.song.home.createLabel"> Crear nuevo Song </span>
@@ -28,7 +29,7 @@
     <span jhiTranslate="mFinder1App.song.home.notFound">Ningún Songs encontrado</span>
   </div>
   <div class="container" *ngIf="songs && songs.length > 0">
-    <div class="row row-cols-md-4 g-3">
+    <div class="row row-cols-md-3 g-3">
       <span *ngFor="let song of songs; trackBy: trackId" data-cy="entityTable">
         <div class="col" style="border-style: solid; color: white">
           <div class="card justify-content-center align-items-center">
@@ -47,9 +48,13 @@
                 <span jhiTranslate="mFinder1App.song.duration">Duration</span>
                 &nbsp;{{ song.duration | duration }}
               </p>
+              <p class="card-text" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <span jhiTranslate="global.field.id">id</span>
+                &nbsp;{{ song.id }}
+              </p>
               <p class="card-text">
                 <span jhiTranslate="mFinder1App.song.artists">Artist</span>
-                &nbsp;{{ song.artist }}
+                <a [routerLink]="['/artist', song.artist?.id, 'view']"> &nbsp;{{ song.artist?.artistName }}</a>
               </p>
               <p class="card-text">
                 <!-- <span jhiTranslate="mFinder1App.song.audio">Audio</span> -->
@@ -60,9 +65,13 @@
                   preload="none"
                 ></audio>
               </p>
-              <p class="card-text">
+              <p class="card-text" *ngIf="song.album">
                 <span jhiTranslate="mFinder1App.song.album">Album</span>
-                &nbsp;{{ song.album }}
+                <a [routerLink]="['/album', song.album?.id, 'view']"> &nbsp;{{ song.album.id }}</a>
+              </p>
+              <p class="card-text">
+                <span jhiTranslate="mFinder1App.song.musicGenre">Music Genre</span>
+                <span style="font-weight: bold">&nbsp;{{ song.musicGenre }}</span>
               </p>
               <div class="btn-group">
                 <button type="submit" [routerLink]="['/song', song.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
@@ -70,12 +79,24 @@
                   <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
                 </button>
 
-                <button type="submit" [routerLink]="['/song', song.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <button
+                  type="submit"
+                  *ngIf="song.puedeEditar"
+                  [routerLink]="['/song', song.id, 'edit']"
+                  class="btn btn-primary btn-sm"
+                  data-cy="entityEditButton"
+                >
                   <fa-icon icon="pencil-alt"></fa-icon>
                   <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
                 </button>
 
-                <button type="submit" (click)="delete(song)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <button
+                  type="submit"
+                  *ngIf="song.puedeEditar"
+                  (click)="delete(song)"
+                  class="btn btn-danger btn-sm"
+                  data-cy="entityDeleteButton"
+                >
                   <fa-icon icon="times"></fa-icon>
                   <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
                 </button>

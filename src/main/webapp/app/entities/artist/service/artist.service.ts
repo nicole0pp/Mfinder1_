@@ -77,4 +77,9 @@ export class ArtistService {
   artists(): Observable<string[]> {
     return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/artistsString'));
   }
+  comprobacionEsPropio(artistId: any): Observable<boolean> {
+    ///artist-comprobacion
+    const url = this.applicationConfigService.getEndpointFor('api/artist-comprobacion');
+    return this.http.get<boolean>(`${url}/${artistId}`);
+  }
 }

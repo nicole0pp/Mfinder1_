@@ -13,7 +13,13 @@
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
       <span jhiTranslate="mFinder1App.event.home.refreshListLabel">Refrescar lista</span>
     </button>
-    <button type="submit" (click)="create()" data-cy="entityCreateButton" class="btn btn-primary jh-create-entity create-event">
+    <button
+      type="submit"
+      *jhiHasAnyAuthority="'ROLE_ARTIST'"
+      (click)="create()"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-event"
+    >
       <fa-icon icon="plus"></fa-icon>
       <span jhiTranslate="mFinder1App.event.home.createLabel"> Crear un nuevo Evento </span>
     </button>
@@ -74,9 +80,15 @@
                     data-cy="entityDetailsButton"
                   >
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                    <span class="d-none d-md-inline" *ngIf="event.puedeEditar" jhiTranslate="entity.action.edit">Edit</span>
                   </button>
-                  <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button
+                    type="submit"
+                    *ngIf="event.puedeEditar"
+                    (click)="delete(event)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
                     <fa-icon icon="times"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
                   </button>

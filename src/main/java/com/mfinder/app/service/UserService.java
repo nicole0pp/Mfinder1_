@@ -49,11 +49,7 @@ public class UserService {
 
     private final ArtistRepository artistRepository;
 
-    private final ArtistService artistService;
-
     private final ClientRepository clientRepository;
-
-    private final ClientService clientService;
 
     private final RatingEventRepository ratingEventRepository;
 
@@ -73,9 +69,7 @@ public class UserService {
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
         this.artistRepository = artistRepository;
-        this.artistService = artistService;
         this.clientRepository = clientRepository;
-        this.clientService = clientService;
         this.ratingEventRepository = ratingEventRepository;
     }
 
@@ -333,7 +327,7 @@ public class UserService {
         } else if (client != null) {
             clientRepository.delete(client);
         }
-        List<RatingEvent> ratingEvents = ratingEventRepository.findRatingByUserId(userA.getId());
+        List<RatingEvent> ratingEvents = ratingEventRepository.findRatingByUserLogin(login);
         if (ratingEvents != null) {
             ratingEventRepository.deleteAll(ratingEvents);
         }

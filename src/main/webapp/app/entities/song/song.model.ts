@@ -12,10 +12,11 @@ export interface ISong {
   duration?: number | null;
   audio?: string | null;
   audioContentType?: string | null;
-  artist?: Pick<IArtist, 'id'> | null;
+  artist?: Pick<IArtist, 'id' | 'artistName'> | null;
   musicGenre?: MusicGenre | null;
   listDetails?: Pick<IListDetails, 'id'> | null;
   album?: Pick<IAlbum, 'id'> | null;
+  puedeEditar?: boolean | null;
 }
 
 export type NewSong = Omit<ISong, 'id'> & { id: null };

@@ -1,9 +1,13 @@
 package com.mfinder.app.web.rest;
 
 import com.mfinder.app.domain.Album;
+import com.mfinder.app.domain.Authority;
+import com.mfinder.app.domain.Event;
 import com.mfinder.app.domain.Song;
 import com.mfinder.app.repository.AlbumRepository;
 import com.mfinder.app.repository.SongRepository;
+import com.mfinder.app.security.AuthoritiesConstants;
+import com.mfinder.app.security.SecurityUtils;
 import com.mfinder.app.service.SongService;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -150,7 +154,21 @@ public class SongResource {
     @GetMapping("/songs")
     public List<Song> getAllSongs() {
         log.debug("REST request to get a page of Songs");
-        return songService.findAll();
+        List<Song> songs = songService.findAll();
+
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        songs.forEach(song -> {
+            if (song.getArtist().getUser().getLogin().equals(login) && song.getArtist().getUser().getAuthorities().contains(authority)) {
+                song.setPuedeEditar(true);
+            } else {
+                song.setPuedeEditar(false);
+            }
+        });
+
+        return songs;
     }
 
     /**
@@ -163,6 +181,18 @@ public class SongResource {
     public ResponseEntity<Set<Song>> getAllSongsByAlbumId(@PathVariable("id") Long id) {
         log.debug("REST request to get Songs : {}", id);
         Set<Song> songs = songRepository.getAllSongsByEvent(id);
+
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        songs.forEach(song -> {
+            if (song.getArtist().getUser().getLogin().equals(login) && song.getArtist().getUser().getAuthorities().contains(authority)) {
+                song.setPuedeEditar(true);
+            } else {
+                song.setPuedeEditar(false);
+            }
+        });
         return ResponseEntity.ok(songs);
     }
 
@@ -176,7 +206,34 @@ public class SongResource {
     public ResponseEntity<Song> getSong(@PathVariable Long id) {
         log.debug("REST request to get Song : {}", id);
         Optional<Song> song = songService.findOne(id);
+
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        if (
+            song.get().getArtist().getUser().getLogin().equals(login) &&
+            song.get().getArtist().getUser().getAuthorities().contains(authority)
+        ) {
+            song.get().setPuedeEditar(true);
+        } else {
+            song.get().setPuedeEditar(false);
+        }
+
         return ResponseUtil.wrapOrNotFound(song);
+    }
+
+    /**
+     * {@code GET  /songs/getRapSongs/:genre} : get the "genre" song.
+     *
+     *  @param genre the city of the event to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the event, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/songs/getGenreSongs/{genre}")
+    public ResponseEntity<List<Song>> getSongsByGenre(@PathVariable("genre") String genre) {
+        log.debug("REST request to get a page of Events");
+        List<Song> songs = songRepository.getAllSongsByGenre(genre);
+        return ResponseEntity.ok(songs);
     }
 
     /**

@@ -1,3 +1,12 @@
+// this.activatedRoute.paramMap.subscribe(params => {
+//      const genre = params.get('genre');
+//      this.songService.getGenreSongs(genre).subscribe(response => {
+//        this.fillComponentAttributesFromResponseHeader(response.headers);
+//        this.songs = response.body as ISong[];
+//      });
+//      // Aquí puedes utilizar el valor del parámetro de género para filtrar las canciones
+//    });
+
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
@@ -18,7 +27,7 @@ import { IAlbum } from 'app/entities/album/album.model';
   selector: 'jhi-song',
   templateUrl: './song.component.html',
 })
-export class SongComponent implements OnInit {
+export class SongGenreComponent implements OnInit {
   songs?: ISong[];
   isLoading = false;
   artist?: IArtist[];
@@ -40,7 +49,14 @@ export class SongComponent implements OnInit {
   trackId = (_index: number, item: ISong): number => this.songService.getSongIdentifier(item);
 
   ngOnInit(): void {
-    this.load();
+    this.activatedRoute.paramMap.subscribe(params => {
+      const genre = params.get('genre');
+      this.songService.getGenreSongs(genre).subscribe(response => {
+        this.fillComponentAttributesFromResponseHeader(response.headers);
+        this.songs = response.body as ISong[];
+      });
+      // Aquí puedes utilizar el valor del parámetro de género para filtrar las canciones
+    });
   }
 
   byteSize(base64String: string): string {

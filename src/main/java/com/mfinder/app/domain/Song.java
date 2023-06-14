@@ -26,6 +26,9 @@ public class Song implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "puede_editar")
+    private boolean puedeEditar;
+
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
@@ -55,11 +58,11 @@ public class Song implements Serializable {
     @JoinColumn(name = "artist_id")
     private Artist artist;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "lists", "songs" }, allowSetters = true)
-    private ListDetails listDetails;
+    // @ManyToOne
+    // @JsonIgnoreProperties(value = { "lists", "songs" }, allowSetters = true)
+    // private ListDetails listDetails;
 
-    @JsonIgnore
+    // @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "album_id")
     private Album album;
@@ -77,6 +80,14 @@ public class Song implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isPuedeEditar() {
+        return puedeEditar;
+    }
+
+    public void setPuedeEditar(boolean puedeEditar) {
+        this.puedeEditar = puedeEditar;
     }
 
     public String getName() {
@@ -183,18 +194,18 @@ public class Song implements Serializable {
         this.musicGenre = musicGenre;
     }
 
-    public ListDetails getListDetails() {
-        return this.listDetails;
-    }
+    // public ListDetails getListDetails() {
+    //     return this.listDetails;
+    // }
 
-    public void setListDetails(ListDetails listDetails) {
-        this.listDetails = listDetails;
-    }
+    // public void setListDetails(ListDetails listDetails) {
+    //     this.listDetails = listDetails;
+    // }
 
-    public Song listDetails(ListDetails listDetails) {
-        this.setListDetails(listDetails);
-        return this;
-    }
+    // public Song listDetails(ListDetails listDetails) {
+    //     this.setListDetails(listDetails);
+    //     return this;
+    // }
 
     public Album getAlbum() {
         return this.album;
@@ -239,6 +250,7 @@ public class Song implements Serializable {
             ", duration='" + getDuration() + "'" +
             ", audio='" + getAudio() + "'" +
             ", audioContentType='" + getAudioContentType() + "'" +
+            ", album='" + getAlbum() + "'" +
             ", artists='" + getArtist() + "'" +
             ", musicGenre='" + getMusicGenre() + "'" +
             "}";

@@ -29,6 +29,9 @@ public class Event extends AbstractAuditingEntity<Long> implements Serializable 
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "puede_editar")
+    private boolean puedeEditar;
+
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
@@ -74,22 +77,20 @@ public class Event extends AbstractAuditingEntity<Long> implements Serializable 
     @JsonIgnoreProperties(value = { "events" }, allowSetters = true)
     private Set<Artist> artists = new HashSet<>();
 
-    // @ManyToMany
-    // @JsonIgnore
-    // @JoinTable(
-    //     name = "rating_event",
-    //     joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
-    //     inverseJoinColumns = { @JoinColumn(name = "rating_id", referencedColumnName = "id") }
-    // )
-    // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    // private Set<Rating> ratings = new HashSet<>();
-
     public Long getId() {
         return this.id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isPuedeEditar() {
+        return puedeEditar;
+    }
+
+    public void setPuedeEditar(boolean puedeEditar) {
+        this.puedeEditar = puedeEditar;
     }
 
     public Event id(Long id) {

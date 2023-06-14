@@ -1,7 +1,7 @@
 package com.mfinder.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -34,17 +34,9 @@ public class FavoriteList implements Serializable {
     @Column(name = "picture_content_type")
     private String pictureContentType;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "lists", "songs" }, allowSetters = true)
-    private ListDetails listDetails;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "albums", "favoriteLists" }, allowSetters = true)
-    private Artist artist;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "favoriteLists" }, allowSetters = true)
-    private Client client;
+    @OneToMany(mappedBy = "favoriteList", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private List<ListDetails> listDetails;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -100,42 +92,34 @@ public class FavoriteList implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public ListDetails getListDetails() {
+    public List<ListDetails> getListDetails() {
         return this.listDetails;
     }
 
-    public void setListDetails(ListDetails listDetails) {
+    public void setListDetails(List<ListDetails> listDetails) {
+        if (this.listDetails != null) {
+            this.listDetails.forEach(i -> i.setFavoriteList(null));
+        }
+        if (listDetails != null) {
+            listDetails.forEach(i -> i.setFavoriteList(this));
+        }
         this.listDetails = listDetails;
     }
 
-    public FavoriteList listDetails(ListDetails listDetails) {
+    public FavoriteList listDetails(List<ListDetails> listDetails) {
         this.setListDetails(listDetails);
         return this;
     }
 
-    public Artist getArtist() {
-        return this.artist;
-    }
-
-    public void setArtist(Artist artist) {
-        this.artist = artist;
-    }
-
-    public FavoriteList artist(Artist artist) {
-        this.setArtist(artist);
+    public FavoriteList addListDetails(ListDetails listDetails) {
+        this.listDetails.add(listDetails);
+        listDetails.setFavoriteList(this);
         return this;
     }
 
-    public Client getClient() {
-        return this.client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public FavoriteList client(Client client) {
-        this.setClient(client);
+    public FavoriteList removeListDetails(ListDetails ListDetails) {
+        this.listDetails.remove(ListDetails);
+        ListDetails.setFavoriteList(null);
         return this;
     }
 

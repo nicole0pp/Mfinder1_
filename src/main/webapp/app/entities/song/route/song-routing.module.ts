@@ -8,11 +8,20 @@ import { SongUpdateComponent } from '../update/song-update.component';
 import { SongRoutingResolveService } from './song-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
 import { SongEditComponent } from '../update/song-edit.component';
+import { SongGenreComponent } from '../list/songGenre.component';
 
 const songRoute: Routes = [
   {
     path: '',
     component: SongComponent,
+    data: {
+      defaultSort: 'id,' + ASC,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':genre',
+    component: SongGenreComponent,
     data: {
       defaultSort: 'id,' + ASC,
     },

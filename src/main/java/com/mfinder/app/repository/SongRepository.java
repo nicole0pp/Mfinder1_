@@ -16,4 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface SongRepository extends JpaRepository<Song, Long> {
     @Query(value = "SELECT * FROM song s WHERE s.album_id = :album", nativeQuery = true)
     Set<Song> getAllSongsByEvent(@Param("album") Long id);
+
+    @Query(value = "SELECT * FROM song s WHERE s.music_genre = :genre", nativeQuery = true)
+    List<Song> getAllSongsByGenre(@Param("genre") String genre);
 }

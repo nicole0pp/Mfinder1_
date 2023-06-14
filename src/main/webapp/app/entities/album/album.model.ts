@@ -10,6 +10,7 @@ export interface IAlbum {
   publicationDate?: Date;
   artist?: Pick<IArtist, 'id' | 'artistName' | 'image' | 'imageProfileContentType'> | null;
   songs?: Pick<ISong, 'id'>[] | null;
+  puedeEditar: boolean | null;
 }
 
 export type NewAlbum = Omit<IAlbum, 'id'> & { id: null };

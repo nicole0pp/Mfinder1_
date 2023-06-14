@@ -9,7 +9,6 @@ import com.mfinder.app.IntegrationTest;
 import com.mfinder.app.domain.FavoriteList;
 import com.mfinder.app.repository.FavoriteListRepository;
 import com.mfinder.app.service.dto.FavoriteListDTO;
-import com.mfinder.app.service.mapper.FavoriteListMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -48,9 +47,6 @@ class FavoriteListResourceIT {
 
     @Autowired
     private FavoriteListRepository favoriteListRepository;
-
-    @Autowired
-    private FavoriteListMapper favoriteListMapper;
 
     @Autowired
     private EntityManager em;
@@ -98,11 +94,8 @@ class FavoriteListResourceIT {
     void createFavoriteList() throws Exception {
         int databaseSizeBeforeCreate = favoriteListRepository.findAll().size();
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
         restFavoriteListMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
-            )
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteList)))
             .andExpect(status().isCreated());
 
         // Validate the FavoriteList in the database
@@ -119,15 +112,12 @@ class FavoriteListResourceIT {
     void createFavoriteListWithExistingId() throws Exception {
         // Create the FavoriteList with an existing ID
         favoriteList.setId(1L);
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         int databaseSizeBeforeCreate = favoriteListRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFavoriteListMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
-            )
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteList)))
             .andExpect(status().isBadRequest());
 
         // Validate the FavoriteList in the database
@@ -143,12 +133,9 @@ class FavoriteListResourceIT {
         favoriteList.setName(null);
 
         // Create the FavoriteList, which fails.
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         restFavoriteListMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
-            )
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteList)))
             .andExpect(status().isBadRequest());
 
         List<FavoriteList> favoriteListList = favoriteListRepository.findAll();
@@ -209,13 +196,12 @@ class FavoriteListResourceIT {
         // Disconnect from session so that the updates on updatedFavoriteList are not directly saved in db
         em.detach(updatedFavoriteList);
         updatedFavoriteList.name(UPDATED_NAME).picture(UPDATED_PICTURE).pictureContentType(UPDATED_PICTURE_CONTENT_TYPE);
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(updatedFavoriteList);
 
         restFavoriteListMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, favoriteListDTO.getId())
+                put(ENTITY_API_URL_ID, favoriteList.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(favoriteList))
             )
             .andExpect(status().isOk());
 
@@ -235,14 +221,13 @@ class FavoriteListResourceIT {
         favoriteList.setId(count.incrementAndGet());
 
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFavoriteListMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, favoriteListDTO.getId())
+                put(ENTITY_API_URL_ID, favoriteList.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(favoriteList))
             )
             .andExpect(status().isBadRequest());
 
@@ -258,14 +243,13 @@ class FavoriteListResourceIT {
         favoriteList.setId(count.incrementAndGet());
 
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFavoriteListMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(favoriteList))
             )
             .andExpect(status().isBadRequest());
 
@@ -281,13 +265,10 @@ class FavoriteListResourceIT {
         favoriteList.setId(count.incrementAndGet());
 
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFavoriteListMockMvc
-            .perform(
-                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
-            )
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(favoriteList)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the FavoriteList in the database
@@ -364,14 +345,13 @@ class FavoriteListResourceIT {
         favoriteList.setId(count.incrementAndGet());
 
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFavoriteListMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, favoriteListDTO.getId())
+                patch(ENTITY_API_URL_ID, favoriteList.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(favoriteList))
             )
             .andExpect(status().isBadRequest());
 
@@ -387,14 +367,13 @@ class FavoriteListResourceIT {
         favoriteList.setId(count.incrementAndGet());
 
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFavoriteListMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
+                    .content(TestUtil.convertObjectToJsonBytes(favoriteList))
             )
             .andExpect(status().isBadRequest());
 
@@ -410,14 +389,10 @@ class FavoriteListResourceIT {
         favoriteList.setId(count.incrementAndGet());
 
         // Create the FavoriteList
-        FavoriteListDTO favoriteListDTO = favoriteListMapper.toDto(favoriteList);
-
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restFavoriteListMockMvc
             .perform(
-                patch(ENTITY_API_URL)
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(favoriteListDTO))
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(favoriteList))
             )
             .andExpect(status().isMethodNotAllowed());
 

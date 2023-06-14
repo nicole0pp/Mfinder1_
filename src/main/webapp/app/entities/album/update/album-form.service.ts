@@ -43,7 +43,9 @@ export class AlbumFormService {
       name: new FormControl(albumRawValue.name, {
         validators: [Validators.required],
       }),
-      picture: new FormControl(albumRawValue.picture),
+      picture: new FormControl(albumRawValue.picture, {
+        validators: [Validators.required],
+      }),
       pictureContentType: new FormControl(albumRawValue.pictureContentType),
     });
   }

@@ -1,6 +1,6 @@
 package com.mfinder.app.service;
 
-import com.mfinder.app.service.dto.FavoriteListDTO;
+import com.mfinder.app.domain.FavoriteList;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,26 +12,26 @@ public interface FavoriteListService {
     /**
      * Save a favoriteList.
      *
-     * @param favoriteListDTO the entity to save.
+     * @param favoriteList the entity to save.
      * @return the persisted entity.
      */
-    FavoriteListDTO save(FavoriteListDTO favoriteListDTO);
+    FavoriteList save(FavoriteList favoriteList);
 
     /**
      * Updates a favoriteList.
      *
-     * @param favoriteListDTO the entity to update.
+     * @param favoriteList the entity to update.
      * @return the persisted entity.
      */
-    FavoriteListDTO update(FavoriteListDTO favoriteListDTO);
+    FavoriteList update(FavoriteList favoriteList);
 
     /**
      * Partially updates a favoriteList.
      *
-     * @param favoriteListDTO the entity to update partially.
+     * @param favoriteList the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<FavoriteListDTO> partialUpdate(FavoriteListDTO favoriteListDTO);
+    Optional<FavoriteList> partialUpdate(FavoriteList favoriteList);
 
     /**
      * Get all the favoriteLists.
@@ -39,7 +39,7 @@ public interface FavoriteListService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<FavoriteListDTO> findAll(Pageable pageable);
+    Page<FavoriteList> findAll(Pageable pageable);
 
     /**
      * Get the "id" favoriteList.
@@ -47,7 +47,7 @@ public interface FavoriteListService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<FavoriteListDTO> findOne(Long id);
+    Optional<FavoriteList> findOne(Long id);
 
     /**
      * Delete the "id" favoriteList.

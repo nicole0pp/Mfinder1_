@@ -52,7 +52,7 @@
               type="file"
               id="file_picture"
               data-cy="picture"
-              (change)="setFileData($event, 'picture', false)"
+              (change)="setFileData($event, 'picture', true)"
               jhiTranslate="entity.action.addblob"
             />
           </div>
@@ -64,23 +64,6 @@
             id="field_pictureContentType"
             formControlName="pictureContentType"
           />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="mFinder1App.favoriteList.listDetails" for="field_listDetails">List Details</label>
-          <select
-            class="form-control"
-            id="field_listDetails"
-            data-cy="listDetails"
-            name="listDetails"
-            formControlName="listDetails"
-            [compareWith]="compareListDetails"
-          >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="listDetailsOption" *ngFor="let listDetailsOption of listDetailsSharedCollection">
-              {{ listDetailsOption.id }}
-            </option>
-          </select>
         </div>
 
         <div class="row mb-3">

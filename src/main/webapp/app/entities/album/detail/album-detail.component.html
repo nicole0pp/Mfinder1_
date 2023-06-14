@@ -24,7 +24,7 @@
     </button>
     <button
       type="submit"
-      *ngIf="album"
+      *ngIf="album && album.puedeEditar"
       data-cy="entityCreateButton"
       class="btn btn-primary jh-create-entity create-event justify-self-end"
       (click)="createSong(album)"
@@ -34,8 +34,11 @@
     </button>
   </div>
   <div *ngIf="album">
+    <button *ngIf="album.puedeEditar" type="button" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary">
+      <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="mFinder1App.album.home.editAlbum">Editar Album</span>
+    </button>
     <div class="row jh-entity-details justify-content-around">
-      <div class="col-8">
+      <div class="col" style="margin-bottom: 10px">
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
 
@@ -46,102 +49,97 @@
               <span style="color: #2a9fd6">{{ album.name }}</span>
             </h2>
           </div>
-          <p *jhiHasAnyAuthority="'ROLE_ADMIN'">
-            <span jhiTranslate="mFinder1App.album.id" style="font-weight: bold; color: rgb(59, 127, 244)">ID</span>
-            <span
-              >{{ album.id }} <br />
-              <div *ngIf="album.artist">
-                <img
-                  class="profile-image rounded-circle"
-                  style="width: 150px; height: 150px"
-                  alt="..."
-                  *ngIf="album.artist.image"
-                  [src]="'data:' + album.artist.imageProfileContentType + ';base64,' + album.artist.image"
-                />
-                <a [routerLink]="['/artist', album.artist.id, 'view']" style="font-weight: bold">{{ album.artist.artistName }}</a>
-              </div>
-            </span>
-          </p>
-        </div>
-        <div class="row">
-          <div class="table-responsive table-entities" id="entities" *ngIf="songs && songs.length > 0">
-            <table class="table table-striped" aria-describedby="page-heading">
-              <thead>
-                <tr jhiSort class="table-active">
-                  <!-- (sortChange)="navigateToWithComponentValues()"-->
-                  <th scope="col" jhiSortBy="id">
-                    <div class="d-flex" *jhiHasAnyAuthority="'ROLE_ADMIN'">
-                      <span>ID</span>
-                      <fa-icon class="p-1" icon="sort"></fa-icon>
-                    </div>
-                  </th>
-                  <th scope="col" jhiSortBy="title">
-                    <div class="d-flex">
-                      <span>Name</span>
-                      <fa-icon class="p-1" icon="sort"></fa-icon>
-                    </div>
-                  </th>
-                  <th scope="col" jhiSortBy="audio">
-                    <div class="d-flex">
-                      <span>Audio</span>
-                      <fa-icon class="p-1" icon="sort"></fa-icon>
-                    </div>
-                  </th>
-                  <th scope="col" jhiSortBy="musicGenre">
-                    <div class="d-flex">
-                      <span>Music Genre</span>
-                      <fa-icon class="p-1" icon="sort"></fa-icon>
-                    </div>
-                  </th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let song of songs" data-cy="entityTable">
-                  <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
-                    <a [routerLink]="['/song', song.id, 'view']">{{ song.id }}</a>
-                  </td>
-                  <td>{{ song.name }}</td>
-                  <td>
-                    <audio
-                      *ngIf="song.audio"
-                      [src]="'data:' + song.audioContentType + ';base64,' + song.audio"
-                      controls="controls"
-                      preload="none"
-                    ></audio>
-                  </td>
-                  <td>{{ song.musicGenre }}</td>
-                  <td class="text-end">
-                    <div class="btn-group">
-                      <!-- <button type="submit" [routerLink]="['/task', task.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                        <fa-icon icon="eye"></fa-icon>
-                        <span class="d-none d-md-inline">Vista</span>
-                      </button> -->
-
-                      <button
-                        type="submit"
-                        [routerLink]="['/song', song.id, 'editSong']"
-                        class="btn btn-primary btn-sm"
-                        data-cy="entityEditButton"
-                      >
-                        <fa-icon icon="pencil-alt"></fa-icon>
-                        <span class="d-none d-md-inline">Editar</span>
-                      </button>
-
-                      <button type="submit" (click)="delete(song)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                        <fa-icon icon="times"></fa-icon>
-                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <span *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiTranslate="mFinder1App.album.id" style="font-weight: bold; color: rgb(59, 127, 244)"
+            >ID</span
+          >
+          <span *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ album.id }} <br /></span>
+          <div *ngIf="album.artist">
+            <img
+              class="profile-image rounded-circle"
+              style="width: 150px; height: 150px"
+              alt="..."
+              *ngIf="album.artist.image"
+              [src]="'data:' + album.artist.imageProfileContentType + ';base64,' + album.artist.image"
+            />
+            &nbsp;
+            <a [routerLink]="['/artist', album.artist.id, 'view']" style="font-weight: bold">{{ album.artist.artistName }}</a>
           </div>
         </div>
-        <button type="button" [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="mFinder1App.album.home.editAlbum">Editar Album</span>
-        </button>
+      </div>
+      <div class="table-responsive table-entities" id="entities" *ngIf="songs && songs.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort class="table-active">
+              <!-- (sortChange)="navigateToWithComponentValues()"-->
+              <th scope="col" jhiSortBy="id" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <div class="d-flex">
+                  <span>ID</span>
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                </div>
+              </th>
+              <th scope="col" jhiSortBy="title">
+                <div class="d-flex">
+                  <span>Name</span>
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                </div>
+              </th>
+              <th scope="col" jhiSortBy="audio">
+                <div class="d-flex">
+                  <span>Audio</span>
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                </div>
+              </th>
+              <th scope="col" jhiSortBy="musicGenre">
+                <div class="d-flex">
+                  <span>Music Genre</span>
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                </div>
+              </th>
+              <th *ngIf="album.puedeEditar" scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let song of songs" data-cy="entityTable">
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                <a [routerLink]="['/song', song.id, 'view']">{{ song.id }}</a>
+              </td>
+              <td>{{ song.name }}</td>
+              <td>
+                <audio
+                  *ngIf="song.audio"
+                  [src]="'data:' + song.audioContentType + ';base64,' + song.audio"
+                  controls="controls"
+                  preload="none"
+                ></audio>
+              </td>
+              <td>{{ song.musicGenre }}</td>
+              <td class="text-end" *ngIf="album.puedeEditar">
+                <div class="btn-group">
+                  <button
+                    type="submit"
+                    [routerLink]="['/song', song.id, 'editSong']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Editar</span>
+                  </button>
+
+                  <button
+                    type="submit"
+                    (click)="delete(song)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                    *ngIf="album.puedeEditar"
+                  >
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

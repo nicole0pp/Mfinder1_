@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+     <!--
+          Added the entity ListDetails. 20230614010216_modified_entity_ListDetails.xml
+     -->
+     <changeSet id="20230614010216-2" author="jhipster">
+          <!-- <addColumn tableName="list_details" >
+               <column name="list_id" type="bigint">
+                    <constraints nullable="false"/>
+               </column>
+
+               <column name="song_id" type="bigint">
+                    <constraints nullable="false" />
+               </column>
+
+          </addColumn> -->
+          <addForeignKeyConstraint baseColumnNames="list_id"
+                                   baseTableName="list_details"
+                                   constraintName="fk_list_detail_favorite_list"
+                                   referencedColumnNames="id"
+                                   referencedTableName="favorite_list"/>
+
+          <addForeignKeyConstraint baseColumnNames="song_id"
+                                   baseTableName="list_details"
+                                   constraintName="fk_list_detail_song"
+                                   referencedColumnNames="id"
+                                   referencedTableName="song"/>
+     </changeSet>
+
+     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>

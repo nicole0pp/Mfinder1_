@@ -14,11 +14,15 @@ export class AlbumRoutingResolveService implements Resolve<IAlbum | null> {
   resolve(route: ActivatedRouteSnapshot): Observable<IAlbum | null | never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id);
-    } else {
-      this.router.navigate(['404']);
-      return EMPTY;
+      var album = this.service.find(id);
+      if (album) {
+        return album;
+      } else if (album == null) {
+        this.router.navigate(['404']);
+        return EMPTY;
+      }
     }
+    return of(null);
     // if (id) {
     //   return this.service.find(id).pipe(
     //     mergeMap((album: HttpResponse<IAlbum>) => {
@@ -31,6 +35,5 @@ export class AlbumRoutingResolveService implements Resolve<IAlbum | null> {
     //     })
     //   );
     // }
-    return of(null);
   }
 }

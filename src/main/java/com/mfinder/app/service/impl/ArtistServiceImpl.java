@@ -2,7 +2,9 @@ package com.mfinder.app.service.impl;
 
 import com.mfinder.app.domain.Artist;
 import com.mfinder.app.repository.ArtistRepository;
+import com.mfinder.app.security.SecurityUtils;
 import com.mfinder.app.service.ArtistService;
+import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.service.dto.ArtistDTO;
 import com.mfinder.app.service.mapper.ArtistMapper;
 import java.util.List;
@@ -93,4 +95,14 @@ public class ArtistServiceImpl implements ArtistService {
     public Artist getArtistByUserId(Long userId) {
         return artistRepository.findArtistByUserId(userId);
     }
+    // @Transactional()
+    // public Boolean getEsPropio(Long artistId){
+    //     String loginUser = SecurityUtils.getCurrentUserLogin().get();
+    //     AdminUserDTO user = accountResource.getAccount();
+    //     if(user.getId() == artistId){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
 }

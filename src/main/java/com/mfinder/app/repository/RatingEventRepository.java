@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RatingEventRepository extends JpaRepository<RatingEvent, Long> {
-    @Query(value = "SELECT * FROM rating_event r WHERE r.user_id = :id", nativeQuery = true)
-    List<RatingEvent> findRatingByUserId(@Param("id") Long id);
+    @Query(value = "SELECT * FROM rating_event r WHERE r.created_by = :login", nativeQuery = true)
+    List<RatingEvent> findRatingByUserLogin(@Param("login") String login);
 
     @Query("SELECT r FROM RatingEvent r WHERE r.event.id = :eventId")
     List<RatingEvent> findRatingsByEventId(@Param("eventId") Long eventId);

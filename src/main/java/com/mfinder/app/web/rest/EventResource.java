@@ -1,7 +1,13 @@
 package com.mfinder.app.web.rest;
 
+import com.mfinder.app.domain.Authority;
 import com.mfinder.app.domain.Event;
+import com.mfinder.app.domain.User;
 import com.mfinder.app.repository.EventRepository;
+import com.mfinder.app.repository.UserRepository;
+import com.mfinder.app.security.AuthoritiesConstants;
+import com.mfinder.app.security.SecurityUtils;
+import com.mfinder.app.service.UserService;
 import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -48,14 +54,22 @@ public class EventResource {
 
     private final AccountResource accountResource;
 
+    private final UserRepository userRepository;
+
+    private final UserService userService;
+
     public EventResource(
         // EventService eventService,
         EventRepository eventRepository,
-        AccountResource accountResource
+        AccountResource accountResource,
+        UserRepository userRepository,
+        UserService userService
     ) {
         // this.eventService = eventService;
         this.eventRepository = eventRepository;
         this.accountResource = accountResource;
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     /**
@@ -196,12 +210,24 @@ public class EventResource {
             return ResponseEntity.badRequest().build();
         }
         log.debug("REST request to get a page of Events");
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(login);
         Page<Event> page;
         if (eagerloa) {
             page = eventRepository.findAllWithEagerRelationships(pageable);
         } else {
             page = eventRepository.findAll(pageable);
         }
+        page.forEach(event -> {
+            if (event.getCreatedBy().equals(login) && user.get().getAuthorities().contains(authority)) {
+                event.setPuedeEditar(true);
+            } else {
+                event.setPuedeEditar(false);
+            }
+        });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -219,8 +245,19 @@ public class EventResource {
     @GetMapping("/events/{id}")
     public ResponseEntity<Event> getEvent(@PathVariable Long id) {
         log.debug("REST request to get event : {}", id);
-
         Optional<Event> event = eventRepository.findOneWithEagerRelationships(id);
+
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        Optional<User> user = userService.getUserWithAuthoritiesByLogin(login);
+
+        if (event.get().getCreatedBy().equals(login) && user.get().getAuthorities().contains(authority)) {
+            event.get().setPuedeEditar(true);
+        } else {
+            event.get().setPuedeEditar(false);
+        }
         return ResponseUtil.wrapOrNotFound(event);
     }
 

@@ -31,18 +31,6 @@
             <a [routerLink]="['/list-details', favoriteList.listDetails.id, 'view']">{{ favoriteList.listDetails.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="mFinder1App.favoriteList.artist">Artist</span></dt>
-        <dd>
-          <div *ngIf="favoriteList.artist">
-            <a [routerLink]="['/artist', favoriteList.artist.id, 'view']">{{ favoriteList.artist.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="mFinder1App.favoriteList.client">Client</span></dt>
-        <dd>
-          <div *ngIf="favoriteList.client">
-            <a [routerLink]="['/client', favoriteList.client.id, 'view']">{{ favoriteList.client.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

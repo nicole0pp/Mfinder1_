@@ -2,6 +2,7 @@ package com.mfinder.app.web.rest;
 
 import com.mfinder.app.domain.Artist;
 import com.mfinder.app.repository.ArtistRepository;
+import com.mfinder.app.security.SecurityUtils;
 import com.mfinder.app.service.ArtistService;
 import com.mfinder.app.service.dto.AdminUserDTO;
 import com.mfinder.app.service.dto.ArtistDTO;
@@ -46,10 +47,18 @@ public class ArtistResource {
 
     private final ArtistRepository artistRepository;
 
-    public ArtistResource(ArtistService artistService, ArtistRepository artistRepository, ArtistServiceImpl artistServiceImpl) {
+    private final AccountResource accountResource;
+
+    public ArtistResource(
+        ArtistService artistService,
+        ArtistRepository artistRepository,
+        ArtistServiceImpl artistServiceImpl,
+        AccountResource accountResource
+    ) {
         this.artistService = artistService;
         this.artistRepository = artistRepository;
         this.artistServiceImpl = artistServiceImpl;
+        this.accountResource = accountResource;
     }
 
     /**
@@ -206,4 +215,13 @@ public class ArtistResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+    // /**
+    //  * Gets a list of all the artists.
+    //  * @return a string list of all the artists.
+    //  */
+    // @GetMapping("/artist-comprobacion")
+    // public Boolean comprobacionEsPropio(Long artistId) {
+    //     return artistServiceImpl.getEsPropio(artistId);
+    // }
+
 }

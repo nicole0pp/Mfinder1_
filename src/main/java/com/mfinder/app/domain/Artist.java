@@ -44,11 +44,6 @@ public class Artist implements Serializable {
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
     private Set<Album> albums = new HashSet<>();
 
-    @OneToMany(mappedBy = "artist")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "listDetails", "artist", "client" }, allowSetters = true)
-    private Set<FavoriteList> favoriteLists = new HashSet<>();
-
     @ManyToMany(mappedBy = "artists")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = "artists", allowSetters = true)
@@ -168,37 +163,6 @@ public class Artist implements Serializable {
     public Artist removeAlbum(Album album) {
         this.albums.remove(album);
         album.setArtist(null);
-        return this;
-    }
-
-    public Set<FavoriteList> getFavoriteLists() {
-        return this.favoriteLists;
-    }
-
-    public void setFavoriteLists(Set<FavoriteList> favoriteLists) {
-        if (this.favoriteLists != null) {
-            this.favoriteLists.forEach(i -> i.setArtist(null));
-        }
-        if (favoriteLists != null) {
-            favoriteLists.forEach(i -> i.setArtist(this));
-        }
-        this.favoriteLists = favoriteLists;
-    }
-
-    public Artist favoriteLists(Set<FavoriteList> favoriteLists) {
-        this.setFavoriteLists(favoriteLists);
-        return this;
-    }
-
-    public Artist addFavoriteList(FavoriteList favoriteList) {
-        this.favoriteLists.add(favoriteList);
-        favoriteList.setArtist(this);
-        return this;
-    }
-
-    public Artist removeFavoriteList(FavoriteList favoriteList) {
-        this.favoriteLists.remove(favoriteList);
-        favoriteList.setArtist(null);
         return this;
     }
 

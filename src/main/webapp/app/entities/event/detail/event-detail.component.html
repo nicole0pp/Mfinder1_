@@ -130,7 +130,7 @@
       </div>
       <div class="col-2" style="display: flex; justify-self: center; align-items: self-start">
         <button
-          *jhiHasAnyAuthority="'ROLE_ADMIN'"
+          *ngIf="event.puedeEditar"
           style="margin-top: 4%; justify-content: center"
           type="button"
           [routerLink]="['/event', event.id, 'update-view']"

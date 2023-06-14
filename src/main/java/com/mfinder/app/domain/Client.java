@@ -24,11 +24,6 @@ public class Client implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "client")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "listDetails", "artist", "client" }, allowSetters = true)
-    private Set<FavoriteList> favoriteLists = new HashSet<>();
-
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -46,37 +41,6 @@ public class Client implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<FavoriteList> getFavoriteLists() {
-        return this.favoriteLists;
-    }
-
-    public void setFavoriteLists(Set<FavoriteList> favoriteLists) {
-        if (this.favoriteLists != null) {
-            this.favoriteLists.forEach(i -> i.setClient(null));
-        }
-        if (favoriteLists != null) {
-            favoriteLists.forEach(i -> i.setClient(this));
-        }
-        this.favoriteLists = favoriteLists;
-    }
-
-    public Client favoriteLists(Set<FavoriteList> favoriteLists) {
-        this.setFavoriteLists(favoriteLists);
-        return this;
-    }
-
-    public Client addFavoriteList(FavoriteList favoriteList) {
-        this.favoriteLists.add(favoriteList);
-        favoriteList.setClient(this);
-        return this;
-    }
-
-    public Client removeFavoriteList(FavoriteList favoriteList) {
-        this.favoriteLists.remove(favoriteList);
-        favoriteList.setClient(null);
-        return this;
     }
 
     //Relacion con User
